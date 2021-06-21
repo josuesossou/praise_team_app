@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:lgcogpraiseteam/models/EventModel.dart';
-import 'package:lgcogpraiseteam/services/dbSongsQuery.dart';
+import '../models/EventModel.dart';
+import '../services/dbSongsQuery.dart';
 
 import './db.dart';
 

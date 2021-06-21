@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lgcogpraiseteam/components/flexText.dart';
+import '../components/flexText.dart';
 import '../models/SongModel.dart';
 
 class SongCard extends StatelessWidget {

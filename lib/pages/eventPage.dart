@@ -1,15 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:lgcogpraiseteam/components/SharedSoundCard.dart';
-import 'package:lgcogpraiseteam/components/arrowBack.dart';
-import 'package:lgcogpraiseteam/components/button.dart';
-import 'package:lgcogpraiseteam/components/flexText.dart';
-import 'package:lgcogpraiseteam/components/loader.dart';
-import 'package:lgcogpraiseteam/models/EventModel.dart';
-import 'package:lgcogpraiseteam/models/SongModel.dart';
-import 'package:lgcogpraiseteam/pages/songPage.dart';
-import 'package:lgcogpraiseteam/services/dbSongsQuery.dart';
+import '../components/SharedSoundCard.dart';
+import '../components/arrowBack.dart';
+import '../components/button.dart';
+import '../components/flexText.dart';
+import '../components/loader.dart';
+import '../models/EventModel.dart';
+import '../models/SongModel.dart';
+import '../pages/songPage.dart';
+import '../services/dbSongsQuery.dart';
 
 
 class EventPage extends StatefulWidget {

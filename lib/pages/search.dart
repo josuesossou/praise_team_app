@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:lgcogpraiseteam/components/arrowBack.dart';
-import 'package:lgcogpraiseteam/components/flexText.dart';
-import 'package:lgcogpraiseteam/components/loader.dart';
-import 'package:lgcogpraiseteam/components/songCard.dart';
-import 'package:lgcogpraiseteam/models/SongModel.dart';
-import 'package:lgcogpraiseteam/pages/searchYoutube.dart';
-import 'package:lgcogpraiseteam/services/dbSongsQuery.dart';
+import '../components/arrowBack.dart';
+import '../components/flexText.dart';
+import '../components/loader.dart';
+import '../components/songCard.dart';
+import '../models/SongModel.dart';
+import '../pages/searchYoutube.dart';
+import '../services/dbSongsQuery.dart';
 
 import './songPage.dart';
 import '../components/button.dart';

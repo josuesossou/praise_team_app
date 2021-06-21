@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:lgcogpraiseteam/components/arrowBack.dart';
-import 'package:lgcogpraiseteam/components/dropDownNotes.dart';
-import 'package:lgcogpraiseteam/components/flexText.dart';
-import 'package:lgcogpraiseteam/components/textField.dart';
-import 'package:lgcogpraiseteam/utils/calculateTranspose.dart';
+import '../components/arrowBack.dart';
+import '../components/dropDownNotes.dart';
+import '../components/flexText.dart';
+import '../components/textField.dart';
+import '../utils/calculateTranspose.dart';
 
 class TransposePage extends StatefulWidget {
   @override

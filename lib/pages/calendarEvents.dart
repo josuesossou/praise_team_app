@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lgcogpraiseteam/components/button.dart';
+import '../components/button.dart';
 
 
 class TestYoutubePlayer extends StatefulWidget {

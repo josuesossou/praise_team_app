@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lgcogpraiseteam/components/flexText.dart';
+import '../components/flexText.dart';
 import '../components/textField.dart';
 import '../components/logo.dart';
 import '../components/button.dart';

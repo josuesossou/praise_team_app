@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lgcogpraiseteam/components/flexText.dart';
-import 'package:lgcogpraiseteam/models/SongModel.dart';
+import '../components/flexText.dart';
+import '../models/SongModel.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class SharedSoundCard extends StatelessWidget {

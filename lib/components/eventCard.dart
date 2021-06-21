@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:lgcogpraiseteam/components/flexText.dart';
-import 'package:lgcogpraiseteam/models/EventModel.dart';
-import 'package:lgcogpraiseteam/pages/eventPage.dart';
+import '../components/flexText.dart';
+import '../models/EventModel.dart';
+import '../pages/eventPage.dart';
 import './button.dart';
 
 class EventCard extends StatelessWidget {

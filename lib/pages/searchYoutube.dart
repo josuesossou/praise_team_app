@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:lgcogpraiseteam/components/arrowBack.dart';
-import 'package:lgcogpraiseteam/components/loader.dart';
-import 'package:lgcogpraiseteam/models/SongModel.dart';
-import 'package:lgcogpraiseteam/services/youtubeAPI.dart';
+import '../components/arrowBack.dart';
+import '../components/loader.dart';
+import '../models/SongModel.dart';
+import '../services/youtubeAPI.dart';
 import '../components/button.dart';
 import '../components/textField.dart';
 import '../components/youtubeVideoCard.dart';

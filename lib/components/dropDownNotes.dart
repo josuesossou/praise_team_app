@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lgcogpraiseteam/utils/calculateTranspose.dart';
+import '../utils/calculateTranspose.dart';
 
 class DropDownNotes extends StatelessWidget {
   DropDownNotes({ 

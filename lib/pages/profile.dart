@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lgcogpraiseteam/components/arrowBack.dart';
+import '../components/arrowBack.dart';
 
 class Profile extends StatefulWidget {
   @override

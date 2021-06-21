@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lgcogpraiseteam/models/AuthModel.dart';
+import './models/AuthModel.dart';
 import 'package:provider/provider.dart';
 
 // firebase imports

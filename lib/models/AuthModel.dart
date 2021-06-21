@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:lgcogpraiseteam/services/dbUsersQuery.dart';
+import '../services/dbUsersQuery.dart';
 
 class AuthModel with ChangeNotifier { 
   User authUser;

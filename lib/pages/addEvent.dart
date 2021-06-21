@@ -1,20 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:lgcogpraiseteam/components/arrowBack.dart';
-import 'package:lgcogpraiseteam/components/loader.dart';
-import 'package:lgcogpraiseteam/services/dbEventsQuery.dart';
+import '../components/arrowBack.dart';
+import '../components/loader.dart';
+import '../services/dbEventsQuery.dart';
 import 'package:uuid/uuid.dart';
 
-import 'package:lgcogpraiseteam/components/button.dart';
-import 'package:lgcogpraiseteam/components/songCard.dart';
-import 'package:lgcogpraiseteam/components/textField.dart';
-import 'package:lgcogpraiseteam/models/EventModel.dart';
-import 'package:lgcogpraiseteam/models/SongModel.dart';
+import '../components/button.dart';
+import '../components/songCard.dart';
+import '../components/textField.dart';
+import '../models/EventModel.dart';
+import '../models/SongModel.dart';
 import '../services/dbSongsQuery.dart';
 import '../components/flexText.dart';
-
-
 
 class AddEvent extends StatefulWidget {
   @override

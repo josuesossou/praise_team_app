@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:lgcogpraiseteam/pages/profile.dart';
-import 'package:lgcogpraiseteam/pages/search.dart';
-import 'package:lgcogpraiseteam/pages/transposePage.dart';
-import 'package:lgcogpraiseteam/utils/auth_status.dart';
-import 'package:lgcogpraiseteam/utils/calculateTranspose.dart';
+import '../pages/profile.dart';
+import '../pages/search.dart';
+import '../pages/transposePage.dart';
+import '../utils/auth_status.dart';
+import '../utils/calculateTranspose.dart';
 import 'package:provider/provider.dart';
 import '../components/logo.dart';
 import '../components/bottomNavigationBar.dart';

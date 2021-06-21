@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:lgcogpraiseteam/components/arrowBack.dart';
-import 'package:lgcogpraiseteam/components/button.dart';
-import 'package:lgcogpraiseteam/components/dropDownNotes.dart';
-import 'package:lgcogpraiseteam/components/flexText.dart';
-import 'package:lgcogpraiseteam/components/textField.dart';
-import 'package:lgcogpraiseteam/models/SongModel.dart';
-import 'package:lgcogpraiseteam/services/dbSongsQuery.dart';
+import '../components/arrowBack.dart';
+import '../components/button.dart';
+import '../components/dropDownNotes.dart';
+import '../components/flexText.dart';
+import '../components/textField.dart';
+import '../models/SongModel.dart';
+import '../services/dbSongsQuery.dart';
 import '../components/SharedSoundCard.dart';
 import '../utils/calculateTranspose.dart';
 

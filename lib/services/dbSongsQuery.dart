@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:lgcogpraiseteam/models/SongModel.dart';
+import '../models/SongModel.dart';
 import './db.dart';
 
 class DbSongsQuery {

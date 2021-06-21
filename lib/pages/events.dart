@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:lgcogpraiseteam/components/flexText.dart';
-import 'package:lgcogpraiseteam/components/loader.dart';
-import 'package:lgcogpraiseteam/models/EventModel.dart';
+import '../components/flexText.dart';
+import '../components/loader.dart';
+import '../models/EventModel.dart';
 import '../services/dbEventsQuery.dart';
 import '../components/eventCard.dart';
 
