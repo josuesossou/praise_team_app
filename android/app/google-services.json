@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "711022486571",
+    "project_id": "praise-team-b03a5",
+    "storage_bucket": "praise-team-b03a5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:711022486571:android:4456261c8979eb5e3d366e",
+        "android_client_info": {
+          "package_name": "com.example.praiseteam"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "711022486571-n6c2nagmc9v4q3impkrhjgh1lfbakg6r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSBrryEkvtg80R5kn_9ivKDZZrXFR5X-0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "711022486571-n6c2nagmc9v4q3impkrhjgh1lfbakg6r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
