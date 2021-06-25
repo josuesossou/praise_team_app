@@ -69,7 +69,7 @@ class _SwitchNavigatorState extends State<SwitchNavigator> {
         accentColor: Color(0xff01A0C7)
       ),
       home:  auth.authUser == null ? 
-            Login() : MainApp(),
+            MainApp() :Login(),
     );
    
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// import 'package:lgcogpraiseteam/models/AuthModel.dart';
 import '../pages/profile.dart';
 import '../pages/search.dart';
 import '../pages/transposePage.dart';
@@ -35,12 +36,11 @@ class _MainAppState extends State<MainApp> {
     );
   }
 
-  void _toProfilePage(dynamic doSomething) {
-    doSomething();
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => Profile())
-    // );
+  void _toProfilePage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => Profile())
+    );
   }
 
   void _toTransposePage() {
@@ -55,7 +55,6 @@ class _MainAppState extends State<MainApp> {
     Size mediaSize = MediaQuery.of(context).size;
     double size = 0.20 * mediaSize.width;
     double margin = 0.05 * mediaSize.height;
-    final myModel = Provider.of<MyModel>(context);
    
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColorLight,
@@ -80,7 +79,7 @@ class _MainAppState extends State<MainApp> {
           Align(
             alignment: Alignment.bottomCenter,
             child: BottomNavigation(
-              toProfilePage: () => _toProfilePage(myModel.doSomething),
+              toProfilePage: () => _toProfilePage(),
               toSearchPage: () => _toSearchPage(),
             )
           ),

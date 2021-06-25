@@ -68,6 +68,7 @@ class _EventsState extends State<Events> {
                     List<QueryDocumentSnapshot> docs = snapshot.data.docs;
                     if (docs.isEmpty) {
                       child = Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [FlexText(text: "No upcoming events",)],
                       );
                     } else {

@@ -46,7 +46,7 @@ class EventCard extends StatelessWidget {
         color: Theme.of(context).primaryColorDark,
         padding: EdgeInsets.zero,
         onPress: () {
-           Navigator.push(
+          Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => EventPage(
