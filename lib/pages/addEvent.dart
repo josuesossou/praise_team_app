@@ -133,7 +133,7 @@ class _AddEventState extends State<AddEvent> {
           ) : Container(),
           Container(
             alignment: Alignment.bottomCenter,
-            margin: EdgeInsets.only(bottom: 10),
+            margin: EdgeInsets.only(bottom: 20),
             child: RectButton(
               onPress: () => _addEvent(),
               elevation: 5,
@@ -236,7 +236,7 @@ class AddEventComponent extends StatelessWidget {
           ] + songs.map((song) => (
             Container(
               color: theme.primaryColor,
-              height: 200,
+              height: 215,
               margin: EdgeInsets.only(bottom: 10),
               child: SongCard(
                 song: song,
@@ -281,7 +281,7 @@ class SearchedSongLists extends StatelessWidget {
           )
         ]
       ),
-      height: 215,
+      height: 225,
       child: FutureBuilder(
         future: searchedSongs(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {

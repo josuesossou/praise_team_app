@@ -45,7 +45,7 @@ class EventCard extends StatelessWidget {
       child: RectButton(
         color: Theme.of(context).primaryColorDark,
         padding: EdgeInsets.zero,
-        onPress: () {
+        onPress: () => {
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -54,7 +54,7 @@ class EventCard extends StatelessWidget {
                 type: type,
               )
             )
-          );
+          )
         },
         elevation: 0,
         width:  MediaQuery.of(context).size.width,

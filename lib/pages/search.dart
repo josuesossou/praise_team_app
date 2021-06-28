@@ -143,7 +143,7 @@ class SearchSongs extends StatelessWidget {
           SongModel song = SongModel.fromMap(s.data());
 
           return Container(
-            height: 210,
+            height: 215,
             child: RectButton(
               padding: EdgeInsets.zero,
               margin: EdgeInsets.only(bottom: 10),

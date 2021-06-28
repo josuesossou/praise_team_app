@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../components/flexText.dart';
 import '../models/SongModel.dart';
 
@@ -14,13 +15,18 @@ class SongCard extends StatelessWidget {
   final EdgeInsets margin;
 
   final TextStyle style = TextStyle(
-    fontSize: 20, 
+    fontSize: 20,
     fontWeight: FontWeight.bold,
   );
 
   final TextStyle style2 = TextStyle(
     fontSize: 18, 
     fontWeight: FontWeight.bold,
+  );
+
+  final Container lineSeparator = Container(
+    height: 1,
+    color: Colors.black12,
   );
 
   @override
@@ -67,10 +73,8 @@ class SongCard extends StatelessWidget {
               ),
             ],
           ),
-          Container(
-            height: 1,
-            color: Colors.black12,
-          ),
+          
+          lineSeparator,
           SizedBox(height: 5),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -85,20 +89,20 @@ class SongCard extends StatelessWidget {
               ),
             ],
           ),
-          Container(
-            height: 1,
-            color: Colors.black12,
-          ),
+          lineSeparator,
           SizedBox(height: 5),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               FlexText(
-                text: 'Last Date Played:',
+                text: 'Date Played:',
                 style: style2,
               ),
               FlexText(
-                text: song.lastDatePlayed,
+                text: song.lastDatePlayed == 'New Song' ? 
+                        song.lastDatePlayed :
+                        DateFormat.yMMMd()
+                        .format(DateTime.parse(song.lastDatePlayed)),
                 style: style2,
               ),
             ],

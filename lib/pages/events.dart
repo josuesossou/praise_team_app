@@ -67,9 +67,22 @@ class _EventsState extends State<Events> {
                   if (snapshot.hasData) {
                     List<QueryDocumentSnapshot> docs = snapshot.data.docs;
                     if (docs.isEmpty) {
-                      child = Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [FlexText(text: "No upcoming events",)],
+                      child = Container(
+                        height: size.height * 0.17,
+                        margin: EdgeInsets.symmetric(horizontal: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        
+                        alignment: Alignment.center,
+                        child: Text(
+                          "No upcoming events",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold
+                          ),
+                        ),
                       );
                     } else {
                       child = PageView(

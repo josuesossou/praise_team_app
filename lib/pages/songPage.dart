@@ -1,4 +1,7 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:open_file/open_file.dart';
 import '../components/arrowBack.dart';
 import '../components/button.dart';
 import '../components/dropDownNotes.dart';
@@ -237,10 +240,93 @@ class EditSong extends StatelessWidget {
   }
 }
 
+class AddFileOptions extends StatelessWidget {
+  AddFileOptions({ Key key }) : super(key: key);
+
+  void _openFileExplorer() async {
+
+
+//  setState(() => _loadingPath = true);
+    try {
+      // _directoryPath = null;
+      await FilePicker.platform.pickFiles(
+        // type: _pickingType,
+        allowMultiple: true,
+        // allowedExtensions: (_extension?.isNotEmpty ?? false)
+        //     ? _extension?.replaceAll(' ', '').split(',')
+        //     : null,
+      );
+    } on PlatformException catch (e) {
+      print("Unsupported operation" + e.toString());
+    } catch (ex) {
+      print(ex);
+    }
+
+
+    // FilePickerResult result = await FilePicker.platform.pickFiles(
+    //   type: FileType.custom,
+    //   allowedExtensions: ['jpg', 'pdf', 'doc'],
+    // );
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Theme.of(context).primaryColorDark,
+      height: 150,
+      padding: EdgeInsets.only(bottom: 50, top: 15),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          RectButton(
+            elevation: 2,
+            padding: EdgeInsets.zero,
+            margin: EdgeInsets.zero,
+            
+            onPress: () {
+              _openFileExplorer();
+            }, 
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.file_upload, size: 30,),
+                SizedBox(height: 6),
+                Text('Files')
+              ],
+            )
+          ),
+          SizedBox(width: 20),
+          RectButton(
+            elevation: 2, 
+            onPress: () => {}, 
+            child: Column(
+              children: [
+                Icon(Icons.link_sharp, size: 30,),
+                SizedBox(height: 6),
+                Text('URL')
+              ],
+            )
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class ScrolledContent extends StatelessWidget {
   ScrolledContent({ @required this.song });
 
   final SongModel song;
+
+  void showBottomSheet(context) => showModalBottomSheet<void>(
+    context: context,
+    isDismissible: true,
+    enableDrag: true,
+    builder: (BuildContext context) {
+      return AddFileOptions();
+    },
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -289,7 +375,7 @@ class ScrolledContent extends StatelessWidget {
               margin: unifyMargin,
               color: Theme.of(context).accentColor,
               elevation: 3,
-              onPress: () {}, 
+              onPress: () => showBottomSheet(context), 
               child: Row(
                 children: [
                   FlexText(
@@ -308,12 +394,6 @@ class ScrolledContent extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
 
 /// download posted file button
 class FileCardBtn extends StatelessWidget {
@@ -378,7 +458,6 @@ class FileCardBtn extends StatelessWidget {
                     color: Colors.white,
                   ),
                 )
-                
               ),
             )
           ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../components/flexText.dart';
 import '../models/SongModel.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -114,7 +115,10 @@ class SharedSoundCard extends StatelessWidget {
                   style: style1,
                 ),
                 FlexText(
-                  text: song.lastDatePlayed,
+                  text: song.lastDatePlayed == 'New Song' ? 
+                        song.lastDatePlayed :
+                        DateFormat.yMMMd()
+                        .format(DateTime.parse(song.lastDatePlayed)),
                   style: style2,
                 ),
               ]
