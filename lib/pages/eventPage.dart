@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:share_plus/share_plus.dart';
 import '../components/SharedSoundCard.dart';
 import '../components/arrowBack.dart';
 import '../components/button.dart';
@@ -33,6 +34,15 @@ class _EventPageState extends State<EventPage> {
     fontWeight: FontWeight.normal
   );
 
+  void _onShare(BuildContext context) {
+    final box = context.findRenderObject() as RenderBox;
+    Share.share(
+      'check out my website',
+      subject: 'hello',
+      sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     int numSong = widget.event.songIds.length;
@@ -46,7 +56,9 @@ class _EventPageState extends State<EventPage> {
           CirButton(
             child: Icon(Icons.share_outlined, size: 25,),
             size: 50,
-            onPress: () {},
+            onPress: () {
+              _onShare(context);
+            },
           )
         ],
         elevation: 0,
