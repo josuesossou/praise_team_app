@@ -37,7 +37,7 @@ class _EventPageState extends State<EventPage> {
   void _onShare(BuildContext context) {
     final box = context.findRenderObject() as RenderBox;
     Share.share(
-      'check out my website',
+      'check out my website https://google.com',
       subject: 'hello',
       sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size
     );

@@ -20,7 +20,6 @@ class DbUsers {
             .collection(childCollectionPath)
             .doc(userEmail)
             .get();
-
     return user.exists;
   }
 }

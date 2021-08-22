@@ -26,7 +26,7 @@ class AuthModel with ChangeNotifier {
     personalEmail = pEmail;
 
     UserCredential organizationInfo =
-        await auth.signInWithEmailAndPassword(email: email, password: password);
+      await auth.signInWithEmailAndPassword(email: email, password: password);
     bool isUser = await dbusers.checkUser(pEmail, organizationInfo.user.uid);
     // authUser.sendEmailVerification()
 
