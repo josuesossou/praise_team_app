@@ -2,10 +2,6 @@ import 'package:flutter/material.dart';
 // import './models/AuthModel.dart';
 // import 'package:provider/provider.dart';
 
-// firebase imports
-// import 'package:firebase_core/firebase_core.dart';
-
-
 // dart async library we will refer to when setting up real time updates
 import 'dart:async';
 
@@ -145,26 +141,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<Todo> _todos = [];
 
-  Future<void> _fetchTodos() async {
-    // to be filled in a later step
-    // _subscription = Amplify.DataStore.observe(Todo.classType).listen((event) {
-    //   _fetchTodos();
-    // });
-    try {
-    
-      // query for all Todo entries by passing the Todo classType to
-      // Amplify.DataStore.query();
-      List<Todo> updatedTodos = await Amplify.DataStore
-      .query(Todo.classType, where: Todo.NAME.contains('AND') );
-      
-      //update the ui state to reflect fetched todos
-      setState(() {
-        _todos = updatedTodos;
-      });
-    } catch (e) {
-      print('An error occurred while querying Todos: $e');
-    }
-  }
+
 
     @override
   void dispose() {
