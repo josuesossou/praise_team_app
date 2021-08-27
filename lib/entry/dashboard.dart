@@ -3,23 +3,23 @@ import 'package:flutter/material.dart';
 import '../screens/profile.dart';
 import '../screens/search.dart';
 import '../screens/transposePage.dart';
-import '../utils/auth_status.dart';
-import '../utils/calculateTranspose.dart';
-import 'package:provider/provider.dart';
+// import '../utils/auth_status.dart';
+// import '../utils/calculateTranspose.dart';
+// import 'package:provider/provider.dart';
 import '../components/logo.dart';
 import '../components/bottomNavigationBar.dart';
 import '../components/button.dart';
 import '../screens/home.dart';
 import '../screens/addEvent.dart';
 
-class MainApp extends StatefulWidget {
-  MainApp({String title});
+class DashboardScreen extends StatefulWidget {
+  DashboardScreen({String title});
 
   @override
-  _MainAppState createState() => _MainAppState();
+  _DashboardScreenState createState() => _DashboardScreenState();
 }
 
-class _MainAppState extends State<MainApp> {
+class _DashboardScreenState extends State<DashboardScreen> {
   PageController controller = PageController(initialPage: 1);
 
   void _toAddEventPage() {

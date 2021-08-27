@@ -53,7 +53,10 @@ class TextFieldCop extends StatelessWidget {
           hintText: hintText,
           filled: true,
           fillColor: color,
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(radius), borderSide: border)
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(radius), 
+            borderSide: border
+          )
         ),
       )
     );
