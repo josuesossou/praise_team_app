@@ -1,0 +1,21 @@
+{
+    "appName": "praiseteamapp",
+    "roleName": "pinpointLambdaRole68adca4e",
+    "cloudformationPolicyName": "cloudformationPolicy68adca4e",
+    "cloudWatchPolicyName": "cloudWatchPolicy68adca4e",
+    "pinpointPolicyName": "pinpointPolicy68adca4e",
+    "authPolicyName": "pinpoint_amplify_68adca4e",
+    "unauthPolicyName": "pinpoint_amplify_68adca4e",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "authRoleArn": {
+        "Fn::GetAtt": [
+            "AuthRole",
+            "Arn"
+        ]
+    }
+}

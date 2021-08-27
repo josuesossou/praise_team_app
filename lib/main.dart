@@ -22,13 +22,14 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: 'Praise&Worship Team',
       onGenerateRoute: (settings) {
-        // // home
-        // if (settings.name == '/mainApp') {
-        //   return PageRouteBuilder(
-        //     pageBuilder: (_, __, ___) => MainApp(),
-        //     transitionsBuilder: (_, __, ___, child) => child,
-        //   );
-        // }
+        // home
+        if (settings.name == '/dashboard') {
+          return PageRouteBuilder(
+            pageBuilder: (_, __, ___) => 
+              Testing(),
+            transitionsBuilder: (_, __, ___, child) => child,
+          );
+        }
 
         // signup
         if (settings.name == '/auth') {
@@ -51,7 +52,7 @@ class App extends StatelessWidget {
         if (settings.name == '/confirm') {
           return PageRouteBuilder(
             pageBuilder: (_, __, ___) =>
-              ConfirmScreen(data: settings.arguments as LoginData),
+              ConfirmScreen(data: settings.arguments as Map<String, dynamic>),
             transitionsBuilder: (_, __, ___, child) => child,
           );
         }

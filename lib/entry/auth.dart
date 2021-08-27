@@ -55,6 +55,7 @@ class _AuthState extends State<Auth> {
         );
 
         if (res.isSignedIn) {
+          
           return null;
         }
 
@@ -64,6 +65,7 @@ class _AuthState extends State<Auth> {
           await Amplify.Auth.signOut();
           return 'Problem logging in. Please try again.';
         }
+        print(e);
 
         return '${e.message} - ${e.recoverySuggestion}';
       }
@@ -118,9 +120,10 @@ class AdditionalInfo extends StatelessWidget {
   );
 
   void _onSignup(context) async {
+    String username = loginData.name.replaceAll(RegExp(r'[@\.]'), '').toLowerCase();
     try {
       await Amplify.Auth.signUp(
-        username: _nameController.text.replaceAll(' ', '').toLowerCase(),
+        username: username,
         password: loginData.password,
         options: CognitoSignUpOptions(userAttributes: {
           'email': loginData.name,
@@ -130,10 +133,16 @@ class AdditionalInfo extends StatelessWidget {
         }),
       );
 
-      // _data = data;
-      // print(data.name);
-      showSuccess(context, 'An email with a verification code was sent');
-      Navigator.pushReplacementNamed(context, '/confirm');
+      showSuccess(context, 'A confirmation code was sent to your email');
+      Navigator.pushReplacementNamed(
+        context, 
+        '/confirm', 
+        arguments: {
+          'username': username, 
+          'email': loginData.name,
+          'password': loginData.password 
+        }
+      );
     } on AuthException catch (e) {
       showError(context, '${e.message} - ${e.recoverySuggestion}');
     }

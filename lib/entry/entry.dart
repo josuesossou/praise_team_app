@@ -17,18 +17,9 @@ class _EntryScreenState extends State<EntryScreen> {
   void _isUserExist() async {
     try {
       var user = await Amplify.Auth.getCurrentUser();
-      print(user);
-      print(user.username);
-
-      // Navigator.pushReplacementNamed(context, '/mainApp');
-      
-      // setState(() {
-      //   _user = user;
-      // });
+  
+      Navigator.pushReplacementNamed(context, '/dashboard');
     } catch (e) {
-      // setState(() {
-      //   _user = null;
-      // });
       Navigator.pushReplacementNamed(context, '/auth');
     }
   }

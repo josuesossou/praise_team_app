@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:amplify_flutter/amplify.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:flutter_login/flutter_login.dart';
+import 'package:lgcogpraiseteam/components/scaffoldMessages.dart';
 
 class ConfirmScreen extends StatefulWidget {
-  final LoginData data;
+  final Map<String, dynamic> data;
 
   ConfirmScreen({@required this.data});
 
@@ -26,53 +27,37 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
     });
   }
 
-  void _verifyCode(BuildContext context, LoginData data, String code) async {
+  void _verifyCode(BuildContext context,
+  Map<String, dynamic> data, String code) async {
     try {
       final res = await Amplify.Auth.confirmSignUp(
-        username: data.name,
+        username: data['username'],
         confirmationCode: code,
       );
 
       if (res.isSignUpComplete) {
         // Login user
         final user = await Amplify.Auth.signIn(
-            username: data.name, password: data.password);
+            username: data['username'], password: data['password']);
 
         if (user.isSignedIn) {
           Navigator.pushReplacementNamed(context, '/dashboard');
         }
       }
     } on AuthException catch (e) {
-      _showError(context, e.message);
+      showError(context, e.message);
     }
   }
 
-  void _resendCode(BuildContext context, LoginData data) async {
+  void _resendCode(BuildContext context,
+    Map<String, dynamic> data) async {
     try {
-      await Amplify.Auth.resendSignUpCode(username: data.name);
+      await Amplify.Auth.resendSignUpCode(username: data['username']);
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Colors.blueAccent,
-          content: Text('Confirmation code resent. Check your email',
-              style: TextStyle(fontSize: 15)),
-        ),
-      );
+      showSuccess(context, 'Confirmation code resent. Check your email');
     } on AuthException catch (e) {
-      _showError(context, e.message);
+      showError(context, e.message);
     }
-  }
-
-  void _showError(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: Colors.redAccent,
-        content: Text(
-          message,
-          style: TextStyle(fontSize: 15),
-        ),
-      ),
-    );
   }
 
   @override
@@ -152,6 +137,34 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+
+
+
+
+class Testing extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.amber, 
+      body: Column(
+        children: [
+          Text('this is dashboard'),
+          MaterialButton(
+            onPressed: () {
+              Amplify.Auth.signOut();
+            },
+            child: Text(
+              'Sign out',
+              style: TextStyle(color: Colors.grey),
+            ),
+          )
+        ],
       ),
     );
   }
