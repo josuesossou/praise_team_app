@@ -105,12 +105,12 @@ class _SwitchNavigatorState extends State<SwitchNavigator> {
   void doSignup() async {
     try {
       Map<String, String> userAttributes = {
-        'email': 'email@domain.com',
+        'email': 'lometogovi1@gmail.com',
         'name': 'John Doe',
       };
       SignUpResult res = await Amplify.Auth.signUp(
-        username: 'myusername',
-        password: 'mysupersecurepassword',
+        username: 'lometogovi',
+        password: 'mysupersecure',
         options: CognitoSignUpOptions(
           userAttributes: userAttributes
         )
@@ -121,25 +121,37 @@ class _SwitchNavigatorState extends State<SwitchNavigator> {
     }
   }
 
+  void doConfirmSignup() async {
+    try {
+      SignUpResult res = await Amplify.Auth.confirmSignUp(
+        username: 'lometogovi',
+        confirmationCode: '299032'
+      );
+      // setState(() {
+      //   isSignUpComplete = res.isSignUpComplete;
+      // });
+    } on AuthException catch (e) {
+      print(e.message);
+    }
+  }
+
   void _login() async {
     try {
       SignInResult res = await Amplify.Auth.signIn(
-        username: 'myusername',
-        password: 'mysupersecurepassword',
+        username: 'lometogovi',
+        password: 'mysupersecure',
       );
 
     } on AuthException catch (e) {
       print(e.message);
     }
   }
-  
-  void _fetchSession() async {
+
+  void _fetchUserAttributes() async {
     try {
-      var res = await Amplify.Auth.fetchUserAttributes();
+      AuthUser res = await Amplify.Auth.getCurrentUser();
       // String identityId = (res as CognitoAuthSession).identityId;
-      res.forEach((element) {
-        print('key: ${element.userAttributeKey}; value: ${element.value}');
-      });
+      print(res.username );
 
       // print('identityId: $identityId');
       // print(res);
@@ -156,7 +168,7 @@ class _SwitchNavigatorState extends State<SwitchNavigator> {
   @override
   void initState() {
     // _fetchSession();
-    _login();
+    _fetchUserAttributes();
     super.initState();
   }
 

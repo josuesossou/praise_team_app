@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 // import 'package:lgcogpraiseteam/models/AuthModel.dart';
-import '../pages/profile.dart';
-import '../pages/search.dart';
-import '../pages/transposePage.dart';
+import '../screens/profile.dart';
+import '../screens/search.dart';
+import '../screens/transposePage.dart';
 import '../utils/auth_status.dart';
 import '../utils/calculateTranspose.dart';
 import 'package:provider/provider.dart';
 import '../components/logo.dart';
 import '../components/bottomNavigationBar.dart';
 import '../components/button.dart';
-import '../pages/home.dart';
-import '../pages/addEvent.dart';
+import '../screens/home.dart';
+import '../screens/addEvent.dart';
 
 class MainApp extends StatefulWidget {
   MainApp({String title});
