@@ -8,6 +8,9 @@ import 'dart:async';
 // Amplify Flutter Packages
 import 'package:amplify_flutter/amplify.dart';
 import 'package:amplify_datastore/amplify_datastore.dart';
+import 'package:amplify_analytics_pinpoint/amplify_analytics_pinpoint.dart';
+
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 // import 'package:amplify_api/amplify_api.dart'; // UNCOMMENT this line after backend is deployed
 
 // Generated in previous step
@@ -21,67 +24,39 @@ import 'amplifyconfiguration.dart';
 // import './start/login.dart';
 // import './start/main.dart';
 
-import 'amplifyconfiguration.dart';
-import 'models/ModelProvider.dart';
 import 'models/Todo.dart';
 
 void main() {
-  // WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  // final Future<FirebaseApp> _fbApp = Firebase.initializeApp();
-
   @override
   Widget build(BuildContext context) {
-    return Container(
-      // theme: ThemeData(
-      //   brightness: Brightness.light,
-      //   primaryColor: Colors.white,
-      //   primaryColorLight: Color(0xfff0f0f0),
-      //   primaryColorDark: Color(0xffe0e0e0),
-      //   accentColor: Color(0xff01A0C7)
-      // ),
-      child: SwitchNavigator()
-      // ChangeNotifierProvider<AuthModel>(
-      //   create: (_) => AuthModel(),
-      //   child: SwitchNavigator()
-      // )
-      // FutureBuilder(
-      //   future:  _fbApp,
-      //   builder: (context, snapshot) {
-      //     if (snapshot.hasError) {
-      //       return Text(snapshot.error.toString());
-      //     } else if(snapshot.hasData) {
-      //       return ChangeNotifierProvider<AuthModel>(
-      //         create: (_) => AuthModel(),
-      //         child: SwitchNavigator()
-      //       );
-      //     } else {
-      //       return CircularProgressIndicator();
-      //     }
-      //   }
-      // )
-    );
+    return  AmplifyConfigure();
   }
 }
 
-class SwitchNavigator extends StatefulWidget {
+class AmplifyConfigure extends StatefulWidget {
   @override
-  _SwitchNavigatorState createState() => _SwitchNavigatorState();
+  _AmplifyConfigureState createState() => _AmplifyConfigureState();
 }
 
-class _SwitchNavigatorState extends State<SwitchNavigator> {
+class _AmplifyConfigureState extends State<AmplifyConfigure> {
   bool _amplifyConfigured = false;
 
   void _configureAmplify() async {
-    try {
+    
       // await Amplify.addPlugin(AmplifyAPI()); // UNCOMMENT this line after backend is deployed
-      await Amplify.addPlugin(AmplifyDataStore(modelProvider: ModelProvider.instance));
+    AmplifyDataStore dsPlugin = AmplifyDataStore(modelProvider: ModelProvider.instance);
+    AmplifyAnalyticsPinpoint analyticsPlugin = AmplifyAnalyticsPinpoint();
+    AmplifyAuthCognito authPlugin = AmplifyAuthCognito();
+    await Amplify.addPlugins([dsPlugin, authPlugin, analyticsPlugin]);
 
+    try {
       // Once Plugins are added, configure Amplify
       await Amplify.configure(amplifyconfig);
+
     
       setState(() {
         _amplifyConfigured = true;
@@ -91,69 +66,97 @@ class _SwitchNavigatorState extends State<SwitchNavigator> {
     }
   }
 
-
-
-
   @override
   void initState() {
     super.initState();
-    _configureAmplify();
-  }
+    if (!_amplifyConfigured) {
+      _configureAmplify();
+    }
 
+  }
 
   @override
   Widget build(BuildContext context) {
     // final auth = Provider.of<AuthModel>(context);
     // myModel.doSomething();
     return _amplifyConfigured ? MaterialApp(
-      home: HomeScreen()
-    )
-    // MaterialApp(
-    //   theme: ThemeData(
-    //     brightness: Brightness.light,
-    //     primaryColor: Colors.white,
-    //     primaryColorLight: Color(0xfff0f0f0),
-    //     primaryColorDark: Color(0xffe0e0e0),
-    //     accentColor: Color(0xff01A0C7)
-    //   ),
-    //   home:  auth.authUser == null ? MainApp() : Login(),
-    // ) 
-    : MaterialApp(
-      home: Container()
-    );
+      theme: ThemeData(
+        brightness: Brightness.light,
+        primaryColor: Colors.white,
+        primaryColorLight: Color(0xfff0f0f0),
+        primaryColorDark: Color(0xffe0e0e0),
+        accentColor: Color(0xff01A0C7)
+      ),
+      home: SwitchNavigator()
+      // auth.authUser == null ? MainApp() : Login(),
+    ) 
+    : Container(color: Colors.blue,);
   }
 }
 
-// final item = Todo(
-// 		name: "Lorem ipsum dolor sit amet",
-// 		description: "Lorem ipsum dolor sit amet");
-// await Amplify.DataStore.save(item);
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({ Key key }) : super(key: key);
+class SwitchNavigator extends StatefulWidget {
+  const SwitchNavigator({ Key key }) : super(key: key);
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _SwitchNavigatorState createState() => _SwitchNavigatorState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _SwitchNavigatorState extends State<SwitchNavigator> {
+  void doSignup() async {
+    try {
+      Map<String, String> userAttributes = {
+        'email': 'email@domain.com',
+        'name': 'John Doe',
+      };
+      SignUpResult res = await Amplify.Auth.signUp(
+        username: 'myusername',
+        password: 'mysupersecurepassword',
+        options: CognitoSignUpOptions(
+          userAttributes: userAttributes
+        )
+      );
+      print(res.isSignUpComplete);
+    } on AuthException catch (e) {
+      print(e.message);
+    }
+  }
 
-  StreamSubscription _subscription;
+  void _login() async {
+    try {
+      SignInResult res = await Amplify.Auth.signIn(
+        username: 'myusername',
+        password: 'mysupersecurepassword',
+      );
 
-  List<Todo> _todos = [];
+    } on AuthException catch (e) {
+      print(e.message);
+    }
+  }
+  
+  void _fetchSession() async {
+    try {
+      var res = await Amplify.Auth.fetchUserAttributes();
+      // String identityId = (res as CognitoAuthSession).identityId;
+      res.forEach((element) {
+        print('key: ${element.userAttributeKey}; value: ${element.value}');
+      });
 
+      // print('identityId: $identityId');
+      // print(res);
+    } catch (e) {
+      print(e.message);
+    }
+  }
 
-
-    @override
+  @override
   void dispose() {
-    // to be filled in a later step
-    // _subscription.cancel();
     super.dispose();
   }
 
   @override
   void initState() {
-    // TODO: implement initState
-    _fetchTodos();
+    // _fetchSession();
+    _login();
     super.initState();
   }
 
@@ -161,23 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Container(
-        color: Colors.lightBlue,
-        child: TodosList(todos: _todos,)
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AddTodoForm()),
-          );
-        },
-        tooltip: 'Add Todo',
-        label: Row(
-          children: [Icon(Icons.add), Text('Add todo')],
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      body: TodosList(todos: [],)
     );
   }
 }

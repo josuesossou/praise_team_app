@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-praiseteamapp-dev-95016-authRole",
+      "UnauthRoleArn": "arn:aws:iam::364090414621:role/amplify-praiseteamapp-dev-95016-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::364090414621:role/amplify-praiseteamapp-dev-95016-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-praiseteamapp-dev-95016-deployment",
+      "UnauthRoleName": "amplify-praiseteamapp-dev-95016-unauthRole",
+      "StackName": "amplify-praiseteamapp-dev-95016",
+      "StackId": "arn:aws:cloudformation:us-east-1:364090414621:stack/amplify-praiseteamapp-dev-95016/8d361eb0-0674-11ec-a219-0afa5528cb21",
+      "AmplifyAppId": "dareawzq7wrnq"
+    }
+  }
+}

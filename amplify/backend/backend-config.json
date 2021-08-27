@@ -16,5 +16,12 @@
         }
       }
     }
+  },
+  "auth": {},
+  "analytics": {
+    "praiseteam": {
+      "service": "Pinpoint",
+      "providerPlugin": "awscloudformation"
+    }
   }
 }
