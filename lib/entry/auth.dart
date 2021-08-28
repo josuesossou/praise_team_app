@@ -55,7 +55,7 @@ class _AuthState extends State<Auth> {
         );
 
         if (res.isSignedIn) {
-          
+          Navigator.pushReplacementNamed(context, '/dashboard');
           return null;
         }
 
@@ -65,7 +65,20 @@ class _AuthState extends State<Auth> {
           await Amplify.Auth.signOut();
           return 'Problem logging in. Please try again.';
         }
-        print(e);
+
+        if (e.message.contains('User not found in the system')) {
+          showError(context, 'Email may not be verified, please confirm.');
+          Navigator.pushReplacementNamed(
+            context, 
+            '/confirm', 
+            arguments: {
+              'username': data.name.replaceAll(RegExp(r'[@\.]'), '')
+                                    .toLowerCase(), 
+              'email': data.name,
+              'password': data.password 
+            }
+          );
+        }
 
         return '${e.message} - ${e.recoverySuggestion}';
       }
@@ -120,7 +133,8 @@ class AdditionalInfo extends StatelessWidget {
   );
 
   void _onSignup(context) async {
-    String username = loginData.name.replaceAll(RegExp(r'[@\.]'), '').toLowerCase();
+    String username = loginData.name.replaceAll(RegExp(r'[@\.]'), '')
+                                    .toLowerCase();
     try {
       await Amplify.Auth.signUp(
         username: username,
