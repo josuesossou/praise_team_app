@@ -1,15 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../components/flexText.dart';
 import '../components/loader.dart';
-import '../models/EventModel.dart';
+import '../models/Event.dart';
 import '../services/dbEventsQuery.dart';
 import '../components/eventCard.dart';
 
 class Events extends StatefulWidget {
   Events({ this.events });
 
-  final List<EventModel> events;
+  final List<Event> events;
 
   @override
   _EventsState createState() => _EventsState();
@@ -90,7 +89,7 @@ class _EventsState extends State<Events> {
                         controller: controller,
                         children: docs.map((doc) => EventCard(
                           isLargeCard: true,
-                          event: EventModel.fromMap(doc.data()),
+                          event: Event.fromMap(doc.data()),
                           margin: EdgeInsets.symmetric(horizontal: 10),
                           type: "Comming up",
                         )).toList(),
@@ -134,7 +133,7 @@ class _EventsState extends State<Events> {
                       children: docs.map((doc) => EventCard(
                         type: "Previous Event",
                         height: 100,
-                        event: EventModel.fromMap(doc.data()),
+                        event: Event.fromMap(doc.data()),
                         margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                       )).toList(),
                     );

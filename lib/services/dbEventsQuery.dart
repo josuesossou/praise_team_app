@@ -6,10 +6,12 @@ import '../models/Song.dart';
 import '../services/dbSongsQuery.dart';
 
 class DbEventsQuery {
+  StreamSubscription _subscription;
+  TemporalDateTime  now = TemporalDateTime.now();
+  final _streamController = StreamController<List<Event>>();
+
   Future<bool> addEvent(Event event) async {
-    int date = DateTime.parse(event.date).second;
     DbSongsQuery songQuery = DbSongsQuery();
-    StreamSubscription _subscription;    
 
     Event newEvent = Event(
       id: event.id,
@@ -36,21 +38,47 @@ class DbEventsQuery {
     }
   }
 
-  Stream<QuerySnapshot> getUpcomingEvent() {
-
-    // return db.collection(collectionPath)
-    // .orderBy('dateStamp', descending: false)
-    // .where('dateStamp', isGreaterThan: Timestamp.now())
-    // .snapshots();
+  // subscription to amplify events data, 
+  //watches if new events are in the store
+  void setSubscription() {
+    _subscription =  Amplify.DataStore
+    .observe(Event.classType)
+    .listen((event) {
+      _getUpcomingEvent();
+    });
   }
-  
-  Future<QuerySnapshot> getPreviousEvent() async {
+
+  // canceling amplify stream
+  void cancelSubscription() {
+    _subscription.cancel();
+  }
+
+  // Queries the events from the amplify dbstore
+  void _getUpcomingEvent() async {
     try {
-      await Amplify.DataStore.query(
+      List<Event> events = await Amplify.DataStore.query(
         Event.classType, 
-        where: Event.
-      )
+        where: Event.DATESTAMP.gt(now)
+      );
+
+      _streamController.sink.add(events);
     } catch (e) {
+    }
+  }
+
+  Stream<List<Event>> get upComingEvents {
+    return _streamController.stream;
+  } 
+
+  Future<List<Event>> getPreviousEvent() async {
+    try {
+      List<Event> _events = await Amplify.DataStore.query(
+        Event.classType, 
+        where: Event.DATESTAMP.lt(now)
+      );
+      return _events;
+    } catch (e) {
+      return [];
     }
   }
 }
