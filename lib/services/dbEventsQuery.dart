@@ -1,5 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import '../models/EventModel.dart';
+import '../models/Event.dart';
 import '../services/dbSongsQuery.dart';
 
 import './db.dart';

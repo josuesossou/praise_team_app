@@ -146,26 +146,26 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
 
 
 
-class Testing extends StatelessWidget {
+// class Testing extends StatelessWidget {
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.amber, 
-      body: Column(
-        children: [
-          Text('this is dashboard'),
-          MaterialButton(
-            onPressed: () {
-              Amplify.Auth.signOut();
-            },
-            child: Text(
-              'Sign out',
-              style: TextStyle(color: Colors.grey),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       backgroundColor: Colors.amber, 
+//       body: Column(
+//         children: [
+//           Text('this is dashboard'),
+//           MaterialButton(
+//             onPressed: () {
+//               Amplify.Auth.signOut();
+//             },
+//             child: Text(
+//               'Sign out',
+//               style: TextStyle(color: Colors.grey),
+//             ),
+//           )
+//         ],
+//       ),
+//     );
+//   }
+// }

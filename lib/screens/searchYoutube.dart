@@ -1,4 +1,6 @@
+import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:flutter/material.dart';
+import 'package:lgcogpraiseteam/models/ModelProvider.dart';
 import '../components/arrowBack.dart';
 import '../components/loader.dart';
 import '../models/SongModel.dart';
@@ -9,7 +11,7 @@ import '../components/youtubeVideoCard.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../models/YoutubeDataModel.dart';
 import '../services/dbSongsQuery.dart';
-import 'package:uuid/uuid.dart';
+
 
 
 class SearchYoutube extends StatefulWidget {
@@ -45,11 +47,6 @@ class _SearchYoutubeState extends State<SearchYoutube> {
   @override
   Widget build(BuildContext context) {
     ThemeData _theme = Theme.of(context);
-    CirButton circleButton(Widget child, VoidCallback onPress) =>  CirButton(
-      size: 20,
-      onPress: onPress,
-      child: child,
-    );
 
     return Scaffold(
       backgroundColor: _theme.primaryColorLight,
@@ -174,10 +171,10 @@ class BottomModelContent extends StatelessWidget {
   BottomModelContent({ this.video });
 
   final VideoDetail video;
-  final uuid = Uuid();
 
   @override
   Widget build(BuildContext context) {
+    // Youtube player
     YoutubePlayerController _controller = YoutubePlayerController(
       initialVideoId: video.videoId,
       flags: YoutubePlayerFlags(
@@ -185,6 +182,7 @@ class BottomModelContent extends StatelessWidget {
         mute: false,
       ),
     );
+
     ThemeData _theme = Theme.of(context);
     TextStyle style = TextStyle(
       fontSize: 18,
@@ -194,6 +192,8 @@ class BottomModelContent extends StatelessWidget {
       fontSize: 18,
       fontWeight: FontWeight.bold
     );
+
+
     return Container(
       child: Column(
         children: [
@@ -218,23 +218,7 @@ class BottomModelContent extends StatelessWidget {
                 color: _theme.accentColor,
                 child: Text('Add Song', style: style,),
                 onPress: () {
-                  SongModel song = SongModel(
-                    songId: uuid.v1(),
-                    etag: video.etag,
-                    videoTitle: video.title,
-                    videoTitleLowercase: video.title.toLowerCase(),
-                    videoId: video.videoId,
-                    videoDescription: video.description,
-                    videoThumDefaultH: video.thumbNail.defaultH,
-                    videoThumbDefaultW: video.thumbNail.defaultW,
-                    videoThumbDefaultUrl: video.thumbNail.defaultUrl,
-                    videoThumbMediumH: video.thumbNail.mediumH,
-                    videoThumbMediumUrl: video.thumbNail.mediumUrl,
-                    videoThumbMediumW: video.thumbNail.mediumW,
-                    channelTitle: video.channelTitle,
-                    channelId: video.channelId,
-                  );
-                  DbSongsQuery().addSong(song)
+                  DbSongsQuery().addSong(video)
                   .then((val) => Navigator.pop(context));
                 },
               ),

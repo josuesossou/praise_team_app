@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_login/flutter_login.dart';
 
 // entry screens
 import 'entry/entry.dart';
-// import 'entry/mainApp.dart';
+import 'entry/dashboard.dart';
 import 'entry/auth.dart';
 import 'entry/confirm.dart';
 
@@ -26,7 +25,7 @@ class App extends StatelessWidget {
         if (settings.name == '/dashboard') {
           return PageRouteBuilder(
             pageBuilder: (_, __, ___) => 
-              Testing(),
+              DashboardScreen(),
             transitionsBuilder: (_, __, ___, child) => child,
           );
         }
