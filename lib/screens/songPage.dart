@@ -1,22 +1,27 @@
-import 'package:file_picker/file_picker.dart';
+
 import 'package:flutter/material.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart';
-import 'package:open_file/open_file.dart';
+import 'package:lgcogpraiseteam/components/scaffoldMessages.dart';
+// Componenents
 import '../components/arrowBack.dart';
 import '../components/button.dart';
 import '../components/dropDownNotes.dart';
 import '../components/flexText.dart';
 import '../components/textField.dart';
-import '../models/SongModel.dart';
-import '../services/dbSongsQuery.dart';
 import '../components/SharedSoundCard.dart';
+// Helpers
+import '../services/dbSongsQuery.dart';
 import '../utils/calculateTranspose.dart';
+import '../models/Song.dart';
+
+
 
 
 class SongPage extends StatefulWidget {
   SongPage({ @required this.song });
 
-  final SongModel song;
+  final Song song;
 
   @override
   _SongPageState createState() => _SongPageState();
@@ -28,7 +33,7 @@ class _SongPageState extends State<SongPage> {
   bool editMode = false;
   String originalKey;
   int transpose;
-  SongModel song;
+  Song song;
 
   @override
   void initState() {
@@ -64,24 +69,23 @@ class _SongPageState extends State<SongPage> {
     });
   }
 
-  updateSong() {
+  void updateSong() async {
     if (originalKey == 'Not Set') {
-      //TODO: Call error snackbar
+      showError(context, 'Change Key');
     } else {
       String transposeKey = t.getTransposedKey(originalKey, transpose);
-      Map<String, dynamic> data = {
-        'originalkey': originalKey,
-        'transposedNumber': transpose,
-        'transposedKey': transposeKey
-      };
-      DbSongsQuery().updateSong(song.songId, data);
-      //TODO show success snackbar
+      Song updatedSong = song.copyWith(
+        originalkey: originalKey,
+        transposedKey: transposeKey,
+        transposedNumber: transpose
+      );
+      await DbSongsQuery().updateSong(updatedSong);
+
       hideEditMode();
       setState(() {
-        song.originalkey = originalKey;
-        song.transposedKey = transposeKey;
-        song.transposedNumber = transpose;
+        song = updatedSong;
       });
+      showSuccess(context, 'Succefully updated keys');
     }
   }
 
@@ -134,7 +138,7 @@ class EditSong extends StatelessWidget {
     @required this.onChangeTranspose
   });
 
-  final SongModel song;
+  final Song song;
   final String originalKey;
   final Function cancel, submit, onChangeOriginalKey, onChangeTranspose;
 
@@ -317,7 +321,7 @@ class AddFileOptions extends StatelessWidget {
 class ScrolledContent extends StatelessWidget {
   ScrolledContent({ @required this.song });
 
-  final SongModel song;
+  final Song song;
 
   void showBottomSheet(context) => showModalBottomSheet<void>(
     context: context,

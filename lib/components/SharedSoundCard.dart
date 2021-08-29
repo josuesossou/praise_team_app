@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../components/flexText.dart';
-import '../models/SongModel.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import '../models/ModelProvider.dart';
+import '../components/flexText.dart';
 
 class SharedSoundCard extends StatelessWidget {
   SharedSoundCard({ @required this.song });
 
-  final SongModel song;
+  final Song song;
 
   @override
   Widget build(BuildContext context) { 

@@ -24,7 +24,7 @@ export 'Song.dart';
 
 class ModelProvider implements ModelProviderInterface {
   @override
-  String version = "750d4a5baf2db9db29d4ce8052236a3b";
+  String version = "0609d70a28bc948cabce7e98bec401c0";
   @override
   List<ModelSchema> modelSchemas = [Event.schema, Song.schema];
   static final ModelProvider _instance = ModelProvider();

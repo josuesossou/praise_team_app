@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../components/flexText.dart';
-import '../models/SongModel.dart';
+import '../models/Song.dart';
 
 class SongCard extends StatelessWidget {
   SongCard({
@@ -10,7 +10,7 @@ class SongCard extends StatelessWidget {
     this.margin = const EdgeInsets.only(bottom: 30),
   });
 
-  final SongModel song;
+  final Song song;
   final Color color;
   final EdgeInsets margin;
 

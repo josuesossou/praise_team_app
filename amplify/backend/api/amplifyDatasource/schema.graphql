@@ -3,6 +3,7 @@ type Event @model @auth(rules: [{allow: public}]) {
     name: String!,
     date: String,
     createdAt: AWSTimestamp!,
+    dateStamp: AWSDateTime,
     songIds: [String],
     bgCover: String,
 }

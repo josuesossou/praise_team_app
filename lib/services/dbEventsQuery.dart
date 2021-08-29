@@ -1,47 +1,56 @@
+import 'dart:async';
+import 'package:amplify_datastore/amplify_datastore.dart';
+import 'package:amplify_flutter/amplify.dart';
 import '../models/Event.dart';
+import '../models/Song.dart';
 import '../services/dbSongsQuery.dart';
 
-import './db.dart';
-
 class DbEventsQuery {
-  final FirebaseFirestore db = Db().db;
-  final String collectionPath = 'events';
+  Future<bool> addEvent(Event event) async {
+    int date = DateTime.parse(event.date).second;
+    DbSongsQuery songQuery = DbSongsQuery();
+    StreamSubscription _subscription;    
 
-  Future<void> addEvent(EventModel event) async {
-    DateTime date = DateTime.parse(event.date);
+    Event newEvent = Event(
+      id: event.id,
+      createdAt: TemporalTimestamp.now(),
+      name: event.name,
+      date: event.date,
+      dateStamp: TemporalDateTime.fromString(event.date),
+      songIds: event.songIds,
+      bgCover: event.bgCover
+    );
 
-    Map<String, dynamic> eventData = {
-      'id': event.id,
-      'createdAt': Timestamp.now(),
-      'name': event.name,
-      'date': event.date,
-      'dateStamp': Timestamp.fromDate(date),
-      'songIds': event.songIds,
-      'bgCover': event.bgCover
-    };
+    try {
+      for (var id in event.songIds) {
+        Song song = await songQuery.getOneSong(id);
+        Song updatedSong = song.copyWith(lastDatePlayed: event.date);
 
-    event.songIds.forEach((id) {
-      DbSongsQuery().updateSong(id, {
-        'lastDatePlayed': event.date
-      });
-    });
+        await songQuery.updateSong(updatedSong);
+      }
 
-    return db.collection(collectionPath)
-          .doc(event.id).set(eventData);
+      await Amplify.DataStore.save(newEvent);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   Stream<QuerySnapshot> getUpcomingEvent() {
-    return db.collection(collectionPath)
-    .orderBy('dateStamp', descending: false)
-    .where('dateStamp', isGreaterThan: Timestamp.now())
-    .snapshots();
+
+    // return db.collection(collectionPath)
+    // .orderBy('dateStamp', descending: false)
+    // .where('dateStamp', isGreaterThan: Timestamp.now())
+    // .snapshots();
   }
   
   Future<QuerySnapshot> getPreviousEvent() async {
-    return db.collection(collectionPath)
-    .orderBy('dateStamp', descending: true)
-    .where('dateStamp', isLessThan: Timestamp.now())
-    .limit(20)
-    .get();
+    try {
+      await Amplify.DataStore.query(
+        Event.classType, 
+        where: Event.
+      )
+    } catch (e) {
+    }
   }
 }

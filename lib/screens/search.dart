@@ -1,16 +1,18 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:lgcogpraiseteam/models/ModelProvider.dart';
+// components
 import '../components/arrowBack.dart';
 import '../components/flexText.dart';
 import '../components/loader.dart';
 import '../components/songCard.dart';
-import '../models/SongModel.dart';
-import '../pages/searchYoutube.dart';
-import '../services/dbSongsQuery.dart';
-
-import './songPage.dart';
 import '../components/button.dart';
 import '../components/textField.dart';
+// screens
+import './songPage.dart';
+import './searchYoutube.dart';
+// services
+import '../services/dbSongsQuery.dart';
+
 
 class Search extends StatefulWidget {
   @override
@@ -20,7 +22,8 @@ class Search extends StatefulWidget {
 class _SearchState extends State<Search> {
 
   String searchText = '';
-  List<QueryDocumentSnapshot> songs = [];
+  List<Song> songs = [];
+  int page = 0;
   DbSongsQuery dbSongQ = DbSongsQuery();
 
   void toSearchYoutubePage(text) {
@@ -30,24 +33,26 @@ class _SearchState extends State<Search> {
     );
   }
 
-  @override
-  void initState() {
-    dbSongQ.getFirstFewSongs().then((snapshot) => {
-      setState(() {
-        songs = snapshot.docs;
-      })
-    });
+  void getSongs() async {
+    var _songs = await dbSongQ.getFirstFewSongs(page);
 
-    super.initState();
+    setState(() {
+      songs = _songs;
+      page += 1;
+    });
   }
 
-  onSearchTextChanged(text) {
-    dbSongQ.getSearchedSongs(text).then((snapshot) => {
-      setState(() {
-        songs = snapshot.docs;
-        searchText = text;
-      })
+  void searchSongs(text) async {
+    var _songs = await dbSongQ.getSearchedSongs(text);
+    setState(() {
+      songs = _songs;
     });
+  }
+
+  @override
+  void initState() {
+    getSongs();
+    super.initState();
   }
 
   @override
@@ -88,7 +93,7 @@ class _SearchState extends State<Search> {
             TextFieldCop(
               margin: EdgeInsets.only(bottom: 20, top: 10),
               obscureText: false,
-              onChange: onSearchTextChanged,
+              onChange: searchSongs,
               radius: 0,
               hintText: 'Search Songs By Title',
               color: Theme.of(context).primaryColor,
@@ -109,7 +114,7 @@ class SearchSongs extends StatelessWidget {
 
   final String search;
   final VoidCallback toSearchYoutube;
-  final List<QueryDocumentSnapshot> songs;
+  final List<Song> songs;
 
   @override
   Widget build(BuildContext context) {
@@ -139,9 +144,7 @@ class SearchSongs extends StatelessWidget {
       :
       ListView(
         scrollDirection: Axis.vertical,
-        children: songs.map((s) {
-          SongModel song = SongModel.fromMap(s.data());
-
+        children: songs.map((song) {
           return Container(
             height: 215,
             child: RectButton(

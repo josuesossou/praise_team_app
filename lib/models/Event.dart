@@ -27,6 +27,7 @@ class Event extends Model {
   final String name;
   final String date;
   final TemporalTimestamp createdAt;
+  final TemporalDateTime dateStamp;
   final List<String> songIds;
   final String bgCover;
 
@@ -43,6 +44,7 @@ class Event extends Model {
       @required this.name,
       this.date,
       @required this.createdAt,
+      this.dateStamp,
       this.songIds,
       this.bgCover});
 
@@ -51,6 +53,7 @@ class Event extends Model {
       @required String name,
       String date,
       @required TemporalTimestamp createdAt,
+      TemporalDateTime dateStamp,
       List<String> songIds,
       String bgCover}) {
     return Event._internal(
@@ -58,6 +61,7 @@ class Event extends Model {
         name: name,
         date: date,
         createdAt: createdAt,
+        dateStamp: dateStamp,
         songIds: songIds != null ? List<String>.unmodifiable(songIds) : songIds,
         bgCover: bgCover);
   }
@@ -74,6 +78,7 @@ class Event extends Model {
         name == other.name &&
         date == other.date &&
         createdAt == other.createdAt &&
+        dateStamp == other.dateStamp &&
         DeepCollectionEquality().equals(songIds, other.songIds) &&
         bgCover == other.bgCover;
   }
@@ -92,6 +97,9 @@ class Event extends Model {
     buffer.write("createdAt=" +
         (createdAt != null ? createdAt.toString() : "null") +
         ", ");
+    buffer.write("dateStamp=" +
+        (dateStamp != null ? dateStamp.format() : "null") +
+        ", ");
     buffer.write(
         "songIds=" + (songIds != null ? songIds.toString() : "null") + ", ");
     buffer.write("bgCover=" + "$bgCover");
@@ -105,6 +113,7 @@ class Event extends Model {
       String name,
       String date,
       TemporalTimestamp createdAt,
+      TemporalDateTime dateStamp,
       List<String> songIds,
       String bgCover}) {
     return Event(
@@ -112,6 +121,7 @@ class Event extends Model {
         name: name ?? this.name,
         date: date ?? this.date,
         createdAt: createdAt ?? this.createdAt,
+        dateStamp: dateStamp ?? this.dateStamp,
         songIds: songIds ?? this.songIds,
         bgCover: bgCover ?? this.bgCover);
   }
@@ -123,6 +133,9 @@ class Event extends Model {
         createdAt = json['createdAt'] != null
             ? TemporalTimestamp.fromSeconds(json['createdAt'])
             : null,
+        dateStamp = json['dateStamp'] != null
+            ? TemporalDateTime.fromString(json['dateStamp'])
+            : null,
         songIds = json['songIds']?.cast<String>(),
         bgCover = json['bgCover'];
 
@@ -131,6 +144,7 @@ class Event extends Model {
         'name': name,
         'date': date,
         'createdAt': createdAt?.toSeconds(),
+        'dateStamp': dateStamp?.format(),
         'songIds': songIds,
         'bgCover': bgCover
       };
@@ -139,6 +153,7 @@ class Event extends Model {
   static final QueryField NAME = QueryField(fieldName: "name");
   static final QueryField DATE = QueryField(fieldName: "date");
   static final QueryField CREATEDAT = QueryField(fieldName: "createdAt");
+  static final QueryField DATESTAMP = QueryField(fieldName: "dateStamp");
   static final QueryField SONGIDS = QueryField(fieldName: "songIds");
   static final QueryField BGCOVER = QueryField(fieldName: "bgCover");
   static var schema =
@@ -171,6 +186,11 @@ class Event extends Model {
         key: Event.CREATEDAT,
         isRequired: true,
         ofType: ModelFieldType(ModelFieldTypeEnum.timestamp)));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: Event.DATESTAMP,
+        isRequired: false,
+        ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: Event.SONGIDS,

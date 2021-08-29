@@ -72,7 +72,7 @@ class Song extends Model {
       this.videoThumbMediumW,
       this.lastDatePlayed,
       this.musicSheets,
-      this.createdAt,
+      @required this.createdAt,
       this.originalkey,
       this.numOfTimePlayed,
       this.transposedKey,
@@ -96,7 +96,7 @@ class Song extends Model {
       int videoThumbMediumW,
       String lastDatePlayed,
       List<String> musicSheets,
-      TemporalTimestamp createdAt,
+      @required TemporalTimestamp createdAt,
       String originalkey,
       int numOfTimePlayed,
       String transposedKey,
@@ -443,7 +443,7 @@ class Song extends Model {
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: Song.CREATEDAT,
-        isRequired: false,
+        isRequired: true,
         ofType: ModelFieldType(ModelFieldTypeEnum.timestamp)));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(

@@ -34,34 +34,61 @@ class DbSongsQuery {
       Song.classType, where: Song.VIDEOID.eq(video.videoId));
     
     if (songList.isEmpty) {
-      await Amplify.DataStore.save(newSong);
-      return true;
+      try {
+        await Amplify.DataStore.save(newSong);
+        return true;
+      } catch (e) {
+        return false;
+      }
     }
-
     return false;
   }
 
-  Future<bool> updateSong(String id, Map<String, dynamic> data) {
-    return db.collection(collectionPath)
-      .doc(id).update(data);
+  Future<bool> updateSong(Song uptadedSong) async {
+    try {
+      await Amplify.DataStore.save(uptadedSong);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
-  Future<QuerySnapshot> getFirstFewSongs() {
-    return db.collection(collectionPath)
-    .orderBy('createdAt', descending: true)
-    .limit(25)
-    .get();
+  Future<List<Song>> getFirstFewSongs(int pageNumber) async {
+    try {
+      List<Song> songs = await Amplify.DataStore.query(
+        Song.classType,
+        pagination: new QueryPagination(page:0, limit:25) 
+      );
+
+      return songs;
+    } catch (e) {
+      return [];
+    }
   }
 
-  Future<QuerySnapshot> getSearchedSongs(keyword) {
-    return db.collection(collectionPath)
-    .limit(10)
-    .where('videoTitleLowercase', isGreaterThanOrEqualTo: keyword, isLessThanOrEqualTo: keyword +'\uf8ff')
-    .get();
+  Future<List<Song>> getSearchedSongs(String keyword) async {
+    try {
+      List<Song> songs = await Amplify.DataStore.query(
+        Song.classType,
+        where: Song.VIDEOTITLELOWERCASE.contains(keyword.toLowerCase())
+      );
+
+      return songs;
+    } catch (e) {
+      return [];
+    }
   }
 
-  Future<DocumentSnapshot> getOneSong(String id) {
-    return db.collection(collectionPath)
-    .doc(id).get();
+  Future<Song> getOneSong(String id) async {
+    try {
+      List<Song> songs = await Amplify.DataStore.query(
+        Song.classType,
+        where: Song.ID.eq(id)
+      );
+
+      return songs[0];
+    } catch (e) {
+      return null;
+    }
   }
 }
