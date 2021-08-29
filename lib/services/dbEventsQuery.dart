@@ -51,6 +51,7 @@ class DbEventsQuery {
   // canceling amplify stream
   void cancelSubscription() {
     _subscription.cancel();
+    _streamController.close();
   }
 
   // Queries the events from the amplify dbstore
@@ -66,7 +67,8 @@ class DbEventsQuery {
     }
   }
 
-  Stream<List<Event>> get upComingEvents {
+  // Actual stream to be used by the UI
+  Stream<List<Event>> get getUpcomingEvent {
     return _streamController.stream;
   } 
 

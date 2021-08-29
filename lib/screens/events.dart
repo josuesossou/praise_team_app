@@ -26,8 +26,8 @@ class _EventsState extends State<Events> {
     fontWeight: FontWeight.bold
   );
 
-  Stream<QuerySnapshot> upcomingEvents() =>  dbEventsQuery.getUpcomingEvent();
-  Future<QuerySnapshot> previousEvents() => dbEventsQuery.getPreviousEvent();
+  Stream<List<Event>> upcomingEvents() =>  dbEventsQuery.getUpcomingEvent;
+  Future<List<Event>> previousEvents() => dbEventsQuery.getPreviousEvent();
 
   @override
   void initState() {
@@ -60,11 +60,13 @@ class _EventsState extends State<Events> {
               height: size.height * 0.20,
               child: StreamBuilder(
                 stream: upcomingEvents(),
-                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                builder: (BuildContext context, 
+                                AsyncSnapshot<List<Event>> snapshot) {
                   Widget child;
 
                   if (snapshot.hasData) {
-                    List<QueryDocumentSnapshot> docs = snapshot.data.docs;
+                    List<Event> docs = snapshot.data;
+
                     if (docs.isEmpty) {
                       child = Container(
                         height: size.height * 0.17,
@@ -89,7 +91,7 @@ class _EventsState extends State<Events> {
                         controller: controller,
                         children: docs.map((doc) => EventCard(
                           isLargeCard: true,
-                          event: Event.fromMap(doc.data()),
+                          event: doc,
                           margin: EdgeInsets.symmetric(horizontal: 10),
                           type: "Comming up",
                         )).toList(),
@@ -119,11 +121,12 @@ class _EventsState extends State<Events> {
             sizedBox,
             FutureBuilder(
               future: previousEvents(),
-              builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              builder: (BuildContext context, 
+                        AsyncSnapshot<List<Event>> snapshot) {
                 Widget child;
 
                 if (snapshot.hasData) {
-                  List<QueryDocumentSnapshot> docs = snapshot.data.docs;
+                  List<Event> docs = snapshot.data;
                   if (docs.isEmpty) {
                     child = Column(
                       children: [FlexText(text: "Start by scheduling new events",)],
@@ -133,7 +136,7 @@ class _EventsState extends State<Events> {
                       children: docs.map((doc) => EventCard(
                         type: "Previous Event",
                         height: 100,
-                        event: Event.fromMap(doc.data()),
+                        event: doc,
                         margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                       )).toList(),
                     );

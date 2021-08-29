@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../components/flexText.dart';
-import '../models/EventModel.dart';
-import '../pages/eventPage.dart';
+import '../models/Event.dart';
+import '../screens/eventPage.dart';
 import './button.dart';
 
 class EventCard extends StatelessWidget {
@@ -16,7 +16,7 @@ class EventCard extends StatelessWidget {
 
   final double height;
   final EdgeInsets margin;
-  final EventModel event; 
+  final Event event; 
   final bool isLargeCard;
   final String type;
 

@@ -1,22 +1,20 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:lgcogpraiseteam/models/ModelProvider.dart';
 import 'package:share_plus/share_plus.dart';
 import '../components/SharedSoundCard.dart';
 import '../components/arrowBack.dart';
 import '../components/button.dart';
 import '../components/flexText.dart';
 import '../components/loader.dart';
-import '../models/EventModel.dart';
-import '../models/SongModel.dart';
-import '../pages/songPage.dart';
+import '../screens/songPage.dart';
 import '../services/dbSongsQuery.dart';
-
+import '../models/Event.dart';
 
 class EventPage extends StatefulWidget {
   EventPage({ @required this.event, @required this.type });
 
-  final EventModel event;
+  final Event event;
   final String type;
 
   @override
@@ -100,11 +98,12 @@ class _EventPageState extends State<EventPage> {
                 children: widget.event.songIds.map((songId) => (
                   FutureBuilder(
                     future: DbSongsQuery().getOneSong(songId),
-                    builder: (BuildContext build, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                    builder: (BuildContext build, 
+                          AsyncSnapshot<Song> snapshot) {
                       Widget child;
 
                       if (snapshot.hasData) {
-                        SongModel song = SongModel.fromMap(snapshot.data.data());
+                        Song song = snapshot.data;
 
                         child = Container(
                           child: Column(
