@@ -1,9 +1,6 @@
-import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:flutter/material.dart';
-import 'package:lgcogpraiseteam/models/ModelProvider.dart';
 import '../components/arrowBack.dart';
 import '../components/loader.dart';
-import '../models/SongModel.dart';
 import '../services/youtubeAPI.dart';
 import '../components/button.dart';
 import '../components/textField.dart';
@@ -127,7 +124,8 @@ class AddNewSongs extends StatelessWidget {
     return Container(
       child: FutureBuilder(
         future: getYoutubeData,
-        builder: (BuildContext context, AsyncSnapshot<YoutubeDataModel> snapshot) {
+        builder: (BuildContext context, 
+                    AsyncSnapshot<YoutubeDataModel> snapshot) {
           Widget child;
 
           if (snapshot.hasData) {
@@ -193,6 +191,10 @@ class BottomModelContent extends StatelessWidget {
       fontWeight: FontWeight.bold
     );
 
+    void _addSong() {
+      DbSongsQuery().addSong(video)
+                    .then((val) => Navigator.pop(context));
+    }
 
     return Container(
       child: Column(
@@ -218,8 +220,7 @@ class BottomModelContent extends StatelessWidget {
                 color: _theme.accentColor,
                 child: Text('Add Song', style: style,),
                 onPress: () {
-                  DbSongsQuery().addSong(video)
-                  .then((val) => Navigator.pop(context));
+                  _addSong();
                 },
               ),
               RectButton(

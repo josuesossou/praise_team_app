@@ -9,8 +9,8 @@ import 'package:uuid/uuid.dart';
 import '../components/button.dart';
 import '../components/songCard.dart';
 import '../components/textField.dart';
-import '../models/EventModel.dart';
-import '../models/SongModel.dart';
+import '../models/Event.dart';
+import '../models/Song.dart';
 import '../services/dbSongsQuery.dart';
 import '../components/flexText.dart';
 
@@ -21,7 +21,7 @@ class AddEvent extends StatefulWidget {
 
 class _AddEventState extends State<AddEvent> {
   DateTime selectedDate = DateTime.now();
-  List<SongModel> _songs = [];
+  List<Song> _songs = [];
   String searchText = ''; 
   String nameText = '';
   bool showSearchResult = false;
@@ -56,7 +56,7 @@ class _AddEventState extends State<AddEvent> {
   }
 
   _addNewSong(song) {
-    List<SongModel> newSongs = _songs;
+    List<Song> newSongs = _songs;
     bool exist = false;
 
     _songs.forEach((s) {
@@ -83,7 +83,7 @@ class _AddEventState extends State<AddEvent> {
     Uuid uuid = Uuid();
     List<String> songIdList = _songs.map((song) => song.songId).toList();
 
-    EventModel event = EventModel(
+    Event event = Event(
       id: uuid.v1(),
       date: selectedDate.toString(),
       name: nameText,
@@ -175,7 +175,7 @@ class AddEventComponent extends StatelessWidget {
   final ThemeData theme;
   final DateTime selectedDate;
   final VoidCallback selectDate;
-  final List<SongModel> songs;
+  final List<Song> songs;
   final Function onChangedSearchText;
   final Function onChangedName;
 
@@ -264,7 +264,8 @@ class SearchedSongLists extends StatelessWidget {
   final Function closeSearchResult;
   final Function addNewSong;
 
-  Future<QuerySnapshot> searchedSongs() => DbSongsQuery().getSearchedSongs(keyword);
+  Future<List<Song>> searchedSongs() => DbSongsQuery()
+                                              .getSearchedSongs(keyword);
 
   @override
   Widget build(BuildContext context) {
@@ -284,11 +285,11 @@ class SearchedSongLists extends StatelessWidget {
       height: 225,
       child: FutureBuilder(
         future: searchedSongs(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<List<Song>> snapshot) {
         Widget child;
         
         if (snapshot.hasData) {
-          List<QueryDocumentSnapshot> songs = snapshot.data.docs;
+          List<Song> songs = snapshot.data;
 
           if (songs.isEmpty) {
             child = Row(
@@ -306,10 +307,7 @@ class SearchedSongLists extends StatelessWidget {
             child = ListView(
               clipBehavior: Clip.hardEdge,
               scrollDirection: Axis.horizontal,
-              children: songs.map((s) { 
-                SongModel song = SongModel.fromMap(s.data());
-
-                return RectButton(
+              children: songs.map((song) =>  RectButton(
                   padding: EdgeInsets.zero,
                   raduis: 0,
                   color: theme.primaryColor,
@@ -321,8 +319,8 @@ class SearchedSongLists extends StatelessWidget {
                     color: Colors.transparent,
                     margin: EdgeInsets.zero,
                   )
-                );
-              }).toList(),
+                )
+              ).toList(),
             );
           }
         } else if (snapshot.hasError) {

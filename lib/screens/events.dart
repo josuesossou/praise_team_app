@@ -32,7 +32,13 @@ class _EventsState extends State<Events> {
   @override
   void initState() {
     super.initState();
+  }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    dbEventsQuery.cancelSubscription();
+    super.dispose();
   }
 
   @override
@@ -128,8 +134,10 @@ class _EventsState extends State<Events> {
                 if (snapshot.hasData) {
                   List<Event> docs = snapshot.data;
                   if (docs.isEmpty) {
-                    child = Column(
-                      children: [FlexText(text: "Start by scheduling new events",)],
+                    child =  Container(
+                      height: size.height *0.3,
+                      alignment: Alignment.center,
+                      child: Text("Start by scheduling new events",),
                     );
                   } else {
                     child = Column(
@@ -137,7 +145,10 @@ class _EventsState extends State<Events> {
                         type: "Previous Event",
                         height: 100,
                         event: doc,
-                        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        margin: EdgeInsets.symmetric(
+                          horizontal: 10, 
+                          vertical: 5
+                        ),
                       )).toList(),
                     );
                   }

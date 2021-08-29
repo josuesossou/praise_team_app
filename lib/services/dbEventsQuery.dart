@@ -10,6 +10,10 @@ class DbEventsQuery {
   TemporalDateTime  now = TemporalDateTime.now();
   final _streamController = StreamController<List<Event>>();
 
+  DbEventsQuery() {
+    _streamController.sink.add([]);
+  }
+
   Future<bool> addEvent(Event event) async {
     DbSongsQuery songQuery = DbSongsQuery();
 
