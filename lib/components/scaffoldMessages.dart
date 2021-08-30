@@ -4,8 +4,9 @@ void showSuccess(context, message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         backgroundColor: Colors.blueAccent,
-        content: Text('Confirmation code resent. Check your email',
-            style: TextStyle(fontSize: 15)),
+        content: Text(
+          message,
+          style: TextStyle(fontSize: 15)),
       ),
     );
 }

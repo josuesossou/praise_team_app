@@ -4,33 +4,35 @@ import 'package:amplify_flutter/amplify.dart';
 import '../models/Event.dart';
 import '../models/Song.dart';
 import '../services/dbSongsQuery.dart';
+import 'package:uuid/uuid.dart';
 
 class DbEventsQuery {
   StreamSubscription _subscription;
   TemporalDateTime  now = TemporalDateTime.now();
   final _streamController = StreamController<List<Event>>();
+  Uuid uuid = Uuid();
 
   DbEventsQuery() {
     _streamController.sink.add([]);
   }
 
-  Future<bool> addEvent(Event event) async {
+  Future<bool> addEvent(Map<String, dynamic> event) async {
     DbSongsQuery songQuery = DbSongsQuery();
 
     Event newEvent = Event(
-      id: event.id,
+      id: uuid.v1(),
       createdAt: TemporalTimestamp.now(),
-      name: event.name,
-      date: event.date,
-      dateStamp: TemporalDateTime.fromString(event.date),
-      songIds: event.songIds,
-      bgCover: event.bgCover
+      name: event['name'],
+      date: event['date'],
+      dateStamp: TemporalDateTime.fromString(event['date']),
+      songIds: event['songIds'],
+      bgCover: event['bgCover']
     );
 
     try {
-      for (var id in event.songIds) {
+      for (var id in event['songIds']) {
         Song song = await songQuery.getOneSong(id);
-        Song updatedSong = song.copyWith(lastDatePlayed: event.date);
+        Song updatedSong = song.copyWith(lastDatePlayed: event['date']);
 
         await songQuery.updateSong(updatedSong);
       }

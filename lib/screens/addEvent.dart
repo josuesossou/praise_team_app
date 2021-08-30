@@ -4,12 +4,9 @@ import 'package:intl/intl.dart';
 import '../components/arrowBack.dart';
 import '../components/loader.dart';
 import '../services/dbEventsQuery.dart';
-import 'package:uuid/uuid.dart';
-
 import '../components/button.dart';
 import '../components/songCard.dart';
 import '../components/textField.dart';
-import '../models/Event.dart';
 import '../models/Song.dart';
 import '../services/dbSongsQuery.dart';
 import '../components/flexText.dart';
@@ -80,19 +77,19 @@ class _AddEventState extends State<AddEvent> {
   }
 
   _addEvent() {
-    Uuid uuid = Uuid();
     List<String> songIdList = _songs.map((song) => song.songId).toList();
 
-    Event event = Event(
-      id: uuid.v1(),
-      date: selectedDate.toString(),
-      name: nameText,
-      songIds: songIdList,
-      bgCover: _songs[0].videoThumbDefaultUrl
-    );
+    var event ={
+      'name': nameText,
+      'songIds': songIdList,
+      'bgCover': '_songs[0].videoThumbDefaultUrl',
+      'data': selectedDate
+    };
 
-    DbEventsQuery().addEvent(event);
-    Navigator.pop(context);
+    DbEventsQuery().addEvent(event)
+      .then((value) {
+        Navigator.pop(context);
+    });
   }
 
   @override

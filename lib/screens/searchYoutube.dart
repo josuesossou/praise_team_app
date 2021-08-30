@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lgcogpraiseteam/components/scaffoldMessages.dart';
 import '../components/arrowBack.dart';
 import '../components/loader.dart';
 import '../services/youtubeAPI.dart';
@@ -192,8 +193,16 @@ class BottomModelContent extends StatelessWidget {
     );
 
     void _addSong() {
-      DbSongsQuery().addSong(video)
-                    .then((val) => Navigator.pop(context));
+      DbSongsQuery().addSong(video).then((isSuccess) {
+        Navigator.pop(context);
+        
+        if (isSuccess) {
+          showSuccess(context, 'New Song Added');
+        } else {
+          showError(context, 'Song already exist');
+        }
+      }) ;
+
     }
 
     return Container(

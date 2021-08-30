@@ -119,7 +119,7 @@ class SearchSongs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: songs.length == 0 ?
+      child: songs.isEmpty ?
       Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

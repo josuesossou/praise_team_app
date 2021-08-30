@@ -26,22 +26,29 @@ class DbSongsQuery {
       videoThumbMediumW: video.thumbNail.mediumW,
       channelTitle: video.channelTitle,
       channelId: video.channelId,
-      createdAt: TemporalTimestamp.now()
+      createdAt: TemporalTimestamp.now(),
+      musicSheets: [],
+      lastDatePlayed: 'New Song',
+      numOfTimePlayed: 0,
+      originalkey: 'Not Set',
+      transposedKey: 'Not Set',
+      transposedNumber: 0,
     );
 
-    // check if the video has already been add using the video id
-    List<Song> songList = await Amplify.DataStore.query(
-      Song.classType, where: Song.VIDEOID.eq(video.videoId));
-    
-    if (songList.isEmpty) {
-      try {
+    try {
+      // check if the video has already been add using the video id
+      List<Song> songList = await Amplify.DataStore.query(
+        Song.classType, where: Song.VIDEOID.eq(video.videoId));
+
+      if (songList.isEmpty) {
         await Amplify.DataStore.save(newSong);
         return true;
-      } catch (e) {
+      } else {
         return false;
       }
+    } catch (e) {
+      return false;
     }
-    return false;
   }
 
   Future<bool> updateSong(Song uptadedSong) async {
