@@ -90,7 +90,7 @@ class DbSongsQuery {
     try {
       List<Song> songs = await Amplify.DataStore.query(
         Song.classType,
-        where: Song.ID.eq(id)
+        where: Song.SONGID.eq(id)
       );
 
       return songs[0];

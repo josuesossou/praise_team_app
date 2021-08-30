@@ -1,6 +1,7 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:lgcogpraiseteam/components/scaffoldMessages.dart';
 import '../components/arrowBack.dart';
 import '../components/loader.dart';
 import '../services/dbEventsQuery.dart';
@@ -22,6 +23,7 @@ class _AddEventState extends State<AddEvent> {
   String searchText = ''; 
   String nameText = '';
   bool showSearchResult = false;
+  DbEventsQuery eventsQuery = DbEventsQuery();
 
   _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -76,20 +78,33 @@ class _AddEventState extends State<AddEvent> {
     });
   }
 
-  _addEvent() {
+  _addEvent(context) {
+    print('############# ran ran');
     List<String> songIdList = _songs.map((song) => song.songId).toList();
+    
+    if (songIdList.isNotEmpty) {
+      print(songIdList);
+      var event = {
+        'name': nameText,
+        'songIds': songIdList,
+        'bgCover': _songs[0].videoThumbDefaultUrl,
+        'date': selectedDate.toIso8601String()
+      };
 
-    var event ={
-      'name': nameText,
-      'songIds': songIdList,
-      'bgCover': '_songs[0].videoThumbDefaultUrl',
-      'data': selectedDate
-    };
+      eventsQuery.addEvent(event)
+        .then((isSuccess) {
+          Navigator.pop(context);
 
-    DbEventsQuery().addEvent(event)
-      .then((value) {
-        Navigator.pop(context);
-    });
+          if (isSuccess) {
+            showSuccess(context, 'Added a New Event Successfully');
+          } else {
+            showError(context, 'Failed to add new event');
+          }   
+        }
+      );
+    } else {
+      showError(context, 'Need to add at least one song');
+    }
   }
 
   @override
@@ -132,7 +147,9 @@ class _AddEventState extends State<AddEvent> {
             alignment: Alignment.bottomCenter,
             margin: EdgeInsets.only(bottom: 20),
             child: RectButton(
-              onPress: () => _addEvent(),
+              onPress: () {
+                _addEvent(context);
+              },
               elevation: 5,
               color: _theme.accentColor,
               child: Container(
@@ -262,7 +279,7 @@ class SearchedSongLists extends StatelessWidget {
   final Function addNewSong;
 
   Future<List<Song>> searchedSongs() => DbSongsQuery()
-                                              .getSearchedSongs(keyword);
+                        .getSearchedSongs(keyword);
 
   @override
   Widget build(BuildContext context) {

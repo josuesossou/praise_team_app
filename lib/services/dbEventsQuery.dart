@@ -12,10 +12,6 @@ class DbEventsQuery {
   final _streamController = StreamController<List<Event>>();
   Uuid uuid = Uuid();
 
-  DbEventsQuery() {
-    _streamController.sink.add([]);
-  }
-
   Future<bool> addEvent(Map<String, dynamic> event) async {
     DbSongsQuery songQuery = DbSongsQuery();
 
@@ -24,7 +20,7 @@ class DbEventsQuery {
       createdAt: TemporalTimestamp.now(),
       name: event['name'],
       date: event['date'],
-      dateStamp: TemporalDateTime.fromString(event['date']),
+      dateStamp: TemporalDateTime.fromString(event['date']+'Z'),
       songIds: event['songIds'],
       bgCover: event['bgCover']
     );
@@ -40,6 +36,7 @@ class DbEventsQuery {
       await Amplify.DataStore.save(newEvent);
       return true;
     } catch (e) {
+      print(e);
       return false;
     }
   }
@@ -47,12 +44,14 @@ class DbEventsQuery {
   // subscription to amplify events data, 
   //watches if new events are in the store
   void setSubscription() {
+    _streamController.sink.add([]);
     _subscription =  Amplify.DataStore
     .observe(Event.classType)
     .listen((event) {
       _getUpcomingEvent();
     });
   }
+  
 
   // canceling amplify stream
   void cancelSubscription() {

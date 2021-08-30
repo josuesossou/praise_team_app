@@ -195,14 +195,13 @@ class BottomModelContent extends StatelessWidget {
     void _addSong() {
       DbSongsQuery().addSong(video).then((isSuccess) {
         Navigator.pop(context);
-        
+
         if (isSuccess) {
           showSuccess(context, 'New Song Added');
         } else {
           showError(context, 'Song already exist');
         }
       }) ;
-
     }
 
     return Container(

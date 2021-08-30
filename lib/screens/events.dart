@@ -31,6 +31,7 @@ class _EventsState extends State<Events> {
 
   @override
   void initState() {
+    dbEventsQuery.setSubscription();
     super.initState();
   }
 
