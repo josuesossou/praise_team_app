@@ -27,7 +27,7 @@ class Event extends Model {
   final String name;
   final String date;
   final TemporalTimestamp createdAt;
-  final TemporalDateTime dateStamp;
+  final int dateStamp;
   final List<String> songIds;
   final String bgCover;
 
@@ -53,7 +53,7 @@ class Event extends Model {
       @required String name,
       String date,
       @required TemporalTimestamp createdAt,
-      TemporalDateTime dateStamp,
+      int dateStamp,
       List<String> songIds,
       String bgCover}) {
     return Event._internal(
@@ -98,7 +98,7 @@ class Event extends Model {
         (createdAt != null ? createdAt.toString() : "null") +
         ", ");
     buffer.write("dateStamp=" +
-        (dateStamp != null ? dateStamp.format() : "null") +
+        (dateStamp != null ? dateStamp.toString() : "null") +
         ", ");
     buffer.write(
         "songIds=" + (songIds != null ? songIds.toString() : "null") + ", ");
@@ -113,7 +113,7 @@ class Event extends Model {
       String name,
       String date,
       TemporalTimestamp createdAt,
-      TemporalDateTime dateStamp,
+      int dateStamp,
       List<String> songIds,
       String bgCover}) {
     return Event(
@@ -133,9 +133,7 @@ class Event extends Model {
         createdAt = json['createdAt'] != null
             ? TemporalTimestamp.fromSeconds(json['createdAt'])
             : null,
-        dateStamp = json['dateStamp'] != null
-            ? TemporalDateTime.fromString(json['dateStamp'])
-            : null,
+        dateStamp = json['dateStamp'],
         songIds = json['songIds']?.cast<String>(),
         bgCover = json['bgCover'];
 
@@ -144,7 +142,7 @@ class Event extends Model {
         'name': name,
         'date': date,
         'createdAt': createdAt?.toSeconds(),
-        'dateStamp': dateStamp?.format(),
+        'dateStamp': dateStamp,
         'songIds': songIds,
         'bgCover': bgCover
       };
@@ -190,7 +188,7 @@ class Event extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: Event.DATESTAMP,
         isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)));
+        ofType: ModelFieldType(ModelFieldTypeEnum.int)));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: Event.SONGIDS,

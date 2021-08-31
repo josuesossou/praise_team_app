@@ -80,7 +80,9 @@ class EventCard extends StatelessWidget {
                   style: style1,
                 ), 
                 FlexText(
-                  text: DateFormat.yMMMd().format(DateTime.parse(event.date)), 
+                  text: DateFormat.yMMMd().format(
+                    DateTime.fromMillisecondsSinceEpoch(int.parse(event.date))
+                  ), 
                   style: style2
                 ),
                 sizedBox,

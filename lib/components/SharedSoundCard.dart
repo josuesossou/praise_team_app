@@ -118,7 +118,11 @@ class SharedSoundCard extends StatelessWidget {
                   text: song.lastDatePlayed == 'New Song' ? 
                         song.lastDatePlayed :
                         DateFormat.yMMMd()
-                        .format(DateTime.parse(song.lastDatePlayed)),
+                        .format(
+                          DateTime.fromMillisecondsSinceEpoch(
+                            int.parse(song.lastDatePlayed)
+                          )
+                        ),
                   style: style2,
                 ),
               ]

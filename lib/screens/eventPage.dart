@@ -79,7 +79,11 @@ class _EventPageState extends State<EventPage> {
                     style: style1,
                   ),
                   FlexText(
-                    text: DateFormat.yMMMd().format(DateTime.parse(widget.event.date)),
+                    text: DateFormat.yMMMd().format(
+                      DateTime.fromMillisecondsSinceEpoch(
+                        int.parse(widget.event.date)
+                      )
+                    ),
                     style: style2,
                   ),
                   SizedBox(height: 10),

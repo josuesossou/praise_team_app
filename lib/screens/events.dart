@@ -37,7 +37,6 @@ class _EventsState extends State<Events> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     dbEventsQuery.cancelSubscription();
     super.dispose();
   }
@@ -155,7 +154,9 @@ class _EventsState extends State<Events> {
                   }
                 } else if (snapshot.hasError) {
                   child = Column(
-                    children: [FlexText(text: snapshot.error.toString(),)],
+                    children: [
+                      FlexText(text: snapshot.error.toString(),)
+                    ],
                   );
                 } else {
                   child = Loader();

@@ -1,4 +1,3 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lgcogpraiseteam/components/scaffoldMessages.dart';
@@ -79,7 +78,6 @@ class _AddEventState extends State<AddEvent> {
   }
 
   _addEvent(context) {
-    print('############# ran ran');
     List<String> songIdList = _songs.map((song) => song.songId).toList();
     
     if (songIdList.isNotEmpty) {
@@ -88,7 +86,7 @@ class _AddEventState extends State<AddEvent> {
         'name': nameText,
         'songIds': songIdList,
         'bgCover': _songs[0].videoThumbDefaultUrl,
-        'date': selectedDate.toIso8601String()
+        'date': selectedDate.millisecondsSinceEpoch
       };
 
       eventsQuery.addEvent(event)

@@ -100,9 +100,13 @@ class SongCard extends StatelessWidget {
               ),
               FlexText(
                 text: song.lastDatePlayed == 'New Song' ? 
-                        song.lastDatePlayed :
-                        DateFormat.yMMMd()
-                        .format(DateTime.parse(song.lastDatePlayed)),
+                  song.lastDatePlayed :
+                  DateFormat.yMMMd()
+                  .format(
+                    DateTime.fromMillisecondsSinceEpoch(
+                      int.parse(song.lastDatePlayed)
+                    )
+                  ),
                 style: style2,
               ),
             ],

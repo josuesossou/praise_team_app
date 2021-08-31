@@ -8,7 +8,7 @@ import 'package:uuid/uuid.dart';
 
 class DbEventsQuery {
   StreamSubscription _subscription;
-  TemporalDateTime  now = TemporalDateTime.now();
+  int now = DateTime.now().millisecondsSinceEpoch;
   final _streamController = StreamController<List<Event>>();
   Uuid uuid = Uuid();
 
@@ -19,8 +19,8 @@ class DbEventsQuery {
       id: uuid.v1(),
       createdAt: TemporalTimestamp.now(),
       name: event['name'],
-      date: event['date'],
-      dateStamp: TemporalDateTime.fromString(event['date']+'Z'),
+      date: event['date'].toString(),
+      dateStamp: event['date'],
       songIds: event['songIds'],
       bgCover: event['bgCover']
     );
@@ -28,7 +28,8 @@ class DbEventsQuery {
     try {
       for (var id in event['songIds']) {
         Song song = await songQuery.getOneSong(id);
-        Song updatedSong = song.copyWith(lastDatePlayed: event['date']);
+        Song updatedSong = song.copyWith(
+          lastDatePlayed: event['date'].toString());
 
         await songQuery.updateSong(updatedSong);
       }
@@ -36,7 +37,6 @@ class DbEventsQuery {
       await Amplify.DataStore.save(newEvent);
       return true;
     } catch (e) {
-      print(e);
       return false;
     }
   }
@@ -44,7 +44,8 @@ class DbEventsQuery {
   // subscription to amplify events data, 
   //watches if new events are in the store
   void setSubscription() {
-    _streamController.sink.add([]);
+    print("###### RAN");
+    _streamController.add([]);
     _subscription =  Amplify.DataStore
     .observe(Event.classType)
     .listen((event) {
@@ -66,9 +67,11 @@ class DbEventsQuery {
         Event.classType, 
         where: Event.DATESTAMP.gt(now)
       );
-
-      _streamController.sink.add(events);
+      print("###### Events");
+      _streamController.add(events);
     } catch (e) {
+      print("####### upcoming");
+      print(e);
     }
   }
 
@@ -80,11 +83,13 @@ class DbEventsQuery {
   Future<List<Event>> getPreviousEvent() async {
     try {
       List<Event> _events = await Amplify.DataStore.query(
-        Event.classType, 
+        Event.classType,
         where: Event.DATESTAMP.lt(now)
       );
       return _events;
     } catch (e) {
+      print("####### Previous:");
+      print(e);
       return [];
     }
   }
