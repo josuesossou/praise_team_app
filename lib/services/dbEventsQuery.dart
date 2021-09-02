@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:amplify_flutter/amplify.dart';
 import 'package:lgcogpraiseteam/services/userQuery.dart';
@@ -27,7 +26,7 @@ class DbEventsQuery {
       songIds: event['songIds'],
       bgCover: event['bgCover'],
       createdBy: _user.getUser.userId,
-      creatorName: _user.getUserAttributes['name']
+      creatorName: _user.getUserAttributes.name
     );
 
     try {

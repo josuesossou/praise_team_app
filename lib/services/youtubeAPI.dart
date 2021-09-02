@@ -18,6 +18,5 @@ class YoutubeApi {
 
     return YoutubeDataModel.fromMap(decode);
   }
-
 }
 

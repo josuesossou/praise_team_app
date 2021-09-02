@@ -121,7 +121,7 @@ class TransposeQuery {
     }
   }
 
-  Future<TransposeData> getOne(tKeyId) async {
+  Future<TransposeData> getOne(String tKeyId) async {
     try {
       List<TransposeData> transposeKeys = await Amplify.DataStore.query(
         TransposeData.classType,

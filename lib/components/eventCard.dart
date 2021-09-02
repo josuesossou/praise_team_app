@@ -87,13 +87,14 @@ class EventCard extends StatelessWidget {
                 ),
                 sizedBox,
                 isLargeCard ? FlexText(
-                  text: '${event.songIds.length} ${event.songIds.length > 1 ? "Songs" : "Song"}', 
+                  text: '${event.songIds.length} ${event.songIds.length > 1 ?
+                                                     "Songs" : "Song"}', 
                   // alignment: Alignment.center,
                   style: style3,
                 ) : Container(), // name of the event
                 isLargeCard ? FlexText(
                   // alignment: Alignment.center,
-                  text: 'Posted By: creator', 
+                  text: 'Posted By: ' + event.creatorName, 
                   style: style3,
                 ) : Container(),
                 // date of event

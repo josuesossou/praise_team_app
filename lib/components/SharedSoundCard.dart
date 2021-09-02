@@ -102,16 +102,17 @@ class SharedSoundCard extends StatelessWidget {
             )
           ),
 
-
           columnSpacing,
-          PageView(
-            controller: _pageController,
-            scrollDirection: Axis.horizontal,
-            children: song.transposeList.map((data) => TransposeCard(
-              data: data,
-            )).toList()
-          ),
-          
+          Container(
+            height: 100,
+            child: PageView(
+              controller: _pageController,
+              scrollDirection: Axis.horizontal,
+              children: song.transposeList.map((tKeys) => TransposeCard(
+                transDataKey: tKeys,
+              )).toList()
+            ),
+          )
         ]
       )
     );

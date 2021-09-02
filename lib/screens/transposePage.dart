@@ -11,7 +11,7 @@ class TransposePage extends StatefulWidget {
 }
 
 class _TransposePageState extends State<TransposePage> {
-
+  TransposeCalculation _transpCalc =  TransposeCalculation();
   int transposedNumber = 0;
   List<String> notes = [
     'Not Set', 
@@ -35,7 +35,7 @@ class _TransposePageState extends State<TransposePage> {
   }
 
   onDropdownValChanged(val, i) {
-    String transposekey = Transpose().getTransposedKey(val, transposedNumber);
+    String transposekey = _transpCalc.getTransposedKey(val, transposedNumber);
     setState(() {
       notes[i] = val;
       transposeResults[i] = transposekey;
@@ -105,6 +105,7 @@ class _TransposePageState extends State<TransposePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       DropDownNotes(
+                        items: _transpCalc.listOfNotes,
                         dropdownValue: entry.value,
                         onValueChanged: (val) => onDropdownValChanged(val, entry.key),
                       ),

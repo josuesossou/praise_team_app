@@ -1,5 +1,5 @@
 class TransposeCalculation { 
-  final List<String> notes = [
+  final List<String> _notes = [
     'C','C#','D','D#','E','F','F#','G','G#','A','A#','B', 'Not Set'
   ];
 
@@ -26,8 +26,8 @@ class TransposeCalculation {
       newOffset = 12 + newOffset;
     }
 
-    return notes[newOffset];
+    return _notes[newOffset];
   }
 
-  List<String> get listOfNotes => notes;
+  List<String> get listOfNotes => _notes;
 }

@@ -3,7 +3,6 @@ import 'package:amplify_flutter/amplify.dart';
 import 'package:flutter/material.dart';
 import 'package:lgcogpraiseteam/components/scaffoldMessages.dart';
 import 'package:flutter_login/flutter_login.dart';
-import 'package:lgcogpraiseteam/models/UserData.dart';
 
 // import 'dashboard.dart';
 

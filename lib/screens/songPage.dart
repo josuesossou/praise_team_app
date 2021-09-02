@@ -100,7 +100,7 @@ class _SongPageState extends State<SongPage> {
         };
 
         song.transposeList.add(_transId);
-        
+
         _updatedSong = song.copyWith(
           originalkey: originalKey,
           // transposeList: transposeDataIds
@@ -197,7 +197,7 @@ class EditSong extends StatelessWidget {
     ThemeData theme = Theme.of(context);
 
     return Container(
-      height: size.height * 0.3,
+      height: size.height * 0.4,
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [
@@ -235,11 +235,14 @@ class EditSong extends StatelessWidget {
           ),
 
           columnSpacing,
+          columnSpacing,
+          columnSpacing,
           FlexText(
             text: 'Add New Transpose Key',
             style: style1,
           ),
-
+          
+          columnSpacing,
           columnSpacing,
           Container(
             margin: EdgeInsets.symmetric(horizontal: 15),
@@ -272,7 +275,7 @@ class EditSong extends StatelessWidget {
 
           columnSpacing,
           Container(
-            width: size.width * 0.3,
+            width: size.width * 0.9,
             child: FutureBuilder(
               future: DbUserQuery().getUserData(),
               builder: (BuildContext contex, 
@@ -281,8 +284,11 @@ class EditSong extends StatelessWidget {
 
                 if (snapshot.hasData) {
                   List<String> listOfUserNames = snapshot.data
-                                                .map((user) => user.name);
-                  widget = DropDownNotes(
+                                                .map((user) => user.name)
+                                                .toList();
+                  widget = listOfUserNames.isEmpty ?
+                  Text('No User In App') :
+                  DropDownNotes(
                     items: listOfUserNames,
                     dropdownValue: listOfUserNames[0],
                     onValueChanged: onChangeUserName,
@@ -445,13 +451,13 @@ class ScrolledContent extends StatelessWidget {
               ]
             ),
             columnSpacing,
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+            // Column(
+            //   crossAxisAlignment: CrossAxisAlignment.stretch,
             
-              children: song.musicSheets.map((e) => (
-                FileCardBtn()
-              )).toList(),
-            ),
+            //   children: song.musicSheets.map((e) => (
+            //     FileCardBtn()
+            //   )).toList(),
+            // ),
             columnSpacing,
             columnSpacing,
             RectButton(
