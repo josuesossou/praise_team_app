@@ -81,7 +81,6 @@ class _AddEventState extends State<AddEvent> {
     List<String> songIdList = _songs.map((song) => song.songId).toList();
     
     if (songIdList.isNotEmpty) {
-      print(songIdList);
       var event = {
         'name': nameText,
         'songIds': songIdList,

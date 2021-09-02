@@ -17,16 +17,34 @@
 
 import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
 import 'Event.dart';
+import 'FileURL.dart';
+import 'Organization.dart';
 import 'Song.dart';
+import 'TransposeData.dart';
+import 'UserData.dart';
+import 'UserSetting.dart';
 
 export 'Event.dart';
+export 'FileURL.dart';
+export 'Organization.dart';
 export 'Song.dart';
+export 'TransposeData.dart';
+export 'UserData.dart';
+export 'UserSetting.dart';
 
 class ModelProvider implements ModelProviderInterface {
   @override
-  String version = "247a09b0b998dc4010a909966f15dc8b";
+  String version = "08529efc29a420b462ab92d646633857";
   @override
-  List<ModelSchema> modelSchemas = [Event.schema, Song.schema];
+  List<ModelSchema> modelSchemas = [
+    Event.schema,
+    FileURL.schema,
+    Organization.schema,
+    Song.schema,
+    TransposeData.schema,
+    UserData.schema,
+    UserSetting.schema
+  ];
   static final ModelProvider _instance = ModelProvider();
 
   static ModelProvider get instance => _instance;
@@ -38,9 +56,34 @@ class ModelProvider implements ModelProviderInterface {
           return Event.classType;
         }
         break;
+      case "FileURL":
+        {
+          return FileURL.classType;
+        }
+        break;
+      case "Organization":
+        {
+          return Organization.classType;
+        }
+        break;
       case "Song":
         {
           return Song.classType;
+        }
+        break;
+      case "TransposeData":
+        {
+          return TransposeData.classType;
+        }
+        break;
+      case "UserData":
+        {
+          return UserData.classType;
+        }
+        break;
+      case "UserSetting":
+        {
+          return UserSetting.classType;
         }
         break;
       default:

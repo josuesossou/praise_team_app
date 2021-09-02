@@ -6,6 +6,8 @@ type Event @model @auth(rules: [{allow: public}]) {
     dateStamp: Int,
     songIds: [String],
     bgCover: String,
+    createdBy: ID,
+    creatorName: String,
 }
 
 type Song @model @auth(rules: [{allow: public}]) {
@@ -24,10 +26,37 @@ type Song @model @auth(rules: [{allow: public}]) {
     videoThumbMediumUrl: String,
     videoThumbMediumW: Int,
     lastDatePlayed: String,
-    musicSheets: [String],
+    musicSheets: [FileURL] @connection,
     createdAt: AWSTimestamp!,
     originalkey: String,
     numOfTimePlayed: Int,
-    transposedKey: String,
-    transposedNumber: Int,
+    transposeList: [String]
+}
+
+type Organization @model @auth(rules: [{allow: public}]) {
+    organizationIds: [String]
+}
+
+type UserSetting @model @auth(rules: [{allow: public}]) {
+    color: String
+}
+
+type UserData @model @auth(rules: [{allow: public}]) {
+    uid: ID,
+    name: String,
+    role: String,
+}
+
+type FileURL @model @auth(rules: [{allow: public}]) {
+    url: String,
+    byUser: ID,
+    userName: String
+}
+
+type TransposeData @model @auth(rules: [{allow: public}]) {
+    transposeId: ID!,
+    transposeKey: String,
+    transposeNum: Int,
+    userName: String,
+    songId: ID!
 }

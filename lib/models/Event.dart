@@ -30,6 +30,8 @@ class Event extends Model {
   final int dateStamp;
   final List<String> songIds;
   final String bgCover;
+  final String createdBy;
+  final String creatorName;
 
   @override
   getInstanceType() => classType;
@@ -46,7 +48,9 @@ class Event extends Model {
       @required this.createdAt,
       this.dateStamp,
       this.songIds,
-      this.bgCover});
+      this.bgCover,
+      this.createdBy,
+      this.creatorName});
 
   factory Event(
       {String id,
@@ -55,7 +59,9 @@ class Event extends Model {
       @required TemporalTimestamp createdAt,
       int dateStamp,
       List<String> songIds,
-      String bgCover}) {
+      String bgCover,
+      String createdBy,
+      String creatorName}) {
     return Event._internal(
         id: id == null ? UUID.getUUID() : id,
         name: name,
@@ -63,7 +69,9 @@ class Event extends Model {
         createdAt: createdAt,
         dateStamp: dateStamp,
         songIds: songIds != null ? List<String>.unmodifiable(songIds) : songIds,
-        bgCover: bgCover);
+        bgCover: bgCover,
+        createdBy: createdBy,
+        creatorName: creatorName);
   }
 
   bool equals(Object other) {
@@ -80,7 +88,9 @@ class Event extends Model {
         createdAt == other.createdAt &&
         dateStamp == other.dateStamp &&
         DeepCollectionEquality().equals(songIds, other.songIds) &&
-        bgCover == other.bgCover;
+        bgCover == other.bgCover &&
+        createdBy == other.createdBy &&
+        creatorName == other.creatorName;
   }
 
   @override
@@ -102,7 +112,9 @@ class Event extends Model {
         ", ");
     buffer.write(
         "songIds=" + (songIds != null ? songIds.toString() : "null") + ", ");
-    buffer.write("bgCover=" + "$bgCover");
+    buffer.write("bgCover=" + "$bgCover" + ", ");
+    buffer.write("createdBy=" + "$createdBy" + ", ");
+    buffer.write("creatorName=" + "$creatorName");
     buffer.write("}");
 
     return buffer.toString();
@@ -115,7 +127,9 @@ class Event extends Model {
       TemporalTimestamp createdAt,
       int dateStamp,
       List<String> songIds,
-      String bgCover}) {
+      String bgCover,
+      String createdBy,
+      String creatorName}) {
     return Event(
         id: id ?? this.id,
         name: name ?? this.name,
@@ -123,7 +137,9 @@ class Event extends Model {
         createdAt: createdAt ?? this.createdAt,
         dateStamp: dateStamp ?? this.dateStamp,
         songIds: songIds ?? this.songIds,
-        bgCover: bgCover ?? this.bgCover);
+        bgCover: bgCover ?? this.bgCover,
+        createdBy: createdBy ?? this.createdBy,
+        creatorName: creatorName ?? this.creatorName);
   }
 
   Event.fromJson(Map<String, dynamic> json)
@@ -135,7 +151,9 @@ class Event extends Model {
             : null,
         dateStamp = json['dateStamp'],
         songIds = json['songIds']?.cast<String>(),
-        bgCover = json['bgCover'];
+        bgCover = json['bgCover'],
+        createdBy = json['createdBy'],
+        creatorName = json['creatorName'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -144,7 +162,9 @@ class Event extends Model {
         'createdAt': createdAt?.toSeconds(),
         'dateStamp': dateStamp,
         'songIds': songIds,
-        'bgCover': bgCover
+        'bgCover': bgCover,
+        'createdBy': createdBy,
+        'creatorName': creatorName
       };
 
   static final QueryField ID = QueryField(fieldName: "event.id");
@@ -154,6 +174,8 @@ class Event extends Model {
   static final QueryField DATESTAMP = QueryField(fieldName: "dateStamp");
   static final QueryField SONGIDS = QueryField(fieldName: "songIds");
   static final QueryField BGCOVER = QueryField(fieldName: "bgCover");
+  static final QueryField CREATEDBY = QueryField(fieldName: "createdBy");
+  static final QueryField CREATORNAME = QueryField(fieldName: "creatorName");
   static var schema =
       Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Event";
@@ -199,6 +221,16 @@ class Event extends Model {
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: Event.BGCOVER,
+        isRequired: false,
+        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: Event.CREATEDBY,
+        isRequired: false,
+        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: Event.CREATORNAME,
         isRequired: false,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
   });

@@ -2,12 +2,8 @@ import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify.dart';
 import 'package:flutter/material.dart';
 import 'package:lgcogpraiseteam/components/scaffoldMessages.dart';
-// import 'package:lgcogpraiseteam/models/AuthModel.dart';
-// import '../components/flexText.dart';
-import '../components/textField.dart';
-import '../components/logo.dart';
-import '../components/button.dart';
 import 'package:flutter_login/flutter_login.dart';
+import 'package:lgcogpraiseteam/models/UserData.dart';
 
 // import 'dashboard.dart';
 
@@ -43,7 +39,7 @@ class _AuthState extends State<Auth> {
     Future<String> _doSignup(LoginData data) async {
       _isSignupAction = true;
       _data = data;
-      print(data.name);
+ 
       return null;
     }
 
@@ -72,7 +68,7 @@ class _AuthState extends State<Auth> {
             context, 
             '/confirm', 
             arguments: {
-              'username': data.name.replaceAll(RegExp(r'[@\.]'), '')
+              'username': data.name.split('@')[0]
                                     .toLowerCase(), 
               'email': data.name,
               'password': data.password 
@@ -133,9 +129,10 @@ class AdditionalInfo extends StatelessWidget {
   );
 
   void _onSignup(context) async {
-    String username = loginData.name.replaceAll(RegExp(r'[@\.]'), '')
+    String username = loginData.name.split('@')[0]
                                     .toLowerCase();
     try {
+
       await Amplify.Auth.signUp(
         username: username,
         password: loginData.password,
@@ -164,10 +161,10 @@ class AdditionalInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
+    ThemeData _theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: _theme.primaryColor,
       body: Center(
         child: SafeArea(
           minimum: const EdgeInsets.symmetric(horizontal: 20),

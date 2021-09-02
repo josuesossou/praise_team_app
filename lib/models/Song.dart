@@ -15,6 +15,7 @@
 
 // ignore_for_file: public_member_api_docs
 
+import 'ModelProvider.dart';
 import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
@@ -39,12 +40,11 @@ class Song extends Model {
   final String videoThumbMediumUrl;
   final int videoThumbMediumW;
   final String lastDatePlayed;
-  final List<String> musicSheets;
+  final List<FileURL> musicSheets;
   final TemporalTimestamp createdAt;
   final String originalkey;
   final int numOfTimePlayed;
-  final String transposedKey;
-  final int transposedNumber;
+  final List<String> transposeList;
 
   @override
   getInstanceType() => classType;
@@ -75,8 +75,7 @@ class Song extends Model {
       @required this.createdAt,
       this.originalkey,
       this.numOfTimePlayed,
-      this.transposedKey,
-      this.transposedNumber});
+      this.transposeList});
 
   factory Song(
       {String id,
@@ -95,12 +94,11 @@ class Song extends Model {
       String videoThumbMediumUrl,
       int videoThumbMediumW,
       String lastDatePlayed,
-      List<String> musicSheets,
+      List<FileURL> musicSheets,
       @required TemporalTimestamp createdAt,
       String originalkey,
       int numOfTimePlayed,
-      String transposedKey,
-      int transposedNumber}) {
+      List<String> transposeList}) {
     return Song._internal(
         id: id == null ? UUID.getUUID() : id,
         songId: songId,
@@ -119,13 +117,14 @@ class Song extends Model {
         videoThumbMediumW: videoThumbMediumW,
         lastDatePlayed: lastDatePlayed,
         musicSheets: musicSheets != null
-            ? List<String>.unmodifiable(musicSheets)
+            ? List<FileURL>.unmodifiable(musicSheets)
             : musicSheets,
         createdAt: createdAt,
         originalkey: originalkey,
         numOfTimePlayed: numOfTimePlayed,
-        transposedKey: transposedKey,
-        transposedNumber: transposedNumber);
+        transposeList: transposeList != null
+            ? List<String>.unmodifiable(transposeList)
+            : transposeList);
   }
 
   bool equals(Object other) {
@@ -156,8 +155,7 @@ class Song extends Model {
         createdAt == other.createdAt &&
         originalkey == other.originalkey &&
         numOfTimePlayed == other.numOfTimePlayed &&
-        transposedKey == other.transposedKey &&
-        transposedNumber == other.transposedNumber;
+        DeepCollectionEquality().equals(transposeList, other.transposeList);
   }
 
   @override
@@ -192,9 +190,6 @@ class Song extends Model {
         (videoThumbMediumW != null ? videoThumbMediumW.toString() : "null") +
         ", ");
     buffer.write("lastDatePlayed=" + "$lastDatePlayed" + ", ");
-    buffer.write("musicSheets=" +
-        (musicSheets != null ? musicSheets.toString() : "null") +
-        ", ");
     buffer.write("createdAt=" +
         (createdAt != null ? createdAt.toString() : "null") +
         ", ");
@@ -202,9 +197,8 @@ class Song extends Model {
     buffer.write("numOfTimePlayed=" +
         (numOfTimePlayed != null ? numOfTimePlayed.toString() : "null") +
         ", ");
-    buffer.write("transposedKey=" + "$transposedKey" + ", ");
-    buffer.write("transposedNumber=" +
-        (transposedNumber != null ? transposedNumber.toString() : "null"));
+    buffer.write("transposeList=" +
+        (transposeList != null ? transposeList.toString() : "null"));
     buffer.write("}");
 
     return buffer.toString();
@@ -227,12 +221,11 @@ class Song extends Model {
       String videoThumbMediumUrl,
       int videoThumbMediumW,
       String lastDatePlayed,
-      List<String> musicSheets,
+      List<FileURL> musicSheets,
       TemporalTimestamp createdAt,
       String originalkey,
       int numOfTimePlayed,
-      String transposedKey,
-      int transposedNumber}) {
+      List<String> transposeList}) {
     return Song(
         id: id ?? this.id,
         songId: songId ?? this.songId,
@@ -254,8 +247,7 @@ class Song extends Model {
         createdAt: createdAt ?? this.createdAt,
         originalkey: originalkey ?? this.originalkey,
         numOfTimePlayed: numOfTimePlayed ?? this.numOfTimePlayed,
-        transposedKey: transposedKey ?? this.transposedKey,
-        transposedNumber: transposedNumber ?? this.transposedNumber);
+        transposeList: transposeList ?? this.transposeList);
   }
 
   Song.fromJson(Map<String, dynamic> json)
@@ -275,14 +267,17 @@ class Song extends Model {
         videoThumbMediumUrl = json['videoThumbMediumUrl'],
         videoThumbMediumW = json['videoThumbMediumW'],
         lastDatePlayed = json['lastDatePlayed'],
-        musicSheets = json['musicSheets']?.cast<String>(),
+        musicSheets = json['musicSheets'] is List
+            ? (json['musicSheets'] as List)
+                .map((e) => FileURL.fromJson(new Map<String, dynamic>.from(e)))
+                .toList()
+            : null,
         createdAt = json['createdAt'] != null
             ? TemporalTimestamp.fromSeconds(json['createdAt'])
             : null,
         originalkey = json['originalkey'],
         numOfTimePlayed = json['numOfTimePlayed'],
-        transposedKey = json['transposedKey'],
-        transposedNumber = json['transposedNumber'];
+        transposeList = json['transposeList']?.cast<String>();
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -301,12 +296,11 @@ class Song extends Model {
         'videoThumbMediumUrl': videoThumbMediumUrl,
         'videoThumbMediumW': videoThumbMediumW,
         'lastDatePlayed': lastDatePlayed,
-        'musicSheets': musicSheets,
+        'musicSheets': musicSheets?.map((e) => e?.toJson())?.toList(),
         'createdAt': createdAt?.toSeconds(),
         'originalkey': originalkey,
         'numOfTimePlayed': numOfTimePlayed,
-        'transposedKey': transposedKey,
-        'transposedNumber': transposedNumber
+        'transposeList': transposeList
       };
 
   static final QueryField ID = QueryField(fieldName: "song.id");
@@ -334,15 +328,16 @@ class Song extends Model {
       QueryField(fieldName: "videoThumbMediumW");
   static final QueryField LASTDATEPLAYED =
       QueryField(fieldName: "lastDatePlayed");
-  static final QueryField MUSICSHEETS = QueryField(fieldName: "musicSheets");
+  static final QueryField MUSICSHEETS = QueryField(
+      fieldName: "musicSheets",
+      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
+          ofModelName: (FileURL).toString()));
   static final QueryField CREATEDAT = QueryField(fieldName: "createdAt");
   static final QueryField ORIGINALKEY = QueryField(fieldName: "originalkey");
   static final QueryField NUMOFTIMEPLAYED =
       QueryField(fieldName: "numOfTimePlayed");
-  static final QueryField TRANSPOSEDKEY =
-      QueryField(fieldName: "transposedKey");
-  static final QueryField TRANSPOSEDNUMBER =
-      QueryField(fieldName: "transposedNumber");
+  static final QueryField TRANSPOSELIST =
+      QueryField(fieldName: "transposeList");
   static var schema =
       Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Song";
@@ -434,12 +429,11 @@ class Song extends Model {
         isRequired: false,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
 
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
         key: Song.MUSICSHEETS,
         isRequired: false,
-        isArray: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.collection,
-            ofModelName: describeEnum(ModelFieldTypeEnum.string))));
+        ofModelName: (FileURL).toString(),
+        associatedKey: FileURL.SONGMUSICSHEETSID));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: Song.CREATEDAT,
@@ -457,14 +451,11 @@ class Song extends Model {
         ofType: ModelFieldType(ModelFieldTypeEnum.int)));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Song.TRANSPOSEDKEY,
+        key: Song.TRANSPOSELIST,
         isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Song.TRANSPOSEDNUMBER,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.int)));
+        isArray: true,
+        ofType: ModelFieldType(ModelFieldTypeEnum.collection,
+            ofModelName: describeEnum(ModelFieldTypeEnum.string))));
   });
 }
 

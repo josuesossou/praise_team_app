@@ -16,7 +16,7 @@ class _EntryScreenState extends State<EntryScreen> {
 
   void _isUserExist() async {
     try {
-      var user = await Amplify.Auth.getCurrentUser();
+      await Amplify.Auth.getCurrentUser();
   
       Navigator.pushReplacementNamed(context, '/dashboard');
     } catch (e) {
@@ -35,11 +35,3 @@ class _EntryScreenState extends State<EntryScreen> {
     return Container(child: Text('Loading...'),);
   }
 }
-
-      // theme: ThemeData(
-      //   brightness: Brightness.light,
-      //   primaryColor: Colors.white,
-      //   primaryColorLight: Color(0xfff0f0f0),
-      //   primaryColorDark: Color(0xffe0e0e0),
-      //   accentColor: Color(0xff01A0C7)
-      // ),

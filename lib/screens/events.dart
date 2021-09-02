@@ -18,11 +18,14 @@ class _EventsState extends State<Events> {
 
   DbEventsQuery dbEventsQuery = DbEventsQuery();
 
-  PageController controller = PageController(initialPage: 0);
+  int upcomingEventsAmount = 0;
+  PageController _controller = PageController(
+    initialPage: 0, viewportFraction: 0.8, keepPage: true
+  );
   SizedBox sizedBox = SizedBox(height: 10); // used to separate content in column
   SizedBox sizedBoxL = SizedBox(height: 25); // larger separator
   TextStyle style = TextStyle(
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: FontWeight.bold
   );
 
@@ -47,7 +50,7 @@ class _EventsState extends State<Events> {
 
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 40),
+      padding: EdgeInsets.symmetric(horizontal: 1, vertical: 40),
       child: ConstrainedBox(
         constraints: BoxConstraints(
           minHeight: 0.80 * size.height,
@@ -59,7 +62,7 @@ class _EventsState extends State<Events> {
             sizedBox,
             Container(
               margin: EdgeInsets.symmetric(horizontal: 10),
-              child: Text('Upcoming Events', style: style,),
+              child:Text('Upcoming Events', style: style,),
             ),
             sizedBox,
             Container(
@@ -72,6 +75,7 @@ class _EventsState extends State<Events> {
 
                   if (snapshot.hasData) {
                     List<Event> docs = snapshot.data;
+                    upcomingEventsAmount = docs.length;
 
                     if (docs.isEmpty) {
                       child = Container(
@@ -81,7 +85,6 @@ class _EventsState extends State<Events> {
                           borderRadius: BorderRadius.circular(30),
                           color: Theme.of(context).primaryColor,
                         ),
-                        
                         alignment: Alignment.center,
                         child: Text(
                           "No upcoming events",
@@ -94,11 +97,11 @@ class _EventsState extends State<Events> {
                     } else {
                       child = PageView(
                         scrollDirection: Axis.horizontal,
-                        controller: controller,
+                        controller: _controller,
                         children: docs.map((doc) => EventCard(
                           isLargeCard: true,
                           event: doc,
-                          margin: EdgeInsets.symmetric(horizontal: 10),
+                          margin: EdgeInsets.symmetric(horizontal: 5),
                           type: "Comming up",
                         )).toList(),
                       );

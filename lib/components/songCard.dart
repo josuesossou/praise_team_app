@@ -32,6 +32,8 @@ class SongCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    int titleLength = song.videoTitle.length;
+    String missing = titleLength < 60 ? '' : '...';
 
     return Container(
       color: color,
@@ -54,7 +56,10 @@ class SongCard extends StatelessWidget {
                 ),
               ),
               FlexText(
-                text: song.videoTitle, // from youtube api
+                text: song.videoTitle.substring(
+                  0,
+                  titleLength < 60 ? titleLength :60
+                ) + missing,
                 style: style
               ),
             ],
@@ -76,21 +81,7 @@ class SongCard extends StatelessWidget {
           
           lineSeparator,
           SizedBox(height: 5),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              FlexText(
-                text: 'Transposed: ' + song.transposedNumber.toString(),
-                style: style2,
-              ),
-              FlexText(
-                text: 'Key: ' + song.transposedKey,
-                style: style2,
-              ),
-            ],
-          ),
-          lineSeparator,
-          SizedBox(height: 5),
+          
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

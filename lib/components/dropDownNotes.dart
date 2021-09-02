@@ -4,12 +4,14 @@ import '../utils/calculateTranspose.dart';
 class DropDownNotes extends StatelessWidget {
   DropDownNotes({ 
     @required this.dropdownValue, 
-    @required this.onValueChanged
+    @required this.onValueChanged,
+    @required this.items
   });
 
   final String dropdownValue;
   final Function onValueChanged;
-  final Transpose transpose = Transpose();
+  final List<String> items;
+  final TransposeCalculation transpose = TransposeCalculation();
   
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,7 @@ class DropDownNotes extends StatelessWidget {
         color: Colors.black
       ),
       onChanged: onValueChanged, 
-      items: transpose.listOfNotes
+      items: items
       .map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
           value: value,

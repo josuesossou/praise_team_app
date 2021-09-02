@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lgcogpraiseteam/models/ModelProvider.dart';
+import 'package:lgcogpraiseteam/services/userQuery.dart';
 import 'package:share_plus/share_plus.dart';
 import '../components/SharedSoundCard.dart';
 import '../components/arrowBack.dart';
@@ -22,6 +23,13 @@ class EventPage extends StatefulWidget {
 }
 
 class _EventPageState extends State<EventPage> {
+  PageController _controller = PageController(
+    initialPage: 0, viewportFraction: 0.9, keepPage: true
+  );
+  User user = User();
+  List<Map<String, String>> shareItems = [];
+  String _shareItem = '';
+
   TextStyle style1 = TextStyle(
     fontSize: 20,
     fontWeight: FontWeight.bold
@@ -34,8 +42,9 @@ class _EventPageState extends State<EventPage> {
 
   void _onShare(BuildContext context) {
     final box = context.findRenderObject() as RenderBox;
+    print(_shareItem);
     Share.share(
-      'check out my website https://google.com',
+      _shareItem,
       subject: 'hello',
       sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size
     );
@@ -43,8 +52,9 @@ class _EventPageState extends State<EventPage> {
 
   @override
   Widget build(BuildContext context) {
-    int numSong = widget.event.songIds.length;
-    Size size = MediaQuery.of(context).size;
+    int _numSong = widget.event.songIds.length;
+    Size _size = MediaQuery.of(context).size;
+    Event _event = widget.event;
 
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColorLight, 
@@ -71,7 +81,7 @@ class _EventPageState extends State<EventPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-              height: size.height * 0.13,
+              height: _size.height * 0.15,
               child: Column(
                 children: [
                   FlexText(
@@ -81,14 +91,20 @@ class _EventPageState extends State<EventPage> {
                   FlexText(
                     text: DateFormat.yMMMd().format(
                       DateTime.fromMillisecondsSinceEpoch(
-                        int.parse(widget.event.date)
+                        int.parse(_event.date)
                       )
                     ),
                     style: style2,
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 5),
                   FlexText(
-                    text: '$numSong ${numSong > 1 ? 'Songs' : 'Song'} ',
+                    // margin: EdgeInsets.only(top: 3),
+                    text: 'Posted By ' + _event.creatorName,
+                    style: style1,
+                  ),
+                  // SizedBox(height: 10),
+                  FlexText(
+                    text: '$_numSong ${_numSong > 1 ? 'Songs' : 'Song'} ',
                     style: TextStyle(fontSize: 14),
                   ),
                 ],
@@ -96,8 +112,9 @@ class _EventPageState extends State<EventPage> {
             ),
 
             Expanded(
-              flex: 10,
+              // flex: 10,
               child: PageView(
+                controller: _controller,
                 scrollDirection: Axis.horizontal,
                 children: widget.event.songIds.map((songId) => (
                   FutureBuilder(
@@ -109,7 +126,11 @@ class _EventPageState extends State<EventPage> {
                       if (snapshot.hasData) {
                         Song song = snapshot.data;
 
+                        _shareItem += song.videoTitle + '/n' +
+                        'https://youtu.be/' + song.videoId;
+
                         child = Container(
+                          margin: EdgeInsets.only(left: 10),
                           child: Column(
                             children: [
                               SharedSoundCard(song: song),
@@ -122,13 +143,13 @@ class _EventPageState extends State<EventPage> {
                                     SongPage(song: song,))
                                   );
                                 },
-                                width: size.width * 0.65,
+                                width: _size.width * 0.65,
                                 color: Theme.of(context).accentColor,
                                 child: Row(children: [
                                   FlexText(
                                     alignment: Alignment.center,
-                                    text: 'View More Details',
-                                    style: TextStyle(fontSize: 18),
+                                    text: 'View More',
+                                    style: TextStyle(fontSize: 15),
                                   ),
                                 ],)
                               )
@@ -149,14 +170,12 @@ class _EventPageState extends State<EventPage> {
                       } else {
                         child = Loader();
                       }
-
                       return child;
                     }
                   )
                 )).toList(),
               ),
             )
-            
           ],
         ),
       ),

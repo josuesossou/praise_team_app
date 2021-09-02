@@ -1,4 +1,4 @@
-class Transpose { 
+class TransposeCalculation { 
   final List<String> notes = [
     'C','C#','D','D#','E','F','F#','G','G#','A','A#','B', 'Not Set'
   ];

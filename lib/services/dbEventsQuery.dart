@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:amplify_flutter/amplify.dart';
+import 'package:lgcogpraiseteam/services/userQuery.dart';
 import '../models/Event.dart';
 import '../models/Song.dart';
 import '../services/dbSongsQuery.dart';
@@ -8,21 +10,24 @@ import 'package:uuid/uuid.dart';
 
 class DbEventsQuery {
   StreamSubscription _subscription;
-  int now = DateTime.now().millisecondsSinceEpoch;
+  int _now = DateTime.now().millisecondsSinceEpoch;
   final _streamController = StreamController<List<Event>>();
-  Uuid uuid = Uuid();
+  Uuid _uuid = Uuid();
+  User _user = User();
 
   Future<bool> addEvent(Map<String, dynamic> event) async {
     DbSongsQuery songQuery = DbSongsQuery();
 
     Event newEvent = Event(
-      id: uuid.v1(),
+      id: _uuid.v1(),
       createdAt: TemporalTimestamp.now(),
       name: event['name'],
       date: event['date'].toString(),
       dateStamp: event['date'],
       songIds: event['songIds'],
-      bgCover: event['bgCover']
+      bgCover: event['bgCover'],
+      createdBy: _user.getUser.userId,
+      creatorName: _user.getUserAttributes['name']
     );
 
     try {
@@ -44,8 +49,7 @@ class DbEventsQuery {
   // subscription to amplify events data, 
   //watches if new events are in the store
   void setSubscription() {
-    print("###### RAN");
-    _streamController.add([]);
+    _getUpcomingEvent();
     _subscription =  Amplify.DataStore
     .observe(Event.classType)
     .listen((event) {
@@ -65,12 +69,10 @@ class DbEventsQuery {
     try {
       List<Event> events = await Amplify.DataStore.query(
         Event.classType, 
-        where: Event.DATESTAMP.gt(now)
+        where: Event.DATESTAMP.gt(_now)
       );
-      print("###### Events");
       _streamController.add(events);
     } catch (e) {
-      print("####### upcoming");
       print(e);
     }
   }
@@ -84,11 +86,10 @@ class DbEventsQuery {
     try {
       List<Event> _events = await Amplify.DataStore.query(
         Event.classType,
-        where: Event.DATESTAMP.lt(now)
+        where: Event.DATESTAMP.lt(_now)
       );
       return _events;
     } catch (e) {
-      print("####### Previous:");
       print(e);
       return [];
     }

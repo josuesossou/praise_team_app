@@ -2,7 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart';
-import 'package:lgcogpraiseteam/components/scaffoldMessages.dart';
+import 'package:lgcogpraiseteam/services/userQuery.dart';
+import 'package:uuid/uuid.dart';
 // Componenents
 import '../components/arrowBack.dart';
 import '../components/button.dart';
@@ -10,9 +11,12 @@ import '../components/dropDownNotes.dart';
 import '../components/flexText.dart';
 import '../components/textField.dart';
 import '../components/SharedSoundCard.dart';
+import '../components/loader.dart';
+import '../components/scaffoldMessages.dart';
 // Helpers
 import '../services/dbSongsQuery.dart';
 import '../utils/calculateTranspose.dart';
+import '../models/ModelProvider.dart';
 import '../models/Song.dart';
 
 
@@ -29,9 +33,10 @@ class SongPage extends StatefulWidget {
 
 class _SongPageState extends State<SongPage> {
   EdgeInsets unifyMargin = EdgeInsets.symmetric(horizontal: 15);
-  Transpose t = Transpose();
+  TransposeCalculation t = TransposeCalculation();
   bool editMode = false;
   String originalKey;
+  String userName; // name of the user singing in the transpose key
   int transpose;
   Song song;
 
@@ -57,9 +62,15 @@ class _SongPageState extends State<SongPage> {
     });
   }
 
-  onChangeOriginalKey(val) {
+  onChangeOriginalKey(val) { // dropdown changing the original key
     setState(() {
       originalKey = val;
+    });
+  }
+
+  onChangeUserName(val) { // dropdown changing the user names.
+    setState(() {
+      userName = val;
     });
   }
 
@@ -73,17 +84,40 @@ class _SongPageState extends State<SongPage> {
     if (originalKey == 'Not Set') {
       showError(context, 'Change Key');
     } else {
-      String transposeKey = t.getTransposedKey(originalKey, transpose);
-      Song updatedSong = song.copyWith(
-        originalkey: originalKey,
-        transposedKey: transposeKey,
-        transposedNumber: transpose
-      );
-      await DbSongsQuery().updateSong(updatedSong);
+      Song _updatedSong;
+
+      if (userName != null) {
+        final _transId = Uuid().v1();
+        String transposeKey = t.getTransposedKey(originalKey, transpose);
+        // List<String> transposeDataIds = song.transposeList; 
+        // transposeDataIds.add(_transId);
+        final newTransData = {
+          'id': _transId,
+          'transposeKey': transposeKey,
+          'transposeNum': transpose,
+          'userName': userName,
+          'songId': song.songId
+        };
+
+        song.transposeList.add(_transId);
+        
+        _updatedSong = song.copyWith(
+          originalkey: originalKey,
+          // transposeList: transposeDataIds
+        );
+
+        await TransposeQuery().addTransposeKey(newTransData);
+      } else {
+        _updatedSong = song.copyWith(
+          originalkey: originalKey,
+        );
+      }
+ 
+      await DbSongsQuery().updateSong(_updatedSong);
 
       hideEditMode();
       setState(() {
-        song = updatedSong;
+        song = _updatedSong;
       });
       showSuccess(context, 'Succefully updated keys');
     }
@@ -117,6 +151,7 @@ class _SongPageState extends State<SongPage> {
                 cancel: () => hideEditMode(),
                 onChangeOriginalKey: onChangeOriginalKey,
                 onChangeTranspose: onChangeTranspose,
+                onChangeUserName: onChangeUserName,
                 originalKey: originalKey,
               ) : Container(),
           ],
@@ -135,12 +170,17 @@ class EditSong extends StatelessWidget {
     @required this.submit,
     @required this.onChangeOriginalKey,
     @required this.originalKey,
-    @required this.onChangeTranspose
+    @required this.onChangeTranspose,
+    @required this.onChangeUserName
   });
 
   final Song song;
   final String originalKey;
-  final Function cancel, submit, onChangeOriginalKey, onChangeTranspose;
+  final Function cancel, submit, onChangeOriginalKey, onChangeTranspose,
+        onChangeUserName;
+
+  final TransposeCalculation _transpose = TransposeCalculation();
+
 
   @override
   Widget build(BuildContext context) {
@@ -185,6 +225,7 @@ class EditSong extends StatelessWidget {
                 Container(
                   width: size.width * 0.3,
                   child: DropDownNotes(
+                    items: _transpose.listOfNotes,
                     dropdownValue: originalKey,
                     onValueChanged: onChangeOriginalKey,
                   )
@@ -192,6 +233,13 @@ class EditSong extends StatelessWidget {
               ]
             )
           ),
+
+          columnSpacing,
+          FlexText(
+            text: 'Add New Transpose Key',
+            style: style1,
+          ),
+
           columnSpacing,
           Container(
             margin: EdgeInsets.symmetric(horizontal: 15),
@@ -213,7 +261,7 @@ class EditSong extends StatelessWidget {
                     onChange: onChangeTranspose,
                     keyboardType: TextInputType.number,
                     radius: 0,
-                    hintText: song.transposedNumber.toString(),
+                    hintText: "0",
                     color: Colors.white,
                     border: BorderSide(width: 2, color: Colors.black),
                   ),
@@ -221,6 +269,37 @@ class EditSong extends StatelessWidget {
               ]
             ),
           ),
+
+          columnSpacing,
+          Container(
+            width: size.width * 0.3,
+            child: FutureBuilder(
+              future: DbUserQuery().getUserData(),
+              builder: (BuildContext contex, 
+                            AsyncSnapshot<List<UserData>> snapshot) {
+                Widget widget;
+
+                if (snapshot.hasData) {
+                  List<String> listOfUserNames = snapshot.data
+                                                .map((user) => user.name);
+                  widget = DropDownNotes(
+                    items: listOfUserNames,
+                    dropdownValue: listOfUserNames[0],
+                    onValueChanged: onChangeUserName,
+                  );
+                } else if (snapshot.hasError) {
+                  widget = Text('Unable to find Users');
+                } else {
+                  widget = Loader();
+                }
+
+                return widget;
+              }
+            ),
+            
+                
+          ),
+
           SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,

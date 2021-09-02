@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+
+import '../components/transposeCard.dart';
 import '../models/ModelProvider.dart';
 import '../components/flexText.dart';
 
@@ -12,14 +14,19 @@ class SharedSoundCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) { 
     SizedBox columnSpacing = SizedBox(height: 10,);
-    SizedBox rowSpacing = SizedBox(width: 15,);
-    YoutubePlayerController _controller = YoutubePlayerController(
+    double mLeft = 5, mRight = 20;
+    YoutubePlayerController _youtubeController = YoutubePlayerController(
       initialVideoId: song.videoId,
       flags: YoutubePlayerFlags(
         autoPlay: false,
         mute: false,
       ),
     );
+
+    PageController _pageController = PageController(
+      initialPage: 0, viewportFraction: 0.5, keepPage: true
+    );
+
     TextStyle style3 = TextStyle(
       fontSize: 25,
       fontWeight: FontWeight.bold
@@ -38,14 +45,14 @@ class SharedSoundCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           YoutubePlayer(
-            controller: _controller,
+            controller: _youtubeController,
             showVideoProgressIndicator: true,
           ),
           columnSpacing,
           Row(
             children: [
-              rowSpacing,
               FlexText(
+                margin: EdgeInsets.only(left: mLeft),
                 text: song.videoTitle,
                 style: style3,
               ),
@@ -53,7 +60,7 @@ class SharedSoundCard extends StatelessWidget {
           ),
           columnSpacing,
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 15),
+            margin: EdgeInsets.only(left: mLeft, right: mRight),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -68,45 +75,11 @@ class SharedSoundCard extends StatelessWidget {
               ]
             )
           ),
+
           columnSpacing,
 
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                FlexText(
-                  text: 'Transpose:',
-                  style: style1,
-                ),
-                FlexText(
-                  text: song.transposedNumber.toString(),
-                  style: style2,
-                ),
-              ]
-            ),
-          ),
-          columnSpacing,
-
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                FlexText(
-                  text: 'Transposed Key:',
-                  style: style1,
-                ),
-                FlexText(
-                  text: song.transposedKey,
-                  style: style2,
-                ),
-              ]
-            ),
-          ),
-          columnSpacing,
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 15),
+            margin: EdgeInsets.only(left: mLeft, right: mRight),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -128,6 +101,17 @@ class SharedSoundCard extends StatelessWidget {
               ]
             )
           ),
+
+
+          columnSpacing,
+          PageView(
+            controller: _pageController,
+            scrollDirection: Axis.horizontal,
+            children: song.transposeList.map((data) => TransposeCard(
+              data: data,
+            )).toList()
+          ),
+          
         ]
       )
     );

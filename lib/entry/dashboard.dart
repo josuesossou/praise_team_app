@@ -12,6 +12,27 @@ import '../components/button.dart';
 import '../screens/home.dart';
 import '../screens/addEvent.dart';
 
+
+class DashboardEntry extends StatelessWidget {
+  const DashboardEntry({ Key key }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(
+        brightness: Brightness.light,
+        primaryColor: Colors.white,
+        primaryColorLight: Color(0xfff0f0f0),
+        primaryColorDark: Color(0xffe0e0e0),
+        accentColor: Color(0xffaa5490)
+      ),
+      // 0xff01A0C7
+
+      home: DashboardScreen(),
+    );
+  }
+}
+
 class DashboardScreen extends StatefulWidget {
   DashboardScreen({String title});
 
@@ -55,9 +76,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
     Size mediaSize = MediaQuery.of(context).size;
     double size = 0.20 * mediaSize.width;
     double margin = 0.05 * mediaSize.height;
+    ThemeData _theme = Theme.of(context);
    
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColorLight,
+      backgroundColor: _theme.primaryColorLight,
       appBar: AppBar(
         leading: Logo(size: 14),
         elevation: 0,
@@ -92,12 +114,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 onPress: () => _toAddEventPage(),
                 size: size,
                 child: Icon(Icons.add),
-                color: Color(0xff01A0C7),
+                color: _theme.accentColor,
               )
             )
           ),
         ]
-      ),
+      )
     );
   }
 }

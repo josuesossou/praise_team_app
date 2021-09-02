@@ -25,7 +25,7 @@ class App extends StatelessWidget {
         if (settings.name == '/dashboard') {
           return PageRouteBuilder(
             pageBuilder: (_, __, ___) => 
-              DashboardScreen(),
+              DashboardEntry(),
             transitionsBuilder: (_, __, ___, child) => child,
           );
         }
