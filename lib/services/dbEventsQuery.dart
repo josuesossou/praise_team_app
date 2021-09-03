@@ -16,6 +16,8 @@ class DbEventsQuery {
 
   Future<bool> addEvent(Map<String, dynamic> event) async {
     DbSongsQuery songQuery = DbSongsQuery();
+    var _getUser = await _user.getUser();
+    var _getAttributes = await _user.getUserAttributes();
 
     Event newEvent = Event(
       id: _uuid.v1(),
@@ -25,8 +27,8 @@ class DbEventsQuery {
       dateStamp: event['date'],
       songIds: event['songIds'],
       bgCover: event['bgCover'],
-      createdBy: _user.getUser.userId,
-      creatorName: _user.getUserAttributes.name
+      createdBy: _getUser.userId,
+      creatorName: _getAttributes.name
     );
 
     try {

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:amplify_flutter/amplify.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:flutter/material.dart';
@@ -6,46 +8,30 @@ import 'package:lgcogpraiseteam/models/UserData.dart';
 // Assumes that the user is already signs in. Only user this class
 // in Widgets that has DashboardEntry in their parent tree
 class User {
-  AuthUser _user;
-  List<AuthUserAttribute> _userAttributes;
-
-
-  User() {
-    if (_user == null) {
-      _setUser();
+  Future<AuthUser> getUser() async {
+    try {
+      return await Amplify.Auth.getCurrentUser();
+    } catch (e) {
+      return null;
     }
   }
 
-  // Assumes that the user is already signed in
-  void _setUser() async {
-    _user = await Amplify.Auth.getCurrentUser();
-    _userAttributes = await Amplify.Auth.fetchUserAttributes();
-    print(_userAttributes);
-  }
-
-  AuthUser get getUser {
-    if (_user == null) {
-      _setUser();
-    }
-    return _user;
-  }
-
-  Attributes get getUserAttributes {
+  Future<Attributes> getUserAttributes() async {
     Map<String, dynamic> _attributes = {};
-    if (_userAttributes == null) {
-      _setUser();
-    } 
-    _userAttributes.forEach((attr) {
-      _attributes[attr.userAttributeKey] = attr.value;
-    });
+    try {
+      var _userAttributes = await Amplify.Auth.fetchUserAttributes();
+      _userAttributes.forEach((attr) {
+        _attributes[attr.userAttributeKey] = attr.value;
+      });
     
-    print(_attributes);
-    return Attributes.fromMap(_attributes);
+      return Attributes.fromMap(_attributes);
+    } catch (e) {
+      return null;
+    }
   }
 }
 
 class DbUserQuery {
-
   Future<List<UserData>> getUserData() async {
     try {
       List<UserData> _users = await Amplify.DataStore.query(
@@ -55,6 +41,30 @@ class DbUserQuery {
       return _users;
     } catch (e) {
       return [];
+    }
+  }
+
+  Future<bool> saveUserData() async {
+    try {
+      var _user = User();
+      var _getUser = await _user.getUser();
+      var _getAttributes = await _user.getUserAttributes();
+
+      UserData newUserData = UserData(
+        uid: _getUser.userId,
+        name: _getAttributes.name,
+        role: _getAttributes.role,
+      );
+
+      await Amplify.DataStore.save(newUserData);
+
+      print("@@@@@@@@@@ SAVE USERDATA @@@@@");
+      print(inspect(newUserData));
+      return true;
+    } catch (e) {
+      print("@@@@@@@@@@ SAVE USERDATA ERROR @@@@@");
+      print(inspect(e));
+      return true;
     }
   }
   /// TODO: check organization

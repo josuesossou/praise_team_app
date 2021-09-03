@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:amplify_flutter/amplify.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:lgcogpraiseteam/components/scaffoldMessages.dart';
-import 'package:lgcogpraiseteam/models/UserData.dart';
 import 'package:lgcogpraiseteam/services/userQuery.dart';
 
 class ConfirmScreen extends StatefulWidget {
@@ -42,16 +41,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
           username: data['username'], password: data['password']);
 
         if (user.isSignedIn) {
-          User _user = User();
-
-          UserData newUserData = UserData(
-            uid: _user.getUser.userId,
-            name: _user.getUserAttributes.name,
-            role: _user.getUserAttributes.role,
-          );
-
-          // await Amplify.DataStore.save(newUserData);
-
+          await DbUserQuery().saveUserData();
           Navigator.pushReplacementNamed(context, '/dashboard');
         }
       }

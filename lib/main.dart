@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 // entry screens
 import 'entry/entry.dart';
@@ -12,7 +13,11 @@ import 'utils/amplifyConfig.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await configureAmplify();
-  runApp(App());
+  runApp(
+    Phoenix(
+      child: App(),
+    ),
+  );
 }
 
 class App extends StatelessWidget {
@@ -34,19 +39,10 @@ class App extends StatelessWidget {
         if (settings.name == '/auth') {
           return PageRouteBuilder(
             pageBuilder: (_, __, ___) =>
-                Auth(),
+              Auth(),
             transitionsBuilder: (_, __, ___, child) => child,
           );
         }
-
-        // // login
-        // if (settings.name == '/login') {
-        //   return PageRouteBuilder(
-        //     pageBuilder: (_, __, ___) =>
-        //         ConfirmScreen(data: settings.arguments as LoginData),
-        //     transitionsBuilder: (_, __, ___, child) => child,
-        //   );
-        // }
 
         if (settings.name == '/confirm') {
           return PageRouteBuilder(
@@ -55,7 +51,6 @@ class App extends StatelessWidget {
             transitionsBuilder: (_, __, ___, child) => child,
           );
         }
-
 
         return MaterialPageRoute(builder: (_) => EntryScreen());
       },

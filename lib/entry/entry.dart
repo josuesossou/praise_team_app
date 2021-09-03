@@ -1,3 +1,4 @@
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:flutter/material.dart';
 import 'package:amplify_flutter/amplify.dart';
 // import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
@@ -17,7 +18,6 @@ class _EntryScreenState extends State<EntryScreen> {
   void _isUserExist() async {
     try {
       await Amplify.Auth.getCurrentUser();
-  
       Navigator.pushReplacementNamed(context, '/dashboard');
     } catch (e) {
       Navigator.pushReplacementNamed(context, '/auth');

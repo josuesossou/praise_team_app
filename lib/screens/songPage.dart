@@ -45,6 +45,7 @@ class _SongPageState extends State<SongPage> {
     setState(() {
       song = widget.song;
       originalKey = widget.song.originalkey;
+      userName = '';
       transpose = 0;
     });
     super.initState();
@@ -81,45 +82,53 @@ class _SongPageState extends State<SongPage> {
   }
 
   void updateSong() async {
+
     if (originalKey == 'Not Set') {
       showError(context, 'Change Key');
     } else {
       Song _updatedSong;
 
-      if (userName != null) {
-        final _transId = Uuid().v1();
-        String transposeKey = t.getTransposedKey(originalKey, transpose);
-        // List<String> transposeDataIds = song.transposeList; 
-        // transposeDataIds.add(_transId);
-        final newTransData = {
-          'id': _transId,
-          'transposeKey': transposeKey,
-          'transposeNum': transpose,
-          'userName': userName,
-          'songId': song.songId
-        };
+      try {
+        if (userName != '') {
+          final _transId = Uuid().v1();
+          String transposeKey = t.getTransposedKey(originalKey, transpose);
+          List<String> transposeDataIds = [_transId, ...song.transposeList];
+          // transposeDataIds.add(_transId);
 
-        song.transposeList.add(_transId);
+          final newTransData = {
+            'id': _transId,
+            'transposeKey': transposeKey,
+            'transposeNum': transpose,
+            'userName': userName,
+            'songId': song.songId
+          };
 
-        _updatedSong = song.copyWith(
-          originalkey: originalKey,
-          // transposeList: transposeDataIds
-        );
+          // song.transposeList.add(_transId);
 
-        await TransposeQuery().addTransposeKey(newTransData);
-      } else {
-        _updatedSong = song.copyWith(
-          originalkey: originalKey,
-        );
+          _updatedSong = song.copyWith(
+            originalkey: originalKey,
+            transposeList: transposeDataIds
+          );
+
+          await TransposeQuery().addTransposeKey(newTransData);
+        } else {
+          _updatedSong = song.copyWith(
+            originalkey: originalKey,
+          );
+        }
+  
+        await DbSongsQuery().updateSong(_updatedSong);
+
+        hideEditMode();
+        setState(() {
+          song = _updatedSong;
+        });
+        showSuccess(context, 'Succefully updated keys');
+
+      } catch (e) {
+        print("@@@@@@@@@@@ERROR");
+        print(e);
       }
- 
-      await DbSongsQuery().updateSong(_updatedSong);
-
-      hideEditMode();
-      setState(() {
-        song = _updatedSong;
-      });
-      showSuccess(context, 'Succefully updated keys');
     }
   }
 
@@ -153,6 +162,7 @@ class _SongPageState extends State<SongPage> {
                 onChangeTranspose: onChangeTranspose,
                 onChangeUserName: onChangeUserName,
                 originalKey: originalKey,
+                userName: userName
               ) : Container(),
           ],
         ),
@@ -162,7 +172,6 @@ class _SongPageState extends State<SongPage> {
 }
 
 
-
 class EditSong extends StatelessWidget {
   EditSong({ 
     @required this.song, 
@@ -170,12 +179,13 @@ class EditSong extends StatelessWidget {
     @required this.submit,
     @required this.onChangeOriginalKey,
     @required this.originalKey,
+    @required this.userName,
     @required this.onChangeTranspose,
     @required this.onChangeUserName
   });
 
   final Song song;
-  final String originalKey;
+  final String originalKey, userName;
   final Function cancel, submit, onChangeOriginalKey, onChangeTranspose,
         onChangeUserName;
 
@@ -197,7 +207,7 @@ class EditSong extends StatelessWidget {
     ThemeData theme = Theme.of(context);
 
     return Container(
-      height: size.height * 0.4,
+      height: size.height * 0.46,
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [
@@ -238,7 +248,7 @@ class EditSong extends StatelessWidget {
           columnSpacing,
           columnSpacing,
           FlexText(
-            text: """Add New Transpose Key""",
+            text: 'Add New Transpose Key',
             style: style1,
           ),
 
@@ -286,11 +296,14 @@ class EditSong extends StatelessWidget {
                   List<String> listOfUserNames = snapshot.data
                                                 .map((user) => user.name)
                                                 .toList();
+
                   widget = listOfUserNames.isEmpty ?
                   Text('No User In App') :
                   DropDownNotes(
                     items: listOfUserNames,
-                    dropdownValue: listOfUserNames[0],
+                    dropdownValue: userName == '' ?
+                                    listOfUserNames[0]
+                                    : userName,
                     onValueChanged: onChangeUserName,
                   );
                 } else if (snapshot.hasError) {
@@ -302,8 +315,6 @@ class EditSong extends StatelessWidget {
                 return widget;
               }
             ),
-            
-                
           ),
 
           SizedBox(height: 20),

@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-// import 'package:lgcogpraiseteam/models/AuthModel.dart';
+
+import 'entry.dart';
+
 import '../screens/profile.dart';
 import '../screens/search.dart';
 import '../screens/transposePage.dart';
-// import '../utils/auth_status.dart';
-// import '../utils/calculateTranspose.dart';
-// import 'package:provider/provider.dart';
+
 import '../components/logo.dart';
 import '../components/bottomNavigationBar.dart';
 import '../components/button.dart';
 import '../screens/home.dart';
 import '../screens/addEvent.dart';
+
 
 
 class DashboardEntry extends StatelessWidget {
@@ -27,8 +28,19 @@ class DashboardEntry extends StatelessWidget {
         accentColor: Color(0xffaa5490)
       ),
       // 0xff01A0C7
-
-      home: DashboardScreen(),
+      onGenerateRoute: (settings) {
+        // entry screen
+        if (settings.name == '/entry') {
+          return PageRouteBuilder(
+            pageBuilder: (_, __, ___) => EntryScreen(
+              key: UniqueKey(),
+            ),
+            transitionsBuilder: (_, __, ___, child) => child,
+          );
+        }
+        
+        return MaterialPageRoute(builder: (_) => DashboardScreen());
+      },
     );
   }
 }

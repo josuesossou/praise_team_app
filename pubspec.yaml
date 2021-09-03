@@ -34,6 +34,7 @@ dependencies:
   amplify_analytics_pinpoint: ^0.2.0
   uuid: ^3.0.4
   flutter_login: ^2.2.1
+  flutter_phoenix: "^1.0.0"
 
 
   # The following adds the Cupertino Icons font to your application.
