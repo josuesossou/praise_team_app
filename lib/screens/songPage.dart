@@ -238,10 +238,10 @@ class EditSong extends StatelessWidget {
           columnSpacing,
           columnSpacing,
           FlexText(
-            text: 'Add New Transpose Key',
+            text: """Add New Transpose Key""",
             style: style1,
           ),
-          
+
           columnSpacing,
           columnSpacing,
           Container(

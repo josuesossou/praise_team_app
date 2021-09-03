@@ -34,12 +34,12 @@ class User {
     Map<String, dynamic> _attributes = {};
     if (_userAttributes == null) {
       _setUser();
-    } else {
-        _userAttributes.forEach((attr) {
+    } 
+    _userAttributes.forEach((attr) {
       _attributes[attr.userAttributeKey] = attr.value;
     });
-    }
-
+    
+    print(_attributes);
     return Attributes.fromMap(_attributes);
   }
 }

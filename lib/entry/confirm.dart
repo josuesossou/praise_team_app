@@ -39,7 +39,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
       if (res.isSignUpComplete) {
         // Login user
         final user = await Amplify.Auth.signIn(
-            username: data['username'], password: data['password']);
+          username: data['username'], password: data['password']);
 
         if (user.isSignedIn) {
           User _user = User();
@@ -50,8 +50,8 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
             role: _user.getUserAttributes.role,
           );
 
-          await Amplify.DataStore.save(newUserData);
-          
+          // await Amplify.DataStore.save(newUserData);
+
           Navigator.pushReplacementNamed(context, '/dashboard');
         }
       }
@@ -155,28 +155,3 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
 
 
 
-
-
-// class Testing extends StatelessWidget {
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: Colors.amber, 
-//       body: Column(
-//         children: [
-//           Text('this is dashboard'),
-//           MaterialButton(
-//             onPressed: () {
-//               Amplify.Auth.signOut();
-//             },
-//             child: Text(
-//               'Sign out',
-//               style: TextStyle(color: Colors.grey),
-//             ),
-//           )
-//         ],
-//       ),
-//     );
-//   }
-// }
