@@ -17,7 +17,7 @@ class AddEvent extends StatefulWidget {
 }
 
 class _AddEventState extends State<AddEvent> {
-  DateTime selectedDate = DateTime.now();
+  DateTime selectedDate;
   List<Song> _songs = [];
   String searchText = ''; 
   String nameText = '';
@@ -27,15 +27,19 @@ class _AddEventState extends State<AddEvent> {
   _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
-      initialDate: selectedDate,
+      initialDate: DateTime.now(),
       firstDate: DateTime(2000),
       lastDate: DateTime(2045),
       initialEntryMode: DatePickerEntryMode.calendar,
     );
 
+    print("@@@@@@@@ data !!@@@@@!@");
+    print(selectedDate);
+    print(picked.add(const Duration(hours: 20)));
+
     if (picked != null && picked != selectedDate)
       setState(() {
-        selectedDate = picked;
+        selectedDate = picked.add(const Duration(hours: 20));
       });
   }
 
@@ -79,8 +83,12 @@ class _AddEventState extends State<AddEvent> {
 
   _addEvent(context) {
     List<String> songIdList = _songs.map((song) => song.songId).toList();
-    
-    if (songIdList.isNotEmpty) {
+
+    if (songIdList.isEmpty) {
+      showError(context, 'Need to add at least one song');
+    } else if (selectedDate == null) {
+      showError(context, 'Need to set Event Date');
+    } else {
       var event = {
         'name': nameText,
         'songIds': songIdList,
@@ -99,8 +107,6 @@ class _AddEventState extends State<AddEvent> {
           }   
         }
       );
-    } else {
-      showError(context, 'Need to add at least one song');
     }
   }
 
@@ -224,9 +230,13 @@ class AddEventComponent extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children:[
-                  Text('Event Date:', style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal),),
+                  Text('Event Date:', 
+                    style: TextStyle(fontSize: 18, 
+                    fontWeight: FontWeight.normal),
+                  ),
                   _sizedBox,
                   Text(
+                    selectedDate == null ? '' :
                     DateFormat.yMMMd().format(selectedDate).toString(),
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
@@ -247,7 +257,7 @@ class AddEventComponent extends StatelessWidget {
           ] + songs.map((song) => (
             Container(
               color: theme.primaryColor,
-              height: 215,
+              height: 180,
               margin: EdgeInsets.only(bottom: 10),
               child: SongCard(
                 song: song,
@@ -293,7 +303,7 @@ class SearchedSongLists extends StatelessWidget {
           )
         ]
       ),
-      height: 225,
+      height: 190,
       child: FutureBuilder(
         future: searchedSongs(),
         builder: (BuildContext context, AsyncSnapshot<List<Song>> snapshot) {

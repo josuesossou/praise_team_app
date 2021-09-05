@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lgcogpraiseteam/components/flexText.dart';
+// import 'package:lgcogpraiseteam/components/flexText.dart';
 import 'package:lgcogpraiseteam/components/loader.dart';
 import 'package:lgcogpraiseteam/models/ModelProvider.dart';
 import 'package:lgcogpraiseteam/services/dbSongsQuery.dart';
@@ -30,19 +30,19 @@ class TransposeCard extends StatelessWidget {
 
               child: Column(
                 children: [
-                  FlexText(
-                    margin: EdgeInsets.only(bottom: 15),
-                    text: data.userName + ' Key',
+                  Text(
+                    // margin: EdgeInsets.only(bottom: 15),
+                    data.userName + ' Key',
                     style: TextStyle(
                       fontSize: 18, 
                       fontWeight: FontWeight.bold
                     ),
                   ),
-                  FlexText(
-                    text: 'Transposed Key' + data.transposeKey,
+                  Text(
+                    'Transposed Key' + data.transposeKey,
                   ),
-                  FlexText(
-                    text: 'Transpose ' + data.userName,
+                  Text(
+                    'Transpose ' + data.transposeNum.toString(),
                   ),
                 ],
               ),

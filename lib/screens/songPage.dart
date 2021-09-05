@@ -452,15 +452,16 @@ class ScrolledContent extends StatelessWidget {
             columnSpacing,
             columnSpacing,
             columnSpacing,
-            Row(
-              children: [
-                FlexText(
-                  margin: unifyMargin,
-                  text: 'Music Sheets',
-                  style: style1,
-                ),
-              ]
-            ),
+            // later
+            // Row(
+            //   children: [
+            //     FlexText(
+            //       margin: unifyMargin,
+            //       text: 'Music Sheets',
+            //       style: style1,
+            //     ),
+            //   ]
+            // ),
             columnSpacing,
             // Column(
             //   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -471,21 +472,22 @@ class ScrolledContent extends StatelessWidget {
             // ),
             columnSpacing,
             columnSpacing,
-            RectButton(
-              margin: unifyMargin,
-              color: Theme.of(context).accentColor,
-              elevation: 3,
-              onPress: () => showBottomSheet(context), 
-              child: Row(
-                children: [
-                  FlexText(
-                    alignment: Alignment.center,
-                    text: 'Add File',
-                    style: TextStyle(fontSize: 20),
-                  )
-                ],
-              )
-            ),
+            // later
+            // RectButton(
+            //   margin: unifyMargin,
+            //   color: Theme.of(context).accentColor,
+            //   elevation: 3,
+            //   onPress: () => showBottomSheet(context), 
+            //   child: Row(
+            //     children: [
+            //       FlexText(
+            //         alignment: Alignment.center,
+            //         text: 'Add File',
+            //         style: TextStyle(fontSize: 20),
+            //       )
+            //     ],
+            //   )
+            // ),
             columnSpacing,
             columnSpacing,
           ],

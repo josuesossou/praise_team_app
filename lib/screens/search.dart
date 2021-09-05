@@ -86,7 +86,7 @@ class _SearchState extends State<Search> {
             Expanded(
               child: SearchSongs(
                 search: searchText, 
-                toSearchYoutube: () => toSearchYoutubePage(searchText),
+                toSearchYoutube: () => toSearchYoutubePage('Amazing Grace'),
                 songs: songs,
               )
             ),
@@ -146,7 +146,7 @@ class SearchSongs extends StatelessWidget {
         scrollDirection: Axis.vertical,
         children: songs.map((song) {
           return Container(
-            height: 215,
+            height: 180,
             child: RectButton(
               padding: EdgeInsets.zero,
               margin: EdgeInsets.only(bottom: 10),

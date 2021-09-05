@@ -2,7 +2,6 @@ import 'package:amplify_flutter/amplify.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:lgcogpraiseteam/components/button.dart';
-import 'package:lgcogpraiseteam/services/userQuery.dart';
 import '../components/arrowBack.dart';
 
 class Profile extends StatefulWidget {

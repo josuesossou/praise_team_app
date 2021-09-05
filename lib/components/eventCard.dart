@@ -33,7 +33,7 @@ class EventCard extends StatelessWidget {
       color: Colors.white
     );
     TextStyle style3 = TextStyle(
-      fontWeight: FontWeight.bold,
+      // fontWeight: FontWeight.bold,
       fontSize: 18,
       color: Colors.white
     );
@@ -94,7 +94,7 @@ class EventCard extends StatelessWidget {
                 ) : Container(), // name of the event
                 isLargeCard ? FlexText(
                   // alignment: Alignment.center,
-                  text: 'Posted By: ' + event.creatorName, 
+                  text: 'By ' + event.creatorName, 
                   style: style3,
                 ) : Container(),
                 // date of event

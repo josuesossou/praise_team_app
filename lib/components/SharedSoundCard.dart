@@ -7,14 +7,17 @@ import '../models/ModelProvider.dart';
 import '../components/flexText.dart';
 
 class SharedSoundCard extends StatelessWidget {
-  SharedSoundCard({ @required this.song });
+  SharedSoundCard({ @required this.song, this.isEventPage = false });
 
   final Song song;
+  final bool isEventPage;
 
   @override
   Widget build(BuildContext context) { 
     SizedBox columnSpacing = SizedBox(height: 10,);
     double mLeft = 5, mRight = 20;
+    int titleLength = song.videoTitle.length;
+    String missing = titleLength < 40 ? '' : '...';
     YoutubePlayerController _youtubeController = YoutubePlayerController(
       initialVideoId: song.videoId,
       flags: YoutubePlayerFlags(
@@ -53,7 +56,12 @@ class SharedSoundCard extends StatelessWidget {
             children: [
               FlexText(
                 margin: EdgeInsets.only(left: mLeft),
-                text: song.videoTitle,
+                text: isEventPage ?
+                  song.videoTitle.substring(
+                    0,
+                    titleLength < 40 ? titleLength : 40
+                  ) + missing
+                  : song.videoTitle,
                 style: style3,
               ),
             ]
@@ -103,16 +111,19 @@ class SharedSoundCard extends StatelessWidget {
           ),
 
           columnSpacing,
-          Container(
-            height: 100,
-            child: PageView(
-              controller: _pageController,
-              scrollDirection: Axis.horizontal,
-              children: song.transposeList.map((tKeys) => TransposeCard(
-                transDataKey: tKeys,
-              )).toList()
-            ),
-          )
+
+          isEventPage ?
+            Container()
+            : Container(
+              height: 100,
+              child: PageView(
+                controller: _pageController,
+                scrollDirection: Axis.horizontal,
+                children: song.transposeList.map((tKeys) => TransposeCard(
+                  transDataKey: tKeys,
+                )).toList()
+              ),
+            )
         ]
       )
     );
