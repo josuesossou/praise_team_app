@@ -17,7 +17,7 @@ class SharedSoundCard extends StatelessWidget {
     SizedBox columnSpacing = SizedBox(height: 10,);
     double mLeft = 5, mRight = 20;
     int titleLength = song.videoTitle.length;
-    String missing = titleLength < 40 ? '' : '...';
+    String missing = titleLength < 20 ? '' : '...';
     YoutubePlayerController _youtubeController = YoutubePlayerController(
       initialVideoId: song.videoId,
       flags: YoutubePlayerFlags(
@@ -31,15 +31,15 @@ class SharedSoundCard extends StatelessWidget {
     );
 
     TextStyle style3 = TextStyle(
-      fontSize: 25,
+      fontSize: 20,
       fontWeight: FontWeight.bold
     );
     TextStyle style1 = TextStyle(
-      fontSize: 20,
+      fontSize: 18,
       fontWeight: FontWeight.bold
     ); 
     TextStyle style2 = TextStyle(
-      fontSize: 20,
+      fontSize: 18,
     ); 
 
     return Container(
@@ -59,7 +59,7 @@ class SharedSoundCard extends StatelessWidget {
                 text: isEventPage ?
                   song.videoTitle.substring(
                     0,
-                    titleLength < 40 ? titleLength : 40
+                    titleLength < 20 ? titleLength : 20
                   ) + missing
                   : song.videoTitle,
                 style: style3,

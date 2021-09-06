@@ -34,17 +34,15 @@ type Song @model @auth(rules: [{allow: public}]) {
 }
 
 type Organization @model @auth(rules: [{allow: public}]) {
-    organizationIds: [String]
-}
-
-type UserSetting @model @auth(rules: [{allow: public}]) {
-    color: String
+    organizationId: String
 }
 
 type UserData @model @auth(rules: [{allow: public}]) {
-    uid: ID,
+    uid: ID!,
     name: String,
     role: String,
+    organizationId: String!,
+    color: String
 }
 
 type FileURL @model @auth(rules: [{allow: public}]) {

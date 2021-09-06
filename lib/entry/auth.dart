@@ -3,6 +3,7 @@ import 'package:amplify_flutter/amplify.dart';
 import 'package:flutter/material.dart';
 import 'package:lgcogpraiseteam/components/scaffoldMessages.dart';
 import 'package:flutter_login/flutter_login.dart';
+import 'package:lgcogpraiseteam/services/userQuery.dart';
 
 // import 'dashboard.dart';
 
@@ -13,104 +14,104 @@ class Auth extends StatefulWidget {
 }
 
 class _AuthState extends State<Auth> {
-    bool _isSignupAction = false;
-    LoginData _data; 
+  bool _isSignupAction = false;
+  LoginData _data; 
 
-    final SizedBox sizedBox = SizedBox(
-        height: 30,
-    );
-    Map<String, String> loginInfo = {
-        'orgEmail': '',
-        'orgPassword': '',
-        'personalEmail': ''
-    };
-    // AuthModel auth = AuthModel();
+  final SizedBox sizedBox = SizedBox(
+    height: 30,
+  );
+  Map<String, String> loginInfo = {
+    'orgEmail': '',
+    'orgPassword': '',
+    'personalEmail': ''
+  };
+  // AuthModel auth = AuthModel();
 
-    @override
-    void initState() {
-      super.initState();
-    }
+  @override
+  void initState() {
+    super.initState();
+  }
 
-    updateLoginInfo(type, changedText) {
-      loginInfo[type] = changedText;
-    }
+  updateLoginInfo(type, changedText) {
+    loginInfo[type] = changedText;
+  }
 
-    Future<String> _doSignup(LoginData data) async {
-      _isSignupAction = true;
-      _data = data;
- 
-      return null;
-    }
+  Future<String> _doSignup(LoginData data) async {
+    _isSignupAction = true;
+    _data = data;
 
-    Future<String> _onLogin(LoginData data) async {
-      try {
-        final res = await Amplify.Auth.signIn(
-          username: data.name,
-          password: data.password,
-        );
+    return null;
+  }
 
-        if (res.isSignedIn) {
-          Navigator.pushReplacementNamed(context, '/dashboard');
-          return null;
-        }
-
-        return 'Something went wrong, Try again';
-      } on AuthException catch (e) {
-        if (e.message.contains('already a user which is signed in')) {
-          await Amplify.Auth.signOut();
-          return 'Problem logging in. Please try again.';
-        }
-
-        if (e.message.contains('User not found in the system')) {
-          showError(context, 'Email may not be verified, please confirm.');
-          Navigator.pushReplacementNamed(
-            context, 
-            '/confirm', 
-            arguments: {
-              'username': data.name.split('@')[0]
-                                    .toLowerCase(), 
-              'email': data.name,
-              'password': data.password 
-            }
-          );
-        }
-
-        return '${e.message} - ${e.recoverySuggestion}';
-      }
-    }
-
-    Future<String> _recoverPassword(String name) {
-      return Future.delayed(Duration(microseconds: 100))
-              .then((value) => 'recover working');
-    }
-
-    @override
-    Widget build(BuildContext context) {
-      return FlutterLogin(
-        title: 'P&W TEAM',
-        // logo: 'assets/images/ecorp-lightblue.png',
-        onLogin: _onLogin,
-        onSignup: _doSignup,
-        onSubmitAnimationCompleted: () {
-          Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (context) => _isSignupAction ?
-                    AdditionalInfo(loginData: _data,)
-                    : Container(),
-          ));
-        },
-        onRecoverPassword: _recoverPassword,
-        theme: LoginTheme(
-          primaryColor: Colors.teal,
-          accentColor: Colors.yellow,
-          errorColor: Colors.deepOrange,
-          titleStyle: TextStyle(
-            color: Colors.greenAccent,
-            fontFamily: 'Quicksand',
-            letterSpacing: 4,
-          ),
-        ),
+  Future<String> _onLogin(LoginData data) async {
+    try {
+      final res = await Amplify.Auth.signIn(
+        username: data.name,
+        password: data.password,
       );
+
+      if (res.isSignedIn) {
+        Navigator.pushReplacementNamed(context, '/dashboard');
+        return null;
+      }
+
+      return 'Something went wrong, Try again';
+    } on AuthException catch (e) {
+      if (e.message.contains('already a user which is signed in')) {
+        await Amplify.Auth.signOut();
+        return 'Problem logging in. Please try again.';
+      }
+
+      if (e.message.contains('User not found in the system')) {
+        showError(context, 'Email may not be verified, please confirm.');
+        Navigator.pushReplacementNamed(
+          context, 
+          '/confirm', 
+          arguments: {
+            'username': data.name.split('@')[0]
+                                  .toLowerCase(), 
+            'email': data.name,
+            'password': data.password 
+          }
+        );
+      }
+
+      return '${e.message} - ${e.recoverySuggestion}';
     }
+  }
+
+  Future<String> _recoverPassword(String name) {
+    return Future.delayed(Duration(microseconds: 100))
+            .then((value) => 'recover working');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FlutterLogin(
+      title: 'P&W TEAM',
+      // logo: 'assets/images/ecorp-lightblue.png',
+      onLogin: _onLogin,
+      onSignup: _doSignup,
+      onSubmitAnimationCompleted: () {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => _isSignupAction ?
+                  AdditionalInfo(loginData: _data,)
+                  : Container(),
+        ));
+      },
+      onRecoverPassword: _recoverPassword,
+      theme: LoginTheme(
+        primaryColor: Color(0xFF4DB6AC),
+        accentColor: Colors.white,
+        errorColor: Colors.deepOrange,
+        titleStyle: TextStyle(
+          color: Color(0xFFB9F6CA),
+          fontFamily: 'Quicksand',
+          letterSpacing: 4,
+        ),
+      ),
+    );
+  }
 }
 
 
@@ -128,8 +129,21 @@ class AdditionalInfo extends StatelessWidget {
   );
 
   void _onSignup(context) async {
-    String username = loginData.name.split('@')[0]
-                                    .toLowerCase();
+    String username = loginData.name.split('@')[0].toLowerCase();
+    bool isOrgExist = await DbUserQuery().checkOrganization(
+      _orgIdController.text
+    );
+
+    if (_nameController.text.isEmpty) {
+      showError(context, 'A name is required');
+      return;
+    }
+
+    if (!isOrgExist) {
+      showError(context, 'Organization Id does not exist');
+      return;
+    }
+
     try {
 
       await Amplify.Auth.signUp(
@@ -160,17 +174,26 @@ class AdditionalInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ThemeData _theme = Theme.of(context);
-
     return Scaffold(
-      backgroundColor: _theme.primaryColor,
-      body: Center(
-        child: SafeArea(
-          minimum: const EdgeInsets.symmetric(horizontal: 20),
+      backgroundColor: Color(0xFF4DB6AC),
+      body:  SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minHeight: 0.70 * MediaQuery.of(context).size.height,
+          ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Additional Info'),
+              Text(
+                'Additional Info',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Quicksand'
+                ),
+              ),
               Card(
                 elevation: 12,
                 shape: RoundedRectangleBorder(
@@ -185,10 +208,21 @@ class AdditionalInfo extends StatelessWidget {
                       TextField(
                         controller: _nameController,
                         decoration: InputDecoration(
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(40)),
+                            borderSide: const BorderSide(
+                              width: 2,
+                              color: Color(0xFF4DB6AC)
+                            )
+                          ),
+                          focusColor: Color(0xFF4DB6AC),
+
                           filled: true,
                           contentPadding:
                               const EdgeInsets.symmetric(vertical: 4.0),
-                          prefixIcon: Icon(Icons.account_circle_rounded),
+                          prefixIcon: Icon(
+                            Icons.account_circle_rounded,
+                          ),
                           labelText: 'First and Last Name',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(40)),
@@ -199,6 +233,14 @@ class AdditionalInfo extends StatelessWidget {
                       TextField(
                         controller: _roleController,
                         decoration: InputDecoration(
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(40)),
+                            borderSide: const BorderSide(
+                              width: 2,
+                              
+                              color: Color(0xFF4DB6AC)
+                            )
+                          ),
                           filled: true,
                           contentPadding:
                               const EdgeInsets.symmetric(vertical: 4.0),
@@ -213,6 +255,14 @@ class AdditionalInfo extends StatelessWidget {
                       TextField(
                         controller: _orgIdController,
                         decoration: InputDecoration(
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(40)),
+                            borderSide: const BorderSide(
+                              width: 2,
+                              
+                              color: Color(0xFF4DB6AC)
+                            )
+                          ),
                           filled: true,
                           contentPadding:
                               const EdgeInsets.symmetric(vertical: 4.0),
@@ -229,8 +279,8 @@ class AdditionalInfo extends StatelessWidget {
                           _onSignup(context);
                         },
                         elevation: 4,
-                        color: Theme.of(context).primaryColor,
-                        disabledColor: Colors.deepPurple.shade200,
+                        color: Color(0xFF4DB6AC),
+                        disabledColor: Colors.teal.shade200,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(20)),
                         ),

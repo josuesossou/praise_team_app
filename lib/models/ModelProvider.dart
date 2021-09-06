@@ -22,7 +22,6 @@ import 'Organization.dart';
 import 'Song.dart';
 import 'TransposeData.dart';
 import 'UserData.dart';
-import 'UserSetting.dart';
 
 export 'Event.dart';
 export 'FileURL.dart';
@@ -30,11 +29,10 @@ export 'Organization.dart';
 export 'Song.dart';
 export 'TransposeData.dart';
 export 'UserData.dart';
-export 'UserSetting.dart';
 
 class ModelProvider implements ModelProviderInterface {
   @override
-  String version = "08529efc29a420b462ab92d646633857";
+  String version = "23177611129db5db3d953ad0d1f172d3";
   @override
   List<ModelSchema> modelSchemas = [
     Event.schema,
@@ -42,8 +40,7 @@ class ModelProvider implements ModelProviderInterface {
     Organization.schema,
     Song.schema,
     TransposeData.schema,
-    UserData.schema,
-    UserSetting.schema
+    UserData.schema
   ];
   static final ModelProvider _instance = ModelProvider();
 
@@ -79,11 +76,6 @@ class ModelProvider implements ModelProviderInterface {
       case "UserData":
         {
           return UserData.classType;
-        }
-        break;
-      case "UserSetting":
-        {
-          return UserSetting.classType;
         }
         break;
       default:

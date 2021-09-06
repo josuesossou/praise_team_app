@@ -16,7 +16,6 @@
 // ignore_for_file: public_member_api_docs
 
 import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 
 /** This is an auto generated class representing the Organization type in your schema. */
@@ -24,7 +23,7 @@ import 'package:flutter/foundation.dart';
 class Organization extends Model {
   static const classType = const _OrganizationModelType();
   final String id;
-  final List<String> organizationIds;
+  final String organizationId;
 
   @override
   getInstanceType() => classType;
@@ -34,14 +33,11 @@ class Organization extends Model {
     return id;
   }
 
-  const Organization._internal({@required this.id, this.organizationIds});
+  const Organization._internal({@required this.id, this.organizationId});
 
-  factory Organization({String id, List<String> organizationIds}) {
+  factory Organization({String id, String organizationId}) {
     return Organization._internal(
-        id: id == null ? UUID.getUUID() : id,
-        organizationIds: organizationIds != null
-            ? List<String>.unmodifiable(organizationIds)
-            : organizationIds);
+        id: id == null ? UUID.getUUID() : id, organizationId: organizationId);
   }
 
   bool equals(Object other) {
@@ -53,7 +49,7 @@ class Organization extends Model {
     if (identical(other, this)) return true;
     return other is Organization &&
         id == other.id &&
-        DeepCollectionEquality().equals(organizationIds, other.organizationIds);
+        organizationId == other.organizationId;
   }
 
   @override
@@ -65,29 +61,27 @@ class Organization extends Model {
 
     buffer.write("Organization {");
     buffer.write("id=" + "$id" + ", ");
-    buffer.write("organizationIds=" +
-        (organizationIds != null ? organizationIds.toString() : "null"));
+    buffer.write("organizationId=" + "$organizationId");
     buffer.write("}");
 
     return buffer.toString();
   }
 
-  Organization copyWith({String id, List<String> organizationIds}) {
+  Organization copyWith({String id, String organizationId}) {
     return Organization(
         id: id ?? this.id,
-        organizationIds: organizationIds ?? this.organizationIds);
+        organizationId: organizationId ?? this.organizationId);
   }
 
   Organization.fromJson(Map<String, dynamic> json)
       : id = json['id'],
-        organizationIds = json['organizationIds']?.cast<String>();
+        organizationId = json['organizationId'];
 
-  Map<String, dynamic> toJson() =>
-      {'id': id, 'organizationIds': organizationIds};
+  Map<String, dynamic> toJson() => {'id': id, 'organizationId': organizationId};
 
   static final QueryField ID = QueryField(fieldName: "organization.id");
-  static final QueryField ORGANIZATIONIDS =
-      QueryField(fieldName: "organizationIds");
+  static final QueryField ORGANIZATIONID =
+      QueryField(fieldName: "organizationId");
   static var schema =
       Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Organization";
@@ -105,11 +99,9 @@ class Organization extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Organization.ORGANIZATIONIDS,
+        key: Organization.ORGANIZATIONID,
         isRequired: false,
-        isArray: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.collection,
-            ofModelName: describeEnum(ModelFieldTypeEnum.string))));
+        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
   });
 }
 

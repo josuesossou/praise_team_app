@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:lgcogpraiseteam/models/UserData.dart';
+import 'package:lgcogpraiseteam/services/userQuery.dart';
 
 import 'entry.dart';
 
@@ -13,9 +15,33 @@ import '../screens/home.dart';
 import '../screens/addEvent.dart';
 
 
+class DashboardEntry extends StatefulWidget {
+  DashboardEntry({ Key key }) : super(key: key);
 
-class DashboardEntry extends StatelessWidget {
-  const DashboardEntry({ Key key }) : super(key: key);
+  @override
+  _DashboardEntryState createState() => _DashboardEntryState();
+}
+
+class _DashboardEntryState extends State<DashboardEntry> {
+  String _color = '0xFF4DB6AC';
+
+  void _getUserData() async {
+    try {
+      UserData _user = await DbUserQuery().getMyUserData();
+      if (_user != null) {
+        setState(() {
+          _color = _user.color;
+        });
+      }
+    } catch (e) {
+    }
+  }
+
+  @override
+  void initState() {
+    _getUserData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +51,8 @@ class DashboardEntry extends StatelessWidget {
         primaryColor: Colors.white,
         primaryColorLight: Color(0xfff0f0f0),
         primaryColorDark: Color(0xffe0e0e0),
-        accentColor: Color(0xffaa5490)
+        accentColor: Color(int.parse(_color)),
+        fontFamily: 'Quicksand'
       ),
       // 0xff01A0C7
       onGenerateRoute: (settings) {

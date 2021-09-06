@@ -92,13 +92,13 @@ class _EventPageState extends State<EventPage> {
       padding: EdgeInsets.symmetric(horizontal: 1, vertical: 10),
       child: ConstrainedBox(
         constraints: BoxConstraints(
-          maxHeight: 0.85 * _size.height,
+          minHeight: 0.90 * _size.height,
         ),
       // Container(
       //   padding: EdgeInsets.symmetric(vertical: 20),
         child: Column(
           // mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
           // crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
@@ -126,10 +126,9 @@ class _EventPageState extends State<EventPage> {
               )
             ),
 
-            Expanded(
-              flex: 10,
-              child: 
-            PageView(
+            Container(
+              height: _size.height *0.60,
+              child:  PageView(
                 controller: _controller,
                 scrollDirection: Axis.horizontal,
                 children: widget.event.songIds.map((songId) => (
@@ -152,6 +151,7 @@ class _EventPageState extends State<EventPage> {
                               SharedSoundCard(song: song, isEventPage: true,),
                               SizedBox(height: 20),
                               RectButton(
+                                margin: EdgeInsets.zero,
                                 onPress: () {
                                   Navigator.push(
                                     context, 

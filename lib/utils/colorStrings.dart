@@ -1,0 +1,12 @@
+
+List<int> colorStrings = [
+  0xff01A0C7,
+  0xff03A9F4,
+  0xffFFC107,
+  0xffFFECB3,
+  0xffCDDC39,
+  0xffFFEB3B,
+  0xff8BC34A,
+  0xffCDDC39,
+  0xFF4DB6AC, // original
+];

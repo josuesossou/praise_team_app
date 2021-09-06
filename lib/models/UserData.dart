@@ -26,6 +26,8 @@ class UserData extends Model {
   final String uid;
   final String name;
   final String role;
+  final String organizationId;
+  final String color;
 
   @override
   getInstanceType() => classType;
@@ -35,11 +37,28 @@ class UserData extends Model {
     return id;
   }
 
-  const UserData._internal({@required this.id, this.uid, this.name, this.role});
+  const UserData._internal(
+      {@required this.id,
+      @required this.uid,
+      this.name,
+      this.role,
+      @required this.organizationId,
+      this.color});
 
-  factory UserData({String id, String uid, String name, String role}) {
+  factory UserData(
+      {String id,
+      @required String uid,
+      String name,
+      String role,
+      @required String organizationId,
+      String color}) {
     return UserData._internal(
-        id: id == null ? UUID.getUUID() : id, uid: uid, name: name, role: role);
+        id: id == null ? UUID.getUUID() : id,
+        uid: uid,
+        name: name,
+        role: role,
+        organizationId: organizationId,
+        color: color);
   }
 
   bool equals(Object other) {
@@ -53,7 +72,9 @@ class UserData extends Model {
         id == other.id &&
         uid == other.uid &&
         name == other.name &&
-        role == other.role;
+        role == other.role &&
+        organizationId == other.organizationId &&
+        color == other.color;
   }
 
   @override
@@ -67,33 +88,54 @@ class UserData extends Model {
     buffer.write("id=" + "$id" + ", ");
     buffer.write("uid=" + "$uid" + ", ");
     buffer.write("name=" + "$name" + ", ");
-    buffer.write("role=" + "$role");
+    buffer.write("role=" + "$role" + ", ");
+    buffer.write("organizationId=" + "$organizationId" + ", ");
+    buffer.write("color=" + "$color");
     buffer.write("}");
 
     return buffer.toString();
   }
 
-  UserData copyWith({String id, String uid, String name, String role}) {
+  UserData copyWith(
+      {String id,
+      String uid,
+      String name,
+      String role,
+      String organizationId,
+      String color}) {
     return UserData(
         id: id ?? this.id,
         uid: uid ?? this.uid,
         name: name ?? this.name,
-        role: role ?? this.role);
+        role: role ?? this.role,
+        organizationId: organizationId ?? this.organizationId,
+        color: color ?? this.color);
   }
 
   UserData.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         uid = json['uid'],
         name = json['name'],
-        role = json['role'];
+        role = json['role'],
+        organizationId = json['organizationId'],
+        color = json['color'];
 
-  Map<String, dynamic> toJson() =>
-      {'id': id, 'uid': uid, 'name': name, 'role': role};
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'uid': uid,
+        'name': name,
+        'role': role,
+        'organizationId': organizationId,
+        'color': color
+      };
 
   static final QueryField ID = QueryField(fieldName: "userData.id");
   static final QueryField UID = QueryField(fieldName: "uid");
   static final QueryField NAME = QueryField(fieldName: "name");
   static final QueryField ROLE = QueryField(fieldName: "role");
+  static final QueryField ORGANIZATIONID =
+      QueryField(fieldName: "organizationId");
+  static final QueryField COLOR = QueryField(fieldName: "color");
   static var schema =
       Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "UserData";
@@ -112,7 +154,7 @@ class UserData extends Model {
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: UserData.UID,
-        isRequired: false,
+        isRequired: true,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
@@ -122,6 +164,16 @@ class UserData extends Model {
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: UserData.ROLE,
+        isRequired: false,
+        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: UserData.ORGANIZATIONID,
+        isRequired: true,
+        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: UserData.COLOR,
         isRequired: false,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
   });

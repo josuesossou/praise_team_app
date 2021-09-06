@@ -146,7 +146,7 @@ class SearchSongs extends StatelessWidget {
         scrollDirection: Axis.vertical,
         children: songs.map((song) {
           return Container(
-            height: 180,
+            height: 190,
             child: RectButton(
               padding: EdgeInsets.zero,
               margin: EdgeInsets.only(bottom: 10),

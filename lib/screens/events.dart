@@ -26,7 +26,7 @@ class _EventsState extends State<Events> {
   SizedBox sizedBoxL = SizedBox(height: 25); // larger separator
   TextStyle style = TextStyle(
     fontSize: 24,
-    fontWeight: FontWeight.bold
+    fontWeight: FontWeight.bold,
   );
 
   Stream<List<Event>> upcomingEvents() =>  dbEventsQuery.getUpcomingEvent;

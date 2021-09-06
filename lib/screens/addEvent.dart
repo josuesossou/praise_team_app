@@ -257,7 +257,7 @@ class AddEventComponent extends StatelessWidget {
           ] + songs.map((song) => (
             Container(
               color: theme.primaryColor,
-              height: 180,
+              height: 190,
               margin: EdgeInsets.only(bottom: 10),
               child: SongCard(
                 song: song,
@@ -303,7 +303,7 @@ class SearchedSongLists extends StatelessWidget {
           )
         ]
       ),
-      height: 190,
+      height: 200,
       child: FutureBuilder(
         future: searchedSongs(),
         builder: (BuildContext context, AsyncSnapshot<List<Song>> snapshot) {
