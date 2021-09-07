@@ -3,10 +3,8 @@ import 'package:amplify_flutter/amplify.dart';
 import 'package:flutter/material.dart';
 import 'package:lgcogpraiseteam/components/scaffoldMessages.dart';
 import 'package:flutter_login/flutter_login.dart';
+import 'package:lgcogpraiseteam/components/textField.dart';
 import 'package:lgcogpraiseteam/services/userQuery.dart';
-
-// import 'dashboard.dart';
-
 
 class Auth extends StatefulWidget {
   @override
@@ -102,10 +100,21 @@ class _AuthState extends State<Auth> {
       onRecoverPassword: _recoverPassword,
       theme: LoginTheme(
         primaryColor: Color(0xFF4DB6AC),
-        accentColor: Colors.white,
+        textFieldStyle: TextStyle(
+          color: Colors.grey.shade800,
+          fontSize: 15,
+        ),
+        inputTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: Colors.teal.withOpacity(.1),
+          labelStyle: TextStyle(
+            color: Colors.grey.shade800,
+            fontSize: 15
+          ),
+        ),
         errorColor: Colors.deepOrange,
         titleStyle: TextStyle(
-          color: Color(0xFFB9F6CA),
+          color: Colors.white,
           fontFamily: 'Quicksand',
           letterSpacing: 4,
         ),
@@ -139,10 +148,10 @@ class AdditionalInfo extends StatelessWidget {
       return;
     }
 
-    if (!isOrgExist) {
-      showError(context, 'Organization Id does not exist');
-      return;
-    }
+    // if (!isOrgExist) {
+    //   showError(context, 'Organization Id does not exist');
+    //   return;
+    // }
 
     try {
 
@@ -187,11 +196,13 @@ class AdditionalInfo extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Additional Info',
+                'ADDITIONAL INFO',
                 style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Quicksand'
+                  fontSize: 22,
+                  fontWeight: FontWeight.w600,
+                  fontFamily: 'Quicksand',
+                  color: Colors.white,
+                  letterSpacing: 4
                 ),
               ),
               Card(
@@ -205,73 +216,24 @@ class AdditionalInfo extends StatelessWidget {
                   child: Column(
                     children: [
                       SizedBox(height: 10),
-                      TextField(
-                        controller: _nameController,
-                        decoration: InputDecoration(
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(40)),
-                            borderSide: const BorderSide(
-                              width: 2,
-                              color: Color(0xFF4DB6AC)
-                            )
-                          ),
-                          focusColor: Color(0xFF4DB6AC),
-
-                          filled: true,
-                          contentPadding:
-                              const EdgeInsets.symmetric(vertical: 4.0),
-                          prefixIcon: Icon(
-                            Icons.account_circle_rounded,
-                          ),
-                          labelText: 'First and Last Name',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(40)),
-                          ),
-                        ),
+                      CustomTextInput(
+                        controller: _nameController, 
+                        labelText: 'Your Name (Required)', 
+                        icon: Icon(
+                          Icons.account_circle_rounded,
+                        )
                       ),
                       sizedBox,
-                      TextField(
-                        controller: _roleController,
-                        decoration: InputDecoration(
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(40)),
-                            borderSide: const BorderSide(
-                              width: 2,
-                              
-                              color: Color(0xFF4DB6AC)
-                            )
-                          ),
-                          filled: true,
-                          contentPadding:
-                              const EdgeInsets.symmetric(vertical: 4.0),
-                          prefixIcon: Icon(Icons.account_circle_rounded),
-                          labelText: 'Musician Role (optional)',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(40)),
-                          ),
-                        ),
+                      CustomTextInput(
+                        controller: _roleController, 
+                        labelText: 'Musician Role (optional)', 
+                        icon: Icon(Icons.account_circle_rounded),
                       ),
                       sizedBox,
-                      TextField(
-                        controller: _orgIdController,
-                        decoration: InputDecoration(
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(40)),
-                            borderSide: const BorderSide(
-                              width: 2,
-                              
-                              color: Color(0xFF4DB6AC)
-                            )
-                          ),
-                          filled: true,
-                          contentPadding:
-                              const EdgeInsets.symmetric(vertical: 4.0),
-                          prefixIcon: Icon(Icons.verified_user_rounded),
-                          labelText: 'Organization ID',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(40)),
-                          ),
-                        ),
+                      CustomTextInput(
+                        controller: _orgIdController, 
+                        labelText: 'Organization ID (Required)', 
+                        icon: Icon(Icons.verified_user_rounded),
                       ),
                       sizedBox,
                       MaterialButton(
@@ -301,7 +263,10 @@ class AdditionalInfo extends StatelessWidget {
                         },
                         child: Text(
                           'Go back',
-                          style: TextStyle(color: Colors.grey),
+                          style: TextStyle(
+                            color: Colors.grey.shade400,
+                            fontFamily: 'Quicksand'
+                          ),
                         ),
                       )
                     ],

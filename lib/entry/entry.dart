@@ -27,6 +27,31 @@ class _EntryScreenState extends State<EntryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(child: Text('Loading...'),);
+    Size _size = MediaQuery.of(context).size;
+    double _width = _size.width/4;
+
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Container(
+          width: _width,
+          height: _width,
+          alignment: Alignment.center,
+          child: Text(
+            'P&W',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+              color: Color(0xFF4DB6AC),
+              fontFamily: 'Quicksand'
+            ),
+          ),
+          decoration: BoxDecoration(
+            border: Border.all(width: 4, color: Color(0xFF4DB6AC)),
+            borderRadius: BorderRadius.all(Radius.circular(_width))
+          ),
+        ),
+      )
+    );
   }
 }

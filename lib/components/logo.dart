@@ -6,11 +6,16 @@ class Logo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // TODO: Replace text with lgcog logo
-      child: Text('LGCOG', style: TextStyle(
-        fontWeight: FontWeight.bold,
-        fontSize: size
-      ),),
+      alignment: Alignment.center,
+      child: Text(
+        'P&W',
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 20,
+          color: Color(0xFF4DB6AC),
+          fontFamily: 'Quicksand'
+        ),
+      ),
     );
   }
 }

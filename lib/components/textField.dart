@@ -62,3 +62,50 @@ class TextFieldCop extends StatelessWidget {
     );
   }
 }
+
+class CustomTextInput extends StatelessWidget {
+  const  CustomTextInput({ 
+    @required this.controller,
+    @required this.labelText,
+    @required this.icon,
+  });
+  final TextEditingController controller;
+  final String labelText;
+  final Icon icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: controller,
+      style: TextStyle(
+          color: Colors.grey.shade800,
+          fontSize: 15,
+        ),
+      decoration: InputDecoration(
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(40)),
+          borderSide: const BorderSide(
+            width: 1,
+            color: Color(0xFF4DB6AC)
+          )
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(40)),
+          borderSide: BorderSide.none,
+        ),
+        focusColor: Color(0xFF4DB6AC),
+        filled: true,
+        fillColor: Colors.teal.withOpacity(.1),
+        contentPadding:
+          const EdgeInsets.symmetric(vertical: 4.0),
+        prefixIcon: icon,
+        labelText: labelText,
+        labelStyle: TextStyle(
+          fontFamily: 'Quicksand',
+          color: Colors.grey.shade800,
+          fontSize: 15,
+        ),
+      ),
+    );
+  }
+}

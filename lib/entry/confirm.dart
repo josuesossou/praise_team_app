@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:amplify_flutter/amplify.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:lgcogpraiseteam/components/scaffoldMessages.dart';
+import 'package:lgcogpraiseteam/components/textField.dart';
 import 'package:lgcogpraiseteam/services/userQuery.dart';
+
+import 'auth.dart';
 
 class ConfirmScreen extends StatefulWidget {
   final Map<String, dynamic> data;
@@ -70,7 +73,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: Color(0xFF4DB6AC),
       body: Center(
         child: SafeArea(
           minimum: const EdgeInsets.symmetric(horizontal: 20),
@@ -87,19 +90,24 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
                   child: Column(
                     children: [
                       SizedBox(height: 10),
-                      TextField(
-                        controller: _controller,
-                        decoration: InputDecoration(
-                          filled: true,
-                          contentPadding:
-                              const EdgeInsets.symmetric(vertical: 4.0),
-                          prefixIcon: Icon(Icons.lock),
-                          labelText: 'Enter confirmation code',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(40)),
-                          ),
-                        ),
+                      CustomTextInput(
+                        controller: _controller, 
+                        labelText: 'Enter confirmation code', 
+                        icon: Icon(Icons.account_circle_rounded),
                       ),
+                      // TextField(
+                      //   controller: ,
+                      //   decoration: InputDecoration(
+                      //     filled: true,
+                      //     contentPadding:
+                      //         const EdgeInsets.symmetric(vertical: 4.0),
+                      //     prefixIcon: Icon(Icons.lock),
+                      //     labelText: 'Enter confirmation code',
+                      //     border: OutlineInputBorder(
+                      //       borderRadius: BorderRadius.all(Radius.circular(40)),
+                      //     ),
+                      //   ),
+                      // ),
                       SizedBox(height: 10),
                       MaterialButton(
                         onPressed: _isEnabled
@@ -109,8 +117,8 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
                               }
                             : null,
                         elevation: 4,
-                        color: Theme.of(context).primaryColor,
-                        disabledColor: Colors.deepPurple.shade200,
+                        color: Color(0xFF4DB6AC),
+                        disabledColor: Colors.teal.shade200,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(20)),
                         ),
@@ -128,7 +136,10 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
                         },
                         child: Text(
                           'Resend code',
-                          style: TextStyle(color: Colors.grey),
+                          style: TextStyle(
+                            color: Colors.grey.shade400,
+                            fontFamily: 'Quicksand'
+                          ),
                         ),
                       )
                     ],
