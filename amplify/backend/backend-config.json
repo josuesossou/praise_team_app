@@ -18,7 +18,7 @@
     }
   },
   "auth": {
-    "praiseteamapp193e1109": {
+    "praiseteamapp852f1fd1": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],

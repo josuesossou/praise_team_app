@@ -14,7 +14,7 @@ void showSuccess(context, message) {
 void showError(context, message) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      backgroundColor: Colors.deepOrange,
+      backgroundColor: Colors.redAccent,
       content: Text(
         message,
         style: TextStyle(fontSize: 15),

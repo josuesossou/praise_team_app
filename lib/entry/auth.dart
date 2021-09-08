@@ -87,7 +87,6 @@ class _AuthState extends State<Auth> {
   Widget build(BuildContext context) {
     return FlutterLogin(
       title: 'P&W TEAM',
-      // logo: 'assets/images/ecorp-lightblue.png',
       onLogin: _onLogin,
       onSignup: _doSignup,
       onSubmitAnimationCompleted: () {
@@ -112,7 +111,7 @@ class _AuthState extends State<Auth> {
             fontSize: 15
           ),
         ),
-        errorColor: Colors.deepOrange,
+        errorColor: Colors.redAccent,
         titleStyle: TextStyle(
           color: Colors.white,
           fontFamily: 'Quicksand',
@@ -154,15 +153,15 @@ class AdditionalInfo extends StatelessWidget {
     // }
 
     try {
-
       await Amplify.Auth.signUp(
         username: username,
         password: loginData.password,
         options: CognitoSignUpOptions(userAttributes: {
           'email': loginData.name,
-          'name': _nameController.text,
-          'custom:role': _roleController.text,
-          'custom:organizationID': _orgIdController.text
+          'name': _nameController.text.toString(),
+          'custom:role': _roleController.text.isEmpty ? 'Musician' : 
+                          _roleController.text.toString(),
+          'custom:organizationID': _orgIdController.text.toString()
         }),
       );
 
@@ -176,8 +175,11 @@ class AdditionalInfo extends StatelessWidget {
           'password': loginData.password 
         }
       );
-    } on AuthException catch (e) {
-      showError(context, '${e.message} - ${e.recoverySuggestion}');
+    } on AuthException catch (_) {
+      showError(
+        context, 
+        'Something went wrong, please check internet connection and try again'
+      );
     }
   }
 

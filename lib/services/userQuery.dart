@@ -22,11 +22,18 @@ class User {
     try {
       var _userAttributes = await Amplify.Auth.fetchUserAttributes();
       _userAttributes.forEach((attr) {
+        print(inspect(attr));
+        print(inspect(attr.userAttributeKey));
         _attributes[attr.userAttributeKey] = attr.value;
       });
+      print("@@@@@@@@@@ FETCH ATTRIBUTES @@@@@");
+      print(inspect(_attributes));
+      print(inspect(_userAttributes));
     
       return Attributes.fromMap(_attributes);
     } catch (e) {
+      print("@@@@@@@@@@ FETCH ATTRIBUTES ERROR @@@@@");
+      print(inspect(e));
       return null;
     }
   }
@@ -62,6 +69,8 @@ class DbUserQuery {
         organizationId: _getAttributes.orgId,
         color: '0xFF4DB6AC'
       );
+      print("@@@@@@@@@@ BEFORE SAVE USERDATA @@@@@");
+      print(inspect(_getAttributes));
 
       await Amplify.DataStore.save(newUserData);
 
@@ -100,9 +109,9 @@ class DbUserQuery {
         where: UserData.UID.eq(_userData.userId)
       );
 
-       print('@@@@@@@@@@@@@@@ USER DATA BACKEND');
-    print(_user);
-    print(_userData);
+      print('@@@@@@@@@@@@@@@ USER DATA BACKEND');
+      print(inspect(_user));
+      print(inspect(_userData));
 
       if (_user.isEmpty) {
         return null;
@@ -110,8 +119,8 @@ class DbUserQuery {
       
       return _user[0];
     } catch (e) {
-       print('@@@@@@@@@@@@@@@ ERROR USER DATA');
-    print(_user);
+      print('@@@@@@@@@@@@@@@ ERROR USER DATA');
+      print(inspect(e));
       return null;
     }
   }
@@ -129,19 +138,19 @@ class DbUserQuery {
 class Attributes {
   Attributes({
     @required this.name,
-    @required this.role,
+    this.role = 'Musician',
     @required this.orgId
   });
 
-  final String name;
-  final String role;
-  final String orgId;
+  final String name, role, orgId;
 
   factory Attributes.fromMap(Map<String, dynamic> data) {
+    print('@@@@@@@@@@@@@ DATA TO ATTRIBUTES');
+    print(data);
     return Attributes(
-      name: data['name'],
-      role: data['custom:role'],
-      orgId: data['custom:organizationId'],
+      name: data['name'].toString(),
+      role: data['custom:role'].toString(),
+      orgId: data['custom:organizationID'].toString(),
     );
   }
 }

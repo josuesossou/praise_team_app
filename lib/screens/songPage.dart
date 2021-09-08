@@ -136,12 +136,16 @@ class _SongPageState extends State<SongPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColorLight, 
+      floatingActionButton: IconButton(
+        icon: Icon(Icons.edit), 
+        onPressed: () => showEditMode()
+      ),
       appBar: AppBar(
         leading: ArrowBack(),
         
         actions: [
           IconButton(
-            icon: Icon(Icons.edit), 
+            icon: Icon(Icons.report), 
             onPressed: () => showEditMode()
           )
         ],
@@ -165,6 +169,7 @@ class _SongPageState extends State<SongPage> {
                 originalKey: originalKey,
                 userName: userName
               ) : Container(),
+              
           ],
         ),
       )

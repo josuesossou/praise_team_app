@@ -47,6 +47,7 @@ class _EventsState extends State<Events> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    ThemeData _theme = Theme.of(context);
 
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
@@ -111,9 +112,7 @@ class _EventsState extends State<Events> {
                       children: [FlexText(text: snapshot.error.toString(),)],
                     );
                   } else {
-                    child = Center(
-                      child: CircularProgressIndicator(),
-                    );
+                    child = Loader(color: _theme.accentColor);
                   }
 
                   return Container(
@@ -162,7 +161,7 @@ class _EventsState extends State<Events> {
                     ],
                   );
                 } else {
-                  child = Loader();
+                  child = Loader(color: _theme.accentColor,);
                 }
 
                 return Container(

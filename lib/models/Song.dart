@@ -45,6 +45,7 @@ class Song extends Model {
   final String originalkey;
   final int numOfTimePlayed;
   final List<String> transposeList;
+  final bool reported;
 
   @override
   getInstanceType() => classType;
@@ -75,7 +76,8 @@ class Song extends Model {
       @required this.createdAt,
       this.originalkey,
       this.numOfTimePlayed,
-      this.transposeList});
+      this.transposeList,
+      this.reported});
 
   factory Song(
       {String id,
@@ -98,7 +100,8 @@ class Song extends Model {
       @required TemporalTimestamp createdAt,
       String originalkey,
       int numOfTimePlayed,
-      List<String> transposeList}) {
+      List<String> transposeList,
+      bool reported}) {
     return Song._internal(
         id: id == null ? UUID.getUUID() : id,
         songId: songId,
@@ -124,7 +127,8 @@ class Song extends Model {
         numOfTimePlayed: numOfTimePlayed,
         transposeList: transposeList != null
             ? List<String>.unmodifiable(transposeList)
-            : transposeList);
+            : transposeList,
+        reported: reported);
   }
 
   bool equals(Object other) {
@@ -155,7 +159,8 @@ class Song extends Model {
         createdAt == other.createdAt &&
         originalkey == other.originalkey &&
         numOfTimePlayed == other.numOfTimePlayed &&
-        DeepCollectionEquality().equals(transposeList, other.transposeList);
+        DeepCollectionEquality().equals(transposeList, other.transposeList) &&
+        reported == other.reported;
   }
 
   @override
@@ -198,7 +203,10 @@ class Song extends Model {
         (numOfTimePlayed != null ? numOfTimePlayed.toString() : "null") +
         ", ");
     buffer.write("transposeList=" +
-        (transposeList != null ? transposeList.toString() : "null"));
+        (transposeList != null ? transposeList.toString() : "null") +
+        ", ");
+    buffer
+        .write("reported=" + (reported != null ? reported.toString() : "null"));
     buffer.write("}");
 
     return buffer.toString();
@@ -225,7 +233,8 @@ class Song extends Model {
       TemporalTimestamp createdAt,
       String originalkey,
       int numOfTimePlayed,
-      List<String> transposeList}) {
+      List<String> transposeList,
+      bool reported}) {
     return Song(
         id: id ?? this.id,
         songId: songId ?? this.songId,
@@ -247,7 +256,8 @@ class Song extends Model {
         createdAt: createdAt ?? this.createdAt,
         originalkey: originalkey ?? this.originalkey,
         numOfTimePlayed: numOfTimePlayed ?? this.numOfTimePlayed,
-        transposeList: transposeList ?? this.transposeList);
+        transposeList: transposeList ?? this.transposeList,
+        reported: reported ?? this.reported);
   }
 
   Song.fromJson(Map<String, dynamic> json)
@@ -277,7 +287,8 @@ class Song extends Model {
             : null,
         originalkey = json['originalkey'],
         numOfTimePlayed = json['numOfTimePlayed'],
-        transposeList = json['transposeList']?.cast<String>();
+        transposeList = json['transposeList']?.cast<String>(),
+        reported = json['reported'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -300,7 +311,8 @@ class Song extends Model {
         'createdAt': createdAt?.toSeconds(),
         'originalkey': originalkey,
         'numOfTimePlayed': numOfTimePlayed,
-        'transposeList': transposeList
+        'transposeList': transposeList,
+        'reported': reported
       };
 
   static final QueryField ID = QueryField(fieldName: "song.id");
@@ -338,6 +350,7 @@ class Song extends Model {
       QueryField(fieldName: "numOfTimePlayed");
   static final QueryField TRANSPOSELIST =
       QueryField(fieldName: "transposeList");
+  static final QueryField REPORTED = QueryField(fieldName: "reported");
   static var schema =
       Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Song";
@@ -456,6 +469,11 @@ class Song extends Model {
         isArray: true,
         ofType: ModelFieldType(ModelFieldTypeEnum.collection,
             ofModelName: describeEnum(ModelFieldTypeEnum.string))));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: Song.REPORTED,
+        isRequired: false,
+        ofType: ModelFieldType(ModelFieldTypeEnum.bool)));
   });
 }
 

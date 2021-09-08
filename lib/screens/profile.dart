@@ -102,14 +102,41 @@ class _ProfileState extends State<Profile> {
 
             ),
             SizedBox(height: 40,),
+            Container(
+              margin: EdgeInsets.only(bottom: 10),
+              child: Text(
+                'Support Info',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(bottom: 10),
+              child: Text(
+                'Email wonderexplorer1@gmail.com for help and inquiries',
+                style: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+            ),
+            SizedBox(height: 40,),
             RectButton(
               onPress: () {
                 _signOut();
               }, 
               color: Colors.redAccent,
               elevation: 5,
-              child: Text('Sign Out')
-            )
+              child: Text(
+                'Sign Out',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15
+                )
+              )
+            ),
           ],
         ),
       ),
