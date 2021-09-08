@@ -130,8 +130,9 @@ class AddNewSongs extends StatelessWidget {
           Widget child;
 
           if (snapshot.hasData) {
+            var data = snapshot.data;
             child = ListView(
-              children: snapshot.data.items.map((video) => 
+              children: data.items.map((video) => 
                 Container(
                   margin: EdgeInsets.only(bottom: 15),
                   child: RectButton(
@@ -152,7 +153,7 @@ class AddNewSongs extends StatelessWidget {
             );
           } else if (snapshot.hasError) {
             child = Center(
-              child: Text('Error Occured: ${snapshot.error}'),
+              child: Text('Unable to reach youtube servers'),
             );
           } else {
             child = Loader();

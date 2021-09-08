@@ -3,7 +3,7 @@ import 'package:lgcogpraiseteam/models/ModelProvider.dart';
 // components
 import '../components/arrowBack.dart';
 import '../components/flexText.dart';
-import '../components/loader.dart';
+// import '../components/loader.dart';
 import '../components/songCard.dart';
 import '../components/button.dart';
 import '../components/textField.dart';

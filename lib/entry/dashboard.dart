@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:lgcogpraiseteam/models/UserData.dart';
 import 'package:lgcogpraiseteam/services/userQuery.dart';
 
-import 'entry.dart';
-
 import '../screens/profile.dart';
 import '../screens/search.dart';
 import '../screens/transposePage.dart';
@@ -54,20 +52,21 @@ class _DashboardEntryState extends State<DashboardEntry> {
         accentColor: Color(int.parse(_color)),
         fontFamily: 'Quicksand'
       ),
+      home: DashboardScreen(),
       // 0xff01A0C7
-      onGenerateRoute: (settings) {
-        // entry screen
-        if (settings.name == '/entry') {
-          return PageRouteBuilder(
-            pageBuilder: (_, __, ___) => EntryScreen(
-              key: UniqueKey(),
-            ),
-            transitionsBuilder: (_, __, ___, child) => child,
-          );
-        }
+      // onGenerateRoute: (settings) {
+      //   // entry screen
+      //   if (settings.name == '/entry') {
+      //     return PageRouteBuilder(
+      //       pageBuilder: (_, __, ___) => EntryScreen(
+      //         key: UniqueKey(),
+      //       ),
+      //       transitionsBuilder: (_, __, ___, child) => child,
+      //     );
+      //   }
         
-        return MaterialPageRoute(builder: (_) => DashboardScreen());
-      },
+      //   return MaterialPageRoute(builder: (_) => DashboardScreen());
+      // },
     );
   }
 }

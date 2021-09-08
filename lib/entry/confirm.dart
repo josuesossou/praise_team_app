@@ -5,8 +5,6 @@ import 'package:lgcogpraiseteam/components/scaffoldMessages.dart';
 import 'package:lgcogpraiseteam/components/textField.dart';
 import 'package:lgcogpraiseteam/services/userQuery.dart';
 
-import 'auth.dart';
-
 class ConfirmScreen extends StatefulWidget {
   final Map<String, dynamic> data;
 
@@ -95,19 +93,6 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
                         labelText: 'Enter confirmation code', 
                         icon: Icon(Icons.account_circle_rounded),
                       ),
-                      // TextField(
-                      //   controller: ,
-                      //   decoration: InputDecoration(
-                      //     filled: true,
-                      //     contentPadding:
-                      //         const EdgeInsets.symmetric(vertical: 4.0),
-                      //     prefixIcon: Icon(Icons.lock),
-                      //     labelText: 'Enter confirmation code',
-                      //     border: OutlineInputBorder(
-                      //       borderRadius: BorderRadius.all(Radius.circular(40)),
-                      //     ),
-                      //   ),
-                      // ),
                       SizedBox(height: 10),
                       MaterialButton(
                         onPressed: _isEnabled

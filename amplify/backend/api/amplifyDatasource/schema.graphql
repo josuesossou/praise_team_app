@@ -30,7 +30,8 @@ type Song @model @auth(rules: [{allow: public}]) {
     createdAt: AWSTimestamp!,
     originalkey: String,
     numOfTimePlayed: Int,
-    transposeList: [String]
+    transposeList: [String],
+    reported: bool
 }
 
 type Organization @model @auth(rules: [{allow: public}]) {

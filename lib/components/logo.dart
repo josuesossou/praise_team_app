@@ -7,15 +7,17 @@ class Logo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      child: Text(
-        'P&W',
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 20,
-          color: Color(0xFF4DB6AC),
-          fontFamily: 'Quicksand'
-        ),
-      ),
+      child: Image.asset('assets/logo.png', width: 30,)
+      
+      // Text(
+      //   'P&W',
+      //   style: TextStyle(
+      //     fontWeight: FontWeight.bold,
+      //     fontSize: 20,
+      //     color: Colors.black,
+      //     fontFamily: 'Noto Sans CJK SC'
+      //   ),
+      // ),
     );
   }
 }

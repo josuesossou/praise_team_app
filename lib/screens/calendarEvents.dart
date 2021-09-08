@@ -14,7 +14,6 @@ class _TestYoutubePlayerState extends State<TestYoutubePlayer> {
    
       child: RectButton(
         onPress: () {
-          // YoutubeApi().testYoutubeApi();
         },
         child: Text('my youtube')
       ),

@@ -92,7 +92,7 @@ class DbUserQuery {
   }
 
   Future<UserData> getMyUserData() async {
-    var _userData = await _user.getUser();
+    AuthUser _userData = await _user.getUser();
 
     try {
       List<UserData> _user = await Amplify.DataStore.query(
@@ -100,12 +100,18 @@ class DbUserQuery {
         where: UserData.UID.eq(_userData.userId)
       );
 
+       print('@@@@@@@@@@@@@@@ USER DATA BACKEND');
+    print(_user);
+    print(_userData);
+
       if (_user.isEmpty) {
         return null;
       }
       
       return _user[0];
     } catch (e) {
+       print('@@@@@@@@@@@@@@@ ERROR USER DATA');
+    print(_user);
       return null;
     }
   }

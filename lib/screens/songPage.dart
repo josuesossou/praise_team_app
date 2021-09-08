@@ -138,6 +138,7 @@ class _SongPageState extends State<SongPage> {
       backgroundColor: Theme.of(context).primaryColorLight, 
       appBar: AppBar(
         leading: ArrowBack(),
+        
         actions: [
           IconButton(
             icon: Icon(Icons.edit), 
@@ -430,12 +431,12 @@ class ScrolledContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    EdgeInsets unifyMargin = EdgeInsets.symmetric(horizontal: 15);
+    // EdgeInsets unifyMargin = EdgeInsets.symmetric(horizontal: 15);
     SizedBox columnSpacing = SizedBox(height: 10,);
-    TextStyle style1 = TextStyle(
-      fontSize: 20,
-      fontWeight: FontWeight.bold
-    ); 
+    // TextStyle style1 = TextStyle(
+    //   fontSize: 20,
+    //   fontWeight: FontWeight.bold
+    // ); 
     Size size = MediaQuery.of(context).size;
 
     return SingleChildScrollView(
