@@ -22,18 +22,11 @@ class User {
     try {
       var _userAttributes = await Amplify.Auth.fetchUserAttributes();
       _userAttributes.forEach((attr) {
-        print(inspect(attr));
-        print(inspect(attr.userAttributeKey));
         _attributes[attr.userAttributeKey] = attr.value;
       });
-      print("@@@@@@@@@@ FETCH ATTRIBUTES @@@@@");
-      print(inspect(_attributes));
-      print(inspect(_userAttributes));
     
       return Attributes.fromMap(_attributes);
     } catch (e) {
-      print("@@@@@@@@@@ FETCH ATTRIBUTES ERROR @@@@@");
-      print(inspect(e));
       return null;
     }
   }
@@ -69,17 +62,9 @@ class DbUserQuery {
         organizationId: _getAttributes.orgId,
         color: '0xFF4DB6AC'
       );
-      print("@@@@@@@@@@ BEFORE SAVE USERDATA @@@@@");
-      print(inspect(_getAttributes));
-
       await Amplify.DataStore.save(newUserData);
-
-      print("@@@@@@@@@@ SAVE USERDATA @@@@@");
-      print(inspect(newUserData));
       return true;
     } catch (e) {
-      print("@@@@@@@@@@ SAVE USERDATA ERROR @@@@@");
-      print(inspect(e));
       return true;
     }
   }
@@ -108,19 +93,12 @@ class DbUserQuery {
         UserData.classType,
         where: UserData.UID.eq(_userData.userId)
       );
-
-      print('@@@@@@@@@@@@@@@ USER DATA BACKEND');
-      print(inspect(_user));
-      print(inspect(_userData));
-
       if (_user.isEmpty) {
         return null;
       }
       
       return _user[0];
     } catch (e) {
-      print('@@@@@@@@@@@@@@@ ERROR USER DATA');
-      print(inspect(e));
       return null;
     }
   }
@@ -145,8 +123,6 @@ class Attributes {
   final String name, role, orgId;
 
   factory Attributes.fromMap(Map<String, dynamic> data) {
-    print('@@@@@@@@@@@@@ DATA TO ATTRIBUTES');
-    print(data);
     return Attributes(
       name: data['name'].toString(),
       role: data['custom:role'].toString(),

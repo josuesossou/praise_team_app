@@ -16,7 +16,6 @@ class YoutubeApi {
     var response = await http.get(uri);
     var decode = json.decode(response.body);
 
-    print(response.body);
     return YoutubeDataModel.fromMap(decode);
   }
 }

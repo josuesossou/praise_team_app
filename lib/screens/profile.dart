@@ -32,9 +32,6 @@ class _ProfileState extends State<Profile> {
 
     UserData _userData = await _dbQuery.getMyUserData();
 
-    print('@@@@@@@@@@@@@@@ USER DATA');
-    print(_userData);
-
     if (_userData != null) {
       var _newUserData = _userData.copyWith(
         color: color.toString(),

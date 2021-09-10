@@ -23,6 +23,6 @@ Future<void> configureAmplify() async {
     // Once Plugins are added, configure Amplify
     await Amplify.configure(amplifyconfig);
   } catch (e) {
-    print(e);
+    // print(e);
   }
 }

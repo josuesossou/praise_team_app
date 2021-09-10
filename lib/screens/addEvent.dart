@@ -33,10 +33,6 @@ class _AddEventState extends State<AddEvent> {
       initialEntryMode: DatePickerEntryMode.calendar,
     );
 
-    print("@@@@@@@@ data !!@@@@@!@");
-    print(selectedDate);
-    print(picked.add(const Duration(hours: 20)));
-
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = picked.add(const Duration(hours: 20));
@@ -356,7 +352,7 @@ class SearchedSongLists extends StatelessWidget {
             )
           );
         } else {
-          child = Loader();
+          child = Loader(color: theme.accentColor,);
         }
 
         return Stack(

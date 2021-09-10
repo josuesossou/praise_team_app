@@ -54,7 +54,7 @@ class TransposeCard extends StatelessWidget {
             child: Text('Could not get transpose data'),
           );
         } else {
-          widget = Loader();
+          widget = Loader(color: Theme.of(context).accentColor,);
         }
 
         return widget;

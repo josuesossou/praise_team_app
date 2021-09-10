@@ -48,8 +48,6 @@ class DbSongsQuery {
         return false;
       }
     } catch (e) {
-      print("@@@@@@@@@@ ERRORRR ADD YOUTUBE @@@@");
-      print(e);
       return false;
     }
   }

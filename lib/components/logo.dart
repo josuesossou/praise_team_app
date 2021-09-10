@@ -8,16 +8,6 @@ class Logo extends StatelessWidget {
     return Container(
       alignment: Alignment.center,
       child: Image.asset('assets/logo.png', width: 30,)
-      
-      // Text(
-      //   'P&W',
-      //   style: TextStyle(
-      //     fontWeight: FontWeight.bold,
-      //     fontSize: 20,
-      //     color: Colors.black,
-      //     fontFamily: 'Noto Sans CJK SC'
-      //   ),
-      // ),
     );
   }
 }

@@ -46,8 +46,6 @@ class _EventPageState extends State<EventPage> {
 
   void _onShare(BuildContext context, shareItem) {
     final box = context.findRenderObject() as RenderBox;
-    print("@@@@@@@@SHARE @@@@@####");
-    print(shareItem);
 
     Share.share(
       shareItem,
@@ -61,6 +59,7 @@ class _EventPageState extends State<EventPage> {
     int _numSong = widget.event.songIds.length;
     Size _size = MediaQuery.of(context).size;
     Event _event = widget.event;
+    ThemeData _theme = Theme.of(context);
     
     String _date = DateFormat.yMMMd().format(
       DateTime.fromMillisecondsSinceEpoch(
@@ -85,7 +84,7 @@ class _EventPageState extends State<EventPage> {
         elevation: 0,
         title: Text(widget.event.name),
         centerTitle: true,
-        backgroundColor: Theme.of(context).accentColor,
+        backgroundColor: _theme.accentColor,
       ),
       body: SingleChildScrollView(
       scrollDirection: Axis.vertical,
@@ -184,7 +183,7 @@ class _EventPageState extends State<EventPage> {
                           )
                         );
                       } else {
-                        child = Loader();
+                        child = Loader(color: _theme.accentColor,);
                       }
                       return child;
                     }

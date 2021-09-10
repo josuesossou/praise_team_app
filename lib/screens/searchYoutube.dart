@@ -156,7 +156,7 @@ class AddNewSongs extends StatelessWidget {
               child: Text('Unable to reach youtube servers'),
             );
           } else {
-            child = Loader(color: _theme.primaryColor,);
+            child = Loader(color: _theme.accentColor,);
           }
 
           return child;

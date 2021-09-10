@@ -124,8 +124,6 @@ class _SongPageState extends State<SongPage> {
         showSuccess(context, 'Succefully updated keys');
 
       } catch (e) {
-        print("@@@@@@@@@@@ERROR");
-        print(e);
       }
     }
   }
@@ -325,7 +323,7 @@ class EditSong extends StatelessWidget {
                   widget = Text('Unable to find Users');
                 } else {
                   widget = Loader(
-                    color: _theme.primaryColor,
+                    color: _theme.accentColor,
                   );
                 }
 

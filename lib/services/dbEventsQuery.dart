@@ -91,7 +91,6 @@ class DbEventsQuery {
       );
       return _events;
     } catch (e) {
-      print(e);
       return [];
     }
   }
