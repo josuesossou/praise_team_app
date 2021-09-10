@@ -121,7 +121,7 @@ class AddNewSongs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    ThemeData _theme = Theme.of(context);
     return Container(
       child: FutureBuilder(
         future: getYoutubeData,
@@ -156,7 +156,7 @@ class AddNewSongs extends StatelessWidget {
               child: Text('Unable to reach youtube servers'),
             );
           } else {
-            child = Loader();
+            child = Loader(color: _theme.primaryColor,);
           }
 
           return child;
@@ -246,7 +246,6 @@ class BottomModelContent extends StatelessWidget {
     );
   }
 }
-
 
 // videoProgressIndicatorColor: Colors.amber,
 // progressColors: ProgressColors(

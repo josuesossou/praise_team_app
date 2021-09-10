@@ -32,7 +32,8 @@ class DbSongsQuery {
       lastDatePlayed: 'New Song',
       numOfTimePlayed: 0,
       originalkey: 'Not Set',
-      transposeList: []
+      transposeList: [],
+      reported: false
     );
 
     try {
@@ -47,6 +48,8 @@ class DbSongsQuery {
         return false;
       }
     } catch (e) {
+      print("@@@@@@@@@@ ERRORRR ADD YOUTUBE @@@@");
+      print(e);
       return false;
     }
   }

@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart';
+import 'package:lgcogpraiseteam/components/showAlert.dart';
 import 'package:lgcogpraiseteam/services/userQuery.dart';
 import 'package:uuid/uuid.dart';
 // Componenents
@@ -18,9 +19,6 @@ import '../services/dbSongsQuery.dart';
 import '../utils/calculateTranspose.dart';
 import '../models/ModelProvider.dart';
 import '../models/Song.dart';
-
-
-
 
 class SongPage extends StatefulWidget {
   SongPage({ @required this.song });
@@ -51,31 +49,31 @@ class _SongPageState extends State<SongPage> {
     super.initState();
   }
 
-  showEditMode() {
+  _showEditMode() {
     setState(() {
       editMode = true;
     });
   }
 
-  hideEditMode() {
+  _hideEditMode() {
     setState(() {
       editMode = false;
     });
   }
 
-  onChangeOriginalKey(val) { // dropdown changing the original key
+  _onChangeOriginalKey(val) { // dropdown changing the original key
     setState(() {
       originalKey = val;
     });
   }
 
-  onChangeUserName(val) { // dropdown changing the user names.
+  _onChangeUserName(val) { // dropdown changing the user names.
     setState(() {
       userName = val;
     });
   }
 
-  onChangeTranspose(val) {
+  _onChangeTranspose(val) {
     setState(() {
       transpose = int.parse(val);
     });
@@ -119,7 +117,7 @@ class _SongPageState extends State<SongPage> {
   
         await DbSongsQuery().updateSong(_updatedSong);
 
-        hideEditMode();
+        _hideEditMode();
         setState(() {
           song = _updatedSong;
         });
@@ -132,27 +130,38 @@ class _SongPageState extends State<SongPage> {
     }
   }
 
+  void showBottomSheet(context) => showModalBottomSheet<void>(
+    context: context,
+    isDismissible: true,
+    enableDrag: true,
+    builder: (BuildContext context) {
+      return ReportContent(song: song,);
+    },
+  );
+
+
   @override
   Widget build(BuildContext context) {
+    ThemeData _theme = Theme.of(context);
+
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColorLight, 
+      backgroundColor: _theme.primaryColorLight, 
       floatingActionButton: IconButton(
         icon: Icon(Icons.edit), 
-        onPressed: () => showEditMode()
+        onPressed: () => _showEditMode()
       ),
       appBar: AppBar(
         leading: ArrowBack(),
-        
         actions: [
-          IconButton(
+          song.reported ? Container() : IconButton(
             icon: Icon(Icons.report), 
-            onPressed: () => showEditMode()
+            onPressed: () => showBottomSheet(context)
           )
         ],
         elevation: 0,
         title: Text('Song Page'),
         centerTitle: true,
-        backgroundColor: Theme.of(context).accentColor,
+        backgroundColor: _theme.accentColor,
       ),
       body: Container(
         child: Stack(
@@ -162,14 +171,13 @@ class _SongPageState extends State<SongPage> {
               EditSong(
                 song: song,
                 submit: updateSong,
-                cancel: () => hideEditMode(),
-                onChangeOriginalKey: onChangeOriginalKey,
-                onChangeTranspose: onChangeTranspose,
-                onChangeUserName: onChangeUserName,
+                cancel: () => _hideEditMode(),
+                onChangeOriginalKey: _onChangeOriginalKey,
+                onChangeTranspose: _onChangeTranspose,
+                onChangeUserName: _onChangeUserName,
                 originalKey: originalKey,
                 userName: userName
               ) : Container(),
-              
           ],
         ),
       )
@@ -177,7 +185,7 @@ class _SongPageState extends State<SongPage> {
   }
 }
 
-
+// Editing song form
 class EditSong extends StatelessWidget {
   EditSong({ 
     @required this.song, 
@@ -201,6 +209,7 @@ class EditSong extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SizedBox columnSpacing = SizedBox(height: 10,);
+    ThemeData _theme = Theme.of(context);
     TextStyle style1 = TextStyle(
       fontSize: 20,
       fontWeight: FontWeight.bold
@@ -315,7 +324,9 @@ class EditSong extends StatelessWidget {
                 } else if (snapshot.hasError) {
                   widget = Text('Unable to find Users');
                 } else {
-                  widget = Loader();
+                  widget = Loader(
+                    color: _theme.primaryColor,
+                  );
                 }
 
                 return widget;

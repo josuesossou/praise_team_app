@@ -47,14 +47,33 @@ class SharedSoundCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          YoutubePlayer(
-            controller: _youtubeController,
-            showVideoProgressIndicator: true,
-          ),
+          song.reported ? 
+            Container(
+              height: 200,
+              
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(Icons.report, size: 50, color: Colors.grey.shade400,),
+                  Text(
+                    'Song contained inappropriate content',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey.shade400
+                    ),
+                  ),
+                ],
+              )
+            ) : 
+            YoutubePlayer(
+              controller: _youtubeController,
+              showVideoProgressIndicator: true,
+            ),
           columnSpacing,
           Row(
             children: [
-              FlexText(
+              song.reported ? Container() : FlexText(
                 margin: EdgeInsets.only(left: mLeft),
                 text: isEventPage ?
                   song.videoTitle.substring(

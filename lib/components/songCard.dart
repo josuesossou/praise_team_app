@@ -60,7 +60,11 @@ class SongCard extends StatelessWidget {
                   0,
                   titleLength < 60 ? titleLength :60
                 ) + missing,
-                style: style
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: song.reported? Colors.grey.shade400 : Colors.black
+                )
               ),
             ],
           ),

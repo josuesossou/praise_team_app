@@ -147,10 +147,10 @@ class AdditionalInfo extends StatelessWidget {
       return;
     }
 
-    // if (!isOrgExist) {
-    //   showError(context, 'Organization Id does not exist');
-    //   return;
-    // }
+    if (!isOrgExist) {
+      showError(context, 'Organization Id does not exist');
+      return;
+    }
 
     try {
       await Amplify.Auth.signUp(
