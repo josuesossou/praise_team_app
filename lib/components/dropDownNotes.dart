@@ -46,7 +46,7 @@ class DropDownUserData extends StatelessWidget {
   DropDownUserData({ 
     @required this.dropdownValue, 
     @required this.onValueChanged,
-    @required this.items
+    @required this.items,
   });
 
   final UserData dropdownValue;

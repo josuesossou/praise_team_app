@@ -41,6 +41,8 @@ class SharedSoundCard extends StatelessWidget {
     TextStyle style2 = TextStyle(
       fontSize: 18,
     ); 
+    print('@@@@@@@ tlist');
+    print(song.transposeList);
 
     return Container(
       child: Column(
@@ -136,7 +138,7 @@ class SharedSoundCard extends StatelessWidget {
             : 
             Container(
               height: 100,
-              color: Colors.red,
+              margin: EdgeInsets.only(top: 20),
               child: PageView(
                 controller: _pageController,
                 scrollDirection: Axis.horizontal,

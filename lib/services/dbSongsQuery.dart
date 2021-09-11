@@ -113,8 +113,9 @@ class DbSongsQuery {
 
 class TransposeQuery {
   /// returns true if succeeded otherwise false
-  Future<bool> addTransposeKey(Map<String, dynamic> updateData) async {
+  Future<String> addTransposeKey(Map<String, dynamic> updateData) async {
     var _userId = updateData['userId'];
+    var _returnVal;
     TransposeData _newTranData;
 
     try {
@@ -132,16 +133,18 @@ class TransposeQuery {
           songId: updateData['songId'],
           userId: _userId
         );
+        _returnVal = "NEW";
       } else {
         _newTranData = tlData[0].copyWith(
           transposeKey: updateData['transposeKey'],
           transposeNum: updateData['transposeNum'],
         );
+        _returnVal = "UPDATE";
       }
       await Amplify.DataStore.save(_newTranData);
-      return true;
+      return _returnVal;
     } catch (e) {
-      return false;
+      return "ERROR";
     }
   }
 

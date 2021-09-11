@@ -86,11 +86,9 @@ class _SongPageState extends State<SongPage> {
       Song _updatedSong;
 
       try {
-        if (userName != null) {
+        if (userName != null && userName.id != 'None') {
           final _transId = Uuid().v1();
           String transposeKey = t.getTransposedKey(originalKey, transpose);
-          List<String> transposeDataIds = [_transId, ...song.transposeList];
-          // transposeDataIds.add(_transId);
 
           final newTranData = {
             'id': _transId,
@@ -101,14 +99,13 @@ class _SongPageState extends State<SongPage> {
             'userId': userName.uid
           };
 
-          // song.transposeList.add(_transId);
+          var res =  await TransposeQuery().addTransposeKey(newTranData);
 
           _updatedSong = song.copyWith(
             originalkey: originalKey,
-            transposeList: transposeDataIds
+            transposeList: res == "NEW"? [_transId, ...song.transposeList]
+                                        : song.transposeList
           );
-
-          await TransposeQuery().addTransposeKey(newTranData);
         } else {
           _updatedSong = song.copyWith(
             originalkey: originalKey,
@@ -144,7 +141,8 @@ class _SongPageState extends State<SongPage> {
 
     return Scaffold(
       backgroundColor: _theme.primaryColorLight, 
-      floatingActionButton: ElevatedButton(
+      floatingActionButton: editMode ? Container()
+      : ElevatedButton(
         
         style: ElevatedButton.styleFrom(
           shape: CircleBorder(),
@@ -226,7 +224,7 @@ class EditSong extends StatelessWidget {
     ThemeData theme = Theme.of(context);
 
     return Container(
-      height: size.height * 0.46,
+      height: size.height * 0.5,
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [
@@ -313,7 +311,17 @@ class EditSong extends StatelessWidget {
 
                 if (snapshot.hasData) {
                   List<UserData> listOfUserNames = snapshot.data;
-
+                  if (listOfUserNames.isNotEmpty && 
+                      listOfUserNames[0].id != 'None') {
+                    listOfUserNames.insert(0, UserData(
+                      id: 'None',
+                      organizationId: 'None',
+                      uid: 'None',
+                      color: '0xffffffff',
+                      name: 'Select Singer',
+                      role: 'None'
+                    ));
+                  }
                   widget = listOfUserNames.isEmpty ?
                   Text('No User In App') :
                   DropDownUserData(
