@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart';
 import 'package:lgcogpraiseteam/components/showAlert.dart';
+import 'package:lgcogpraiseteam/entry/dashboard.dart';
 import 'package:lgcogpraiseteam/services/userQuery.dart';
 import 'package:uuid/uuid.dart';
 // Componenents
@@ -32,6 +33,7 @@ class SongPage extends StatefulWidget {
 class _SongPageState extends State<SongPage> {
   EdgeInsets unifyMargin = EdgeInsets.symmetric(horizontal: 15);
   TransposeCalculation t = TransposeCalculation();
+  DbSongsQuery _dbSongsQuery = DbSongsQuery();
   bool editMode = false;
   String originalKey;
   UserData userName; // name of the user singing in the transpose key
@@ -112,7 +114,7 @@ class _SongPageState extends State<SongPage> {
           );
         }
   
-        await DbSongsQuery().updateSong(_updatedSong);
+        await _dbSongsQuery.updateSong(_updatedSong);
 
         _hideEditMode();
         setState(() {
@@ -125,15 +127,41 @@ class _SongPageState extends State<SongPage> {
     }
   }
 
+  void _reportSong() {
+    var newSong = song.copyWith(
+      reported: true
+    );
+
+    _dbSongsQuery.updateSong(newSong)
+    .then((value) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute<void>(
+          builder: (BuildContext context) => DashboardScreen(),
+        ),
+      );
+      showSuccess(
+        context, 
+        "Report sent! Video will not be displayed in the future"
+      );
+    });
+    // Navigator.of(context).pop();
+   
+
+
+  }
+
   void showBottomSheet(context) => showModalBottomSheet<void>(
     context: context,
     isDismissible: true,
     enableDrag: true,
     builder: (BuildContext context) {
-      return ReportContent(song: song,);
+      return AlertContent(
+        func: _reportSong,
+        aproveKeyWord: 'Report',
+        content: 'Report song for inappropriate content?',
+      );
     },
   );
-
 
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:lgcogpraiseteam/components/showAlert.dart';
 import 'package:lgcogpraiseteam/models/ModelProvider.dart';
+import 'package:lgcogpraiseteam/services/dbEventsQuery.dart';
 import 'package:lgcogpraiseteam/services/userQuery.dart';
 import 'package:share_plus/share_plus.dart';
 import '../components/SharedSoundCard.dart';
@@ -29,7 +31,6 @@ class _EventPageState extends State<EventPage> {
   );
   User user = User();
   List<Map<String, String>> shareItems = [];
-  String _shareItem;
 
   TextStyle style1 = TextStyle(
     fontSize: 20,
@@ -63,6 +64,27 @@ class _EventPageState extends State<EventPage> {
     );
   }
 
+  void _deleteEvent() async {
+    bool isDeleted = await DbEventsQuery().deleteEvent(widget.event);
+    if (isDeleted) {
+      Navigator.of(context).pop();
+      Navigator.of(context).pop();
+    }
+  }
+
+  void showBottomSheet(context) => showModalBottomSheet<void>(
+    context: context,
+    isDismissible: true,
+    enableDrag: true,
+    builder: (BuildContext context) {
+      return AlertContent(
+        func: _deleteEvent,
+        content: 'Delete This Event?',
+        aproveKeyWord: 'Delete',
+      );
+    },
+  );
+
   @override
   Widget build(BuildContext context) {
     int _numSong = widget.event.songIds.length;
@@ -85,7 +107,7 @@ class _EventPageState extends State<EventPage> {
             child: Icon(Icons.delete, size: 25,),
             size: 50,
             onPress: () {
-              // _onShare(context, _shareItem);
+              showBottomSheet(context);
             },
           )
         ],

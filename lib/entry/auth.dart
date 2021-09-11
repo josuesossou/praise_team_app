@@ -173,8 +173,8 @@ class AdditionalInfo extends StatelessWidget {
           'password': loginData.password 
         }
       );
-    } on AuthException catch (e) {
-      print(e);
+    } on AuthException catch (_) {
+      // print(e);
       showError(
         context, 
         'Something went wrong, please check internet connection and try again'

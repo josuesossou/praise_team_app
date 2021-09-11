@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:lgcogpraiseteam/components/scaffoldMessages.dart';
-import 'package:lgcogpraiseteam/models/Song.dart';
-import 'package:lgcogpraiseteam/services/dbSongsQuery.dart';
+// import 'package:lgcogpraiseteam/components/scaffoldMessages.dart';
+// import 'package:lgcogpraiseteam/models/Song.dart';
+// import 'package:lgcogpraiseteam/services/dbSongsQuery.dart';
 
-class ReportContent extends StatelessWidget{
-  ReportContent({ @required this.song });
+class AlertContent extends StatelessWidget{
+  AlertContent({ 
+    @required this.func,
+    @required this.content,
+    @required this.aproveKeyWord,
+  });
 
-  final Song song;
+  final VoidCallback func;
+  final String content, aproveKeyWord;
   
   @override
   Widget build(BuildContext context) {
@@ -19,7 +24,7 @@ class ReportContent extends StatelessWidget{
         children: [
           SizedBox(height: 10,),
           Text(
-            "Report song for inappropriate content?",
+            content,
             style: TextStyle(
               fontSize: 17,
             ),
@@ -29,23 +34,12 @@ class ReportContent extends StatelessWidget{
             children: [
               TextButton(
                 child: Text(
-                  'Report',
+                  aproveKeyWord,
                   style: TextStyle(
                     color: _theme.accentColor 
                   ),
                 ),
-                onPressed: () {
-                  var newSong = song.copyWith(
-                    reported: true
-                  );
-
-                  DbSongsQuery().updateSong(newSong);
-
-                  showSuccess(
-                    context, 
-                    "Report sent! Video will not be displayed in the future"
-                  );
-                },
+                onPressed: func
               ),
               TextButton(
                 child: const Text(

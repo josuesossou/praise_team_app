@@ -77,7 +77,7 @@ class DbEventsQuery {
       );
       _streamController.add(events);
     } catch (e) {
-      print(e);
+      // print(e);
     }
   }
 
@@ -97,6 +97,15 @@ class DbEventsQuery {
       return _events;
     } catch (e) {
       return [];
+    }
+  }
+
+  Future<bool> deleteEvent(Event event) async {
+    try {
+      await Amplify.DataStore.delete(event);
+      return true;
+    } catch (e) {
+      return false;
     }
   }
 }
