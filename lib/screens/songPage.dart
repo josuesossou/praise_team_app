@@ -34,7 +34,7 @@ class _SongPageState extends State<SongPage> {
   TransposeCalculation t = TransposeCalculation();
   bool editMode = false;
   String originalKey;
-  String userName; // name of the user singing in the transpose key
+  UserData userName; // name of the user singing in the transpose key
   int transpose;
   Song song;
 
@@ -43,7 +43,7 @@ class _SongPageState extends State<SongPage> {
     setState(() {
       song = widget.song;
       originalKey = widget.song.originalkey;
-      userName = '';
+      userName = null;
       transpose = 0;
     });
     super.initState();
@@ -80,25 +80,25 @@ class _SongPageState extends State<SongPage> {
   }
 
   void updateSong() async {
-
     if (originalKey == 'Not Set') {
       showError(context, 'Change Key');
     } else {
       Song _updatedSong;
 
       try {
-        if (userName != '') {
+        if (userName != null) {
           final _transId = Uuid().v1();
           String transposeKey = t.getTransposedKey(originalKey, transpose);
           List<String> transposeDataIds = [_transId, ...song.transposeList];
           // transposeDataIds.add(_transId);
 
-          final newTransData = {
+          final newTranData = {
             'id': _transId,
             'transposeKey': transposeKey,
             'transposeNum': transpose,
-            'userName': userName,
-            'songId': song.songId
+            'userName': userName.name,
+            'songId': song.songId,
+            'userId': userName.uid
           };
 
           // song.transposeList.add(_transId);
@@ -108,7 +108,7 @@ class _SongPageState extends State<SongPage> {
             transposeList: transposeDataIds
           );
 
-          await TransposeQuery().addTransposeKey(newTransData);
+          await TransposeQuery().addTransposeKey(newTranData);
         } else {
           _updatedSong = song.copyWith(
             originalkey: originalKey,
@@ -144,8 +144,14 @@ class _SongPageState extends State<SongPage> {
 
     return Scaffold(
       backgroundColor: _theme.primaryColorLight, 
-      floatingActionButton: IconButton(
-        icon: Icon(Icons.edit), 
+      floatingActionButton: ElevatedButton(
+        
+        style: ElevatedButton.styleFrom(
+          shape: CircleBorder(),
+          primary: _theme.accentColor,
+          padding: EdgeInsets.all(20)
+        ),
+        child: Icon(Icons.edit, size: 30,),
         onPressed: () => _showEditMode()
       ),
       appBar: AppBar(
@@ -197,10 +203,10 @@ class EditSong extends StatelessWidget {
   });
 
   final Song song;
-  final String originalKey, userName;
+  final String originalKey;
   final Function cancel, submit, onChangeOriginalKey, onChangeTranspose,
         onChangeUserName;
-
+  final UserData userName;
   final TransposeCalculation _transpose = TransposeCalculation();
 
 
@@ -306,15 +312,13 @@ class EditSong extends StatelessWidget {
                 Widget widget;
 
                 if (snapshot.hasData) {
-                  List<String> listOfUserNames = snapshot.data
-                                                .map((user) => user.name)
-                                                .toList();
+                  List<UserData> listOfUserNames = snapshot.data;
 
                   widget = listOfUserNames.isEmpty ?
                   Text('No User In App') :
-                  DropDownNotes(
+                  DropDownUserData(
                     items: listOfUserNames,
-                    dropdownValue: userName == '' ?
+                    dropdownValue: userName == null?
                                     listOfUserNames[0]
                                     : userName,
                     onValueChanged: onChangeUserName,

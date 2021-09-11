@@ -32,6 +32,7 @@ class Event extends Model {
   final String bgCover;
   final String createdBy;
   final String creatorName;
+  final String orgId;
 
   @override
   getInstanceType() => classType;
@@ -50,7 +51,8 @@ class Event extends Model {
       this.songIds,
       this.bgCover,
       this.createdBy,
-      this.creatorName});
+      this.creatorName,
+      @required this.orgId});
 
   factory Event(
       {String id,
@@ -61,7 +63,8 @@ class Event extends Model {
       List<String> songIds,
       String bgCover,
       String createdBy,
-      String creatorName}) {
+      String creatorName,
+      @required String orgId}) {
     return Event._internal(
         id: id == null ? UUID.getUUID() : id,
         name: name,
@@ -71,7 +74,8 @@ class Event extends Model {
         songIds: songIds != null ? List<String>.unmodifiable(songIds) : songIds,
         bgCover: bgCover,
         createdBy: createdBy,
-        creatorName: creatorName);
+        creatorName: creatorName,
+        orgId: orgId);
   }
 
   bool equals(Object other) {
@@ -90,7 +94,8 @@ class Event extends Model {
         DeepCollectionEquality().equals(songIds, other.songIds) &&
         bgCover == other.bgCover &&
         createdBy == other.createdBy &&
-        creatorName == other.creatorName;
+        creatorName == other.creatorName &&
+        orgId == other.orgId;
   }
 
   @override
@@ -114,7 +119,8 @@ class Event extends Model {
         "songIds=" + (songIds != null ? songIds.toString() : "null") + ", ");
     buffer.write("bgCover=" + "$bgCover" + ", ");
     buffer.write("createdBy=" + "$createdBy" + ", ");
-    buffer.write("creatorName=" + "$creatorName");
+    buffer.write("creatorName=" + "$creatorName" + ", ");
+    buffer.write("orgId=" + "$orgId");
     buffer.write("}");
 
     return buffer.toString();
@@ -129,7 +135,8 @@ class Event extends Model {
       List<String> songIds,
       String bgCover,
       String createdBy,
-      String creatorName}) {
+      String creatorName,
+      String orgId}) {
     return Event(
         id: id ?? this.id,
         name: name ?? this.name,
@@ -139,7 +146,8 @@ class Event extends Model {
         songIds: songIds ?? this.songIds,
         bgCover: bgCover ?? this.bgCover,
         createdBy: createdBy ?? this.createdBy,
-        creatorName: creatorName ?? this.creatorName);
+        creatorName: creatorName ?? this.creatorName,
+        orgId: orgId ?? this.orgId);
   }
 
   Event.fromJson(Map<String, dynamic> json)
@@ -153,7 +161,8 @@ class Event extends Model {
         songIds = json['songIds']?.cast<String>(),
         bgCover = json['bgCover'],
         createdBy = json['createdBy'],
-        creatorName = json['creatorName'];
+        creatorName = json['creatorName'],
+        orgId = json['orgId'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -164,7 +173,8 @@ class Event extends Model {
         'songIds': songIds,
         'bgCover': bgCover,
         'createdBy': createdBy,
-        'creatorName': creatorName
+        'creatorName': creatorName,
+        'orgId': orgId
       };
 
   static final QueryField ID = QueryField(fieldName: "event.id");
@@ -176,6 +186,7 @@ class Event extends Model {
   static final QueryField BGCOVER = QueryField(fieldName: "bgCover");
   static final QueryField CREATEDBY = QueryField(fieldName: "createdBy");
   static final QueryField CREATORNAME = QueryField(fieldName: "creatorName");
+  static final QueryField ORGID = QueryField(fieldName: "orgId");
   static var schema =
       Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Event";
@@ -232,6 +243,11 @@ class Event extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: Event.CREATORNAME,
         isRequired: false,
+        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: Event.ORGID,
+        isRequired: true,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
   });
 }

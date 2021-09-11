@@ -60,21 +60,19 @@ class _AuthState extends State<Auth> {
         return 'Problem logging in. Please try again.';
       }
 
-      if (e.message.contains('User not found in the system')) {
-        showError(context, 'Email may not be verified, please confirm.');
-        Navigator.pushReplacementNamed(
-          context, 
-          '/confirm', 
-          arguments: {
-            'username': data.name.split('@')[0]
-                                  .toLowerCase(), 
-            'email': data.name,
-            'password': data.password 
-          }
-        );
-      }
+      showError(context, 'Email may not be verified, please confirm.');
+      Navigator.pushReplacementNamed(
+        context, 
+        '/confirm', 
+        arguments: {
+          'username': data.name.split('@')[0]
+                                .toLowerCase(), 
+          'email': data.name,
+          'password': data.password 
+        }
+      );
 
-      return '${e.message} - ${e.recoverySuggestion}';
+      return 'Email may not be verified, please confirm.';
     }
   }
 
@@ -175,7 +173,8 @@ class AdditionalInfo extends StatelessWidget {
           'password': loginData.password 
         }
       );
-    } on AuthException catch (_) {
+    } on AuthException catch (e) {
+      print(e);
       showError(
         context, 
         'Something went wrong, please check internet connection and try again'

@@ -75,7 +75,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
     } on AuthException catch (e) {
       showError(context, e.message);
       setState(() {
-        _showLoader = true;
+        _showLoader = false;
       });
     }
   }

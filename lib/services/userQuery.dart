@@ -9,25 +9,39 @@ import 'package:lgcogpraiseteam/models/UserData.dart';
 // Assumes that the user is already signs in. Only user this class
 // in Widgets that has DashboardEntry in their parent tree
 class User {
+  static AuthUser _user;
+  static Attributes _userAttributes;
+
   Future<AuthUser> getUser() async {
-    try {
-      return await Amplify.Auth.getCurrentUser();
-    } catch (e) {
-      return null;
-    }
+    if (_user == null) {
+      try {
+        _user = await Amplify.Auth.getCurrentUser();
+      } catch (e) {
+        _user = null;
+      }
+      // return _user;
+    } 
+    return _user;
   }
 
   Future<Attributes> getUserAttributes() async {
     Map<String, dynamic> _attributes = {};
-    try {
-      var _userAttributes = await Amplify.Auth.fetchUserAttributes();
-      _userAttributes.forEach((attr) {
-        _attributes[attr.userAttributeKey] = attr.value;
-      });
-    
-      return Attributes.fromMap(_attributes);
-    } catch (e) {
-      return null;
+
+    if (_userAttributes == null) {
+      try {
+        var _getUserAttributes = await Amplify.Auth.fetchUserAttributes();
+        _getUserAttributes.forEach((attr) {
+          _attributes[attr.userAttributeKey] = attr.value;
+        });
+
+        _userAttributes = Attributes.fromMap(_attributes);
+      
+        return _userAttributes;
+      } catch (e) {
+        return null;
+      }
+    } else {
+      return _userAttributes;
     }
   }
 }

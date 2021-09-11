@@ -1,0 +1,67 @@
+type Song @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  songId: ID!
+  channelId: String
+  etag: String
+  videoTitle: String!
+  videoTitleLowercase: String!
+  videoId: String!
+  videoDescription: String
+  videoThumDefaultH: Int
+  videoThumbDefaultW: Int
+  videoThumbDefaultUrl: String
+  videoThumbMediumH: Int
+  videoThumbMediumUrl: String
+  videoThumbMediumW: Int
+  lastDatePlayed: String
+  musicSheets: [FileURL] @connection(keyName: "bySong", fields: ["id"])
+  createdAt: AWSTimestamp!
+  originalkey: String
+  numOfTimePlayed: Int
+  transposeList: [String]
+  reported: Boolean
+  channelTitle: String
+  orgId: String!
+}
+
+type Event @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String!
+  date: String
+  createdAt: AWSTimestamp!
+  dateStamp: Int
+  songIds: [String]
+  bgCover: String
+  createdBy: ID
+  creatorName: String
+  orgId: String!
+}
+
+type Organization @model @auth(rules: [{allow: public}]) {
+  organizationId: String
+}
+
+type UserData @model @auth(rules: [{allow: public}]) {
+  uid: ID!
+  name: String
+  role: String
+  organizationId: String!
+  color: String
+}
+
+type FileURL @model @auth(rules: [{allow: public}]) @key(name: "bySong", fields: ["songID"]) {
+  url: String
+  byUser: ID
+  userName: String
+  songID: ID
+}
+
+type TransposeData @model @auth(rules: [{allow: public}]) {
+  transposeId: ID!
+  transposeKey: String
+  transposeNum: Int
+  userName: String
+  songId: ID!
+  userId: String!
+}
+ 

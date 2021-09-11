@@ -1,0 +1,11 @@
+{
+  "AppSyncApiName": "praiseteamapp",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authpraiseteamappaef638fd",
+      "Outputs.UserPoolId"
+    ]
+  }
+}

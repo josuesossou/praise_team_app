@@ -1,13 +1,13 @@
 {
-  "projectName": "praise_team_app",
+  "projectName": "praiseteamapp",
   "version": "3.1",
   "frontend": "flutter",
-  "providers": [
-    "awscloudformation"
-  ],
   "flutter": {
     "config": {
       "ResDir": "./lib/"
     }
-  }
+  },
+  "providers": [
+    "awscloudformation"
+  ]
 }

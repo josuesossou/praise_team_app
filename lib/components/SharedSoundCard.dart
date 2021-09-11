@@ -133,8 +133,10 @@ class SharedSoundCard extends StatelessWidget {
 
           isEventPage ?
             Container()
-            : Container(
+            : 
+            Container(
               height: 100,
+              color: Colors.red,
               child: PageView(
                 controller: _pageController,
                 scrollDirection: Axis.horizontal,

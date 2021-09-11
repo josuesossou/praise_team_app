@@ -9,7 +9,6 @@ class EntryScreen extends StatefulWidget {
 }
 
 class _EntryScreenState extends State<EntryScreen> {
-  // AuthUser _user;
   void _isUserExist() async {
     try {
       await Amplify.Auth.getCurrentUser();

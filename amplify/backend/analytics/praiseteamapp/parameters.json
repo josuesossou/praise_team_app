@@ -1,11 +1,11 @@
 {
     "appName": "praiseteamapp",
-    "roleName": "pinpointLambdaRole68adca4e",
-    "cloudformationPolicyName": "cloudformationPolicy68adca4e",
-    "cloudWatchPolicyName": "cloudWatchPolicy68adca4e",
-    "pinpointPolicyName": "pinpointPolicy68adca4e",
-    "authPolicyName": "pinpoint_amplify_68adca4e",
-    "unauthPolicyName": "pinpoint_amplify_68adca4e",
+    "roleName": "pinpointLambdaRolef1aa2016",
+    "cloudformationPolicyName": "cloudformationPolicyf1aa2016",
+    "cloudWatchPolicyName": "cloudWatchPolicyf1aa2016",
+    "pinpointPolicyName": "pinpointPolicyf1aa2016",
+    "authPolicyName": "pinpoint_amplify_f1aa2016",
+    "unauthPolicyName": "pinpoint_amplify_f1aa2016",
     "authRoleName": {
         "Ref": "AuthRoleName"
     },

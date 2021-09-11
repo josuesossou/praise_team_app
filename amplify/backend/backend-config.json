@@ -1,24 +1,34 @@
 {
   "api": {
-    "amplifyDatasource": {
+    "praiseteamapp": {
       "service": "AppSync",
       "providerPlugin": "awscloudformation",
       "output": {
         "authConfig": {
-          "additionalAuthenticationProviders": [],
           "defaultAuthentication": {
             "authenticationType": "API_KEY",
             "apiKeyConfig": {
-              "description": "",
-              "apiKeyExpirationDays": 7
+              "apiKeyExpirationDays": 30,
+              "description": "api key description"
             }
-          }
+          },
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AWS_IAM"
+            },
+            {
+              "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+              "userPoolConfig": {
+                "userPoolId": "authpraiseteamappaef638fd"
+              }
+            }
+          ]
         }
       }
     }
   },
   "auth": {
-    "praiseteamapp852f1fd1": {
+    "praiseteamappaef638fd": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
@@ -45,13 +55,6 @@
     "praiseteamapp": {
       "service": "Pinpoint",
       "providerPlugin": "awscloudformation"
-    }
-  },
-  "hosting": {
-    "amplifyhosting": {
-      "service": "amplifyhosting",
-      "providerPlugin": "awscloudformation",
-      "type": "manual"
     }
   }
 }

@@ -25,6 +25,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Praise&Worship Team',
+      debugShowCheckedModeBanner: false,
       onGenerateRoute: (settings) {
         // home
         if (settings.name == '/dashboard') {

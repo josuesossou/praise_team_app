@@ -28,7 +28,8 @@ class DbEventsQuery {
       songIds: event['songIds'],
       bgCover: event['bgCover'],
       createdBy: _getUser.userId,
-      creatorName: _getAttributes.name
+      creatorName: _getAttributes.name,
+      orgId: _getAttributes.orgId,
     );
 
     try {
@@ -68,9 +69,11 @@ class DbEventsQuery {
   // Queries the events from the amplify dbstore
   void _getUpcomingEvent() async {
     try {
+      var _getAttributes = await _user.getUserAttributes();
       List<Event> events = await Amplify.DataStore.query(
         Event.classType, 
         where: Event.DATESTAMP.gt(_now)
+                .and(Event.ORGID.eq(_getAttributes.orgId))
       );
       _streamController.add(events);
     } catch (e) {
@@ -85,9 +88,11 @@ class DbEventsQuery {
 
   Future<List<Event>> getPreviousEvent() async {
     try {
+      var _getAttributes = await _user.getUserAttributes();
       List<Event> _events = await Amplify.DataStore.query(
         Event.classType,
         where: Event.DATESTAMP.lt(_now)
+                    .and(Event.ORGID.eq(_getAttributes.orgId))
       );
       return _events;
     } catch (e) {

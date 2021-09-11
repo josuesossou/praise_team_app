@@ -1,50 +1,20 @@
 {
-    "dev": {
-        "awscloudformation": {
-            "AuthRoleName": "amplify-praiseteamapp-dev-95016-authRole",
-            "UnauthRoleArn": "arn:aws:iam::364090414621:role/amplify-praiseteamapp-dev-95016-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::364090414621:role/amplify-praiseteamapp-dev-95016-authRole",
-            "Region": "us-east-1",
-            "DeploymentBucketName": "amplify-praiseteamapp-dev-95016-deployment",
-            "UnauthRoleName": "amplify-praiseteamapp-dev-95016-unauthRole",
-            "StackName": "amplify-praiseteamapp-dev-95016",
-            "StackId": "arn:aws:cloudformation:us-east-1:364090414621:stack/amplify-praiseteamapp-dev-95016/8d361eb0-0674-11ec-a219-0afa5528cb21",
-            "AmplifyAppId": "dareawzq7wrnq"
-        },
-        "categories": {
-            "auth": {
-                "praiseteamapp852f1fd1": {}
-            },
-            "hosting": {
-                "amplifyhosting": {
-                    "appId": "dareawzq7wrnq",
-                    "type": "manual"
-                }
-            }
-        }
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-praiseteamapp-dev-162656-authRole",
+      "UnauthRoleArn": "arn:aws:iam::364090414621:role/amplify-praiseteamapp-dev-162656-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::364090414621:role/amplify-praiseteamapp-dev-162656-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-praiseteamapp-dev-162656-deployment",
+      "UnauthRoleName": "amplify-praiseteamapp-dev-162656-unauthRole",
+      "StackName": "amplify-praiseteamapp-dev-162656",
+      "StackId": "arn:aws:cloudformation:us-east-1:364090414621:stack/amplify-praiseteamapp-dev-162656/72d3f5d0-1275-11ec-832f-0a0aa6304a03",
+      "AmplifyAppId": "d1j6j7pnw2u8l2"
     },
-    "production": {
-        "awscloudformation": {
-            "AuthRoleName": "amplify-praiseteamapp-production-01631-authRole",
-            "UnauthRoleArn": "arn:aws:iam::364090414621:role/amplify-praiseteamapp-production-01631-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::364090414621:role/amplify-praiseteamapp-production-01631-authRole",
-            "Region": "us-east-1",
-            "DeploymentBucketName": "amplify-praiseteamapp-production-01631-deployment",
-            "UnauthRoleName": "amplify-praiseteamapp-production-01631-unauthRole",
-            "StackName": "amplify-praiseteamapp-production-01631",
-            "StackId": "arn:aws:cloudformation:us-east-1:364090414621:stack/amplify-praiseteamapp-production-01631/e1d7f270-11ed-11ec-8ad6-123cdfa4b01d",
-            "AmplifyAppId": "dareawzq7wrnq"
-        },
-        "categories": {
-            "auth": {
-                "praiseteamapp852f1fd1": {}
-            },
-            "hosting": {
-                "amplifyhosting": {
-                    "appId": "dareawzq7wrnq",
-                    "type": "manual"
-                }
-            }
-        }
+    "categories": {
+      "auth": {
+        "praiseteamappaef638fd": {}
+      }
     }
+  }
 }

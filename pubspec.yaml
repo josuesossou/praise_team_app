@@ -28,6 +28,7 @@ dependencies:
   intl: ^0.17.0
   youtube_player_flutter: ^8.0.0
   http: ^0.13.1
+  amplify_api: ^0.2.0
   amplify_flutter: ^0.2.0
   amplify_datastore: ^0.2.0
   amplify_auth_cognito: ^0.2.0

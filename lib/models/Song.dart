@@ -27,7 +27,6 @@ class Song extends Model {
   final String id;
   final String songId;
   final String channelId;
-  final String channelTitle;
   final String etag;
   final String videoTitle;
   final String videoTitleLowercase;
@@ -46,6 +45,8 @@ class Song extends Model {
   final int numOfTimePlayed;
   final List<String> transposeList;
   final bool reported;
+  final String channelTitle;
+  final String orgId;
 
   @override
   getInstanceType() => classType;
@@ -59,7 +60,6 @@ class Song extends Model {
       {@required this.id,
       @required this.songId,
       this.channelId,
-      this.channelTitle,
       this.etag,
       @required this.videoTitle,
       @required this.videoTitleLowercase,
@@ -77,13 +77,14 @@ class Song extends Model {
       this.originalkey,
       this.numOfTimePlayed,
       this.transposeList,
-      this.reported});
+      this.reported,
+      this.channelTitle,
+      @required this.orgId});
 
   factory Song(
       {String id,
       @required String songId,
       String channelId,
-      String channelTitle,
       String etag,
       @required String videoTitle,
       @required String videoTitleLowercase,
@@ -101,12 +102,13 @@ class Song extends Model {
       String originalkey,
       int numOfTimePlayed,
       List<String> transposeList,
-      bool reported}) {
+      bool reported,
+      String channelTitle,
+      @required String orgId}) {
     return Song._internal(
         id: id == null ? UUID.getUUID() : id,
         songId: songId,
         channelId: channelId,
-        channelTitle: channelTitle,
         etag: etag,
         videoTitle: videoTitle,
         videoTitleLowercase: videoTitleLowercase,
@@ -128,7 +130,9 @@ class Song extends Model {
         transposeList: transposeList != null
             ? List<String>.unmodifiable(transposeList)
             : transposeList,
-        reported: reported);
+        reported: reported,
+        channelTitle: channelTitle,
+        orgId: orgId);
   }
 
   bool equals(Object other) {
@@ -142,7 +146,6 @@ class Song extends Model {
         id == other.id &&
         songId == other.songId &&
         channelId == other.channelId &&
-        channelTitle == other.channelTitle &&
         etag == other.etag &&
         videoTitle == other.videoTitle &&
         videoTitleLowercase == other.videoTitleLowercase &&
@@ -160,7 +163,9 @@ class Song extends Model {
         originalkey == other.originalkey &&
         numOfTimePlayed == other.numOfTimePlayed &&
         DeepCollectionEquality().equals(transposeList, other.transposeList) &&
-        reported == other.reported;
+        reported == other.reported &&
+        channelTitle == other.channelTitle &&
+        orgId == other.orgId;
   }
 
   @override
@@ -174,7 +179,6 @@ class Song extends Model {
     buffer.write("id=" + "$id" + ", ");
     buffer.write("songId=" + "$songId" + ", ");
     buffer.write("channelId=" + "$channelId" + ", ");
-    buffer.write("channelTitle=" + "$channelTitle" + ", ");
     buffer.write("etag=" + "$etag" + ", ");
     buffer.write("videoTitle=" + "$videoTitle" + ", ");
     buffer.write("videoTitleLowercase=" + "$videoTitleLowercase" + ", ");
@@ -205,8 +209,10 @@ class Song extends Model {
     buffer.write("transposeList=" +
         (transposeList != null ? transposeList.toString() : "null") +
         ", ");
-    buffer
-        .write("reported=" + (reported != null ? reported.toString() : "null"));
+    buffer.write(
+        "reported=" + (reported != null ? reported.toString() : "null") + ", ");
+    buffer.write("channelTitle=" + "$channelTitle" + ", ");
+    buffer.write("orgId=" + "$orgId");
     buffer.write("}");
 
     return buffer.toString();
@@ -216,7 +222,6 @@ class Song extends Model {
       {String id,
       String songId,
       String channelId,
-      String channelTitle,
       String etag,
       String videoTitle,
       String videoTitleLowercase,
@@ -234,12 +239,13 @@ class Song extends Model {
       String originalkey,
       int numOfTimePlayed,
       List<String> transposeList,
-      bool reported}) {
+      bool reported,
+      String channelTitle,
+      String orgId}) {
     return Song(
         id: id ?? this.id,
         songId: songId ?? this.songId,
         channelId: channelId ?? this.channelId,
-        channelTitle: channelTitle ?? this.channelTitle,
         etag: etag ?? this.etag,
         videoTitle: videoTitle ?? this.videoTitle,
         videoTitleLowercase: videoTitleLowercase ?? this.videoTitleLowercase,
@@ -257,14 +263,15 @@ class Song extends Model {
         originalkey: originalkey ?? this.originalkey,
         numOfTimePlayed: numOfTimePlayed ?? this.numOfTimePlayed,
         transposeList: transposeList ?? this.transposeList,
-        reported: reported ?? this.reported);
+        reported: reported ?? this.reported,
+        channelTitle: channelTitle ?? this.channelTitle,
+        orgId: orgId ?? this.orgId);
   }
 
   Song.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         songId = json['songId'],
         channelId = json['channelId'],
-        channelTitle = json['channelTitle'],
         etag = json['etag'],
         videoTitle = json['videoTitle'],
         videoTitleLowercase = json['videoTitleLowercase'],
@@ -288,13 +295,14 @@ class Song extends Model {
         originalkey = json['originalkey'],
         numOfTimePlayed = json['numOfTimePlayed'],
         transposeList = json['transposeList']?.cast<String>(),
-        reported = json['reported'];
+        reported = json['reported'],
+        channelTitle = json['channelTitle'],
+        orgId = json['orgId'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'songId': songId,
         'channelId': channelId,
-        'channelTitle': channelTitle,
         'etag': etag,
         'videoTitle': videoTitle,
         'videoTitleLowercase': videoTitleLowercase,
@@ -312,13 +320,14 @@ class Song extends Model {
         'originalkey': originalkey,
         'numOfTimePlayed': numOfTimePlayed,
         'transposeList': transposeList,
-        'reported': reported
+        'reported': reported,
+        'channelTitle': channelTitle,
+        'orgId': orgId
       };
 
   static final QueryField ID = QueryField(fieldName: "song.id");
   static final QueryField SONGID = QueryField(fieldName: "songId");
   static final QueryField CHANNELID = QueryField(fieldName: "channelId");
-  static final QueryField CHANNELTITLE = QueryField(fieldName: "channelTitle");
   static final QueryField ETAG = QueryField(fieldName: "etag");
   static final QueryField VIDEOTITLE = QueryField(fieldName: "videoTitle");
   static final QueryField VIDEOTITLELOWERCASE =
@@ -351,6 +360,8 @@ class Song extends Model {
   static final QueryField TRANSPOSELIST =
       QueryField(fieldName: "transposeList");
   static final QueryField REPORTED = QueryField(fieldName: "reported");
+  static final QueryField CHANNELTITLE = QueryField(fieldName: "channelTitle");
+  static final QueryField ORGID = QueryField(fieldName: "orgId");
   static var schema =
       Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Song";
@@ -374,11 +385,6 @@ class Song extends Model {
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: Song.CHANNELID,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Song.CHANNELTITLE,
         isRequired: false,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
 
@@ -446,7 +452,7 @@ class Song extends Model {
         key: Song.MUSICSHEETS,
         isRequired: false,
         ofModelName: (FileURL).toString(),
-        associatedKey: FileURL.SONGMUSICSHEETSID));
+        associatedKey: FileURL.SONGID));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: Song.CREATEDAT,
@@ -474,6 +480,16 @@ class Song extends Model {
         key: Song.REPORTED,
         isRequired: false,
         ofType: ModelFieldType(ModelFieldTypeEnum.bool)));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: Song.CHANNELTITLE,
+        isRequired: false,
+        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: Song.ORGID,
+        isRequired: true,
+        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
   });
 }
 

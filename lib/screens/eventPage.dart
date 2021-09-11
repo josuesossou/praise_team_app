@@ -23,6 +23,7 @@ class EventPage extends StatefulWidget {
 }
 
 class _EventPageState extends State<EventPage> {
+  DbSongsQuery _dbQuery = DbSongsQuery();
   PageController _controller = PageController(
     initialPage: 0, viewportFraction: 0.9, keepPage: true
   );
@@ -44,11 +45,19 @@ class _EventPageState extends State<EventPage> {
     fontWeight: FontWeight.normal
   );
 
-  void _onShare(BuildContext context, shareItem) {
+  void _onShare(BuildContext context, List<String> songIds, date) async {
     final box = context.findRenderObject() as RenderBox;
+    String _shareItem = "Here are the songs for $date\n\n";
+
+    for (var id in songIds) {
+      Song song = await _dbQuery.getOneSong(id);
+
+      _shareItem += "${song.videoTitle}" + 
+      "\nhttps://youtu.be/${song.videoId}\n\n";
+    }
 
     Share.share(
-      shareItem,
+      _shareItem,
       subject: 'hello',
       sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size
     );
@@ -66,7 +75,6 @@ class _EventPageState extends State<EventPage> {
         int.parse(_event.date)
       )
     );
-    _shareItem = "Here are the songs for $_date\n\n";
 
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColorLight, 
@@ -86,6 +94,17 @@ class _EventPageState extends State<EventPage> {
         centerTitle: true,
         backgroundColor: _theme.accentColor,
       ),
+      floatingActionButton: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          shape: CircleBorder(),
+          primary: _theme.accentColor,
+          padding: EdgeInsets.all(20)
+        ),
+        child: Icon(Icons.share, size: 30,),
+        onPressed: () {
+          _onShare(context, widget.event.songIds, _date);
+        },
+      ),
       body: SingleChildScrollView(
       scrollDirection: Axis.vertical,
       padding: EdgeInsets.symmetric(horizontal: 1, vertical: 10),
@@ -93,12 +112,7 @@ class _EventPageState extends State<EventPage> {
         constraints: BoxConstraints(
           minHeight: 0.90 * _size.height,
         ),
-      // Container(
-      //   padding: EdgeInsets.symmetric(vertical: 20),
         child: Column(
-          // mainAxisSize: MainAxisSize.min,
-          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          // crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
               height: _size.height * 0.16,
@@ -132,7 +146,7 @@ class _EventPageState extends State<EventPage> {
                 scrollDirection: Axis.horizontal,
                 children: widget.event.songIds.map((songId) => (
                   FutureBuilder(
-                    future: DbSongsQuery().getOneSong(songId),
+                    future: _dbQuery.getOneSong(songId),
                     builder: (BuildContext build, 
                           AsyncSnapshot<Song> snapshot) {
                       Widget child;
@@ -140,8 +154,6 @@ class _EventPageState extends State<EventPage> {
                       if (snapshot.hasData) {
                         Song song = snapshot.data;
 
-                        _shareItem += "${song.videoTitle}" + 
-                        "\nhttps://youtu.be/${song.videoId}\n\n";
 
                         child = Container(
                           margin: EdgeInsets.symmetric(horizontal: 5),
@@ -158,13 +170,16 @@ class _EventPageState extends State<EventPage> {
                                     SongPage(song: song,))
                                   );
                                 },
-                                width: _size.width * 0.60,
-                                color: Theme.of(context).accentColor,
+                                width: _size.width * 0.40,
+                                color: _theme.primaryColorDark,
                                 child: Row(children: [
                                   FlexText(
                                     alignment: Alignment.center,
-                                    text: 'View More',
-                                    style: TextStyle(fontSize: 15),
+                                    text: 'More',
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold
+                                    ),
                                   ),
                                 ],)
                               )
@@ -190,15 +205,6 @@ class _EventPageState extends State<EventPage> {
                   )
                 )).toList(),
               ),
-            ),
-            RectButton(
-              elevation: 10,
-              child: Text('SHARE'),
-              // Icon(Icons.share_outlined, size: 25,),
-              // size: 50,
-              onPress: () {
-                _onShare(context, _shareItem);
-              },
             ),
             SizedBox(height: 10)
           ],

@@ -2,6 +2,7 @@ import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:amplify_flutter/amplify.dart';
 import 'package:lgcogpraiseteam/models/TransposeData.dart';
 import 'package:lgcogpraiseteam/models/YoutubeDataModel.dart';
+import 'package:lgcogpraiseteam/services/userQuery.dart';
 import 'package:uuid/uuid.dart';
 
 import '../models/Song.dart';
@@ -9,9 +10,12 @@ import '../models/Song.dart';
 class DbSongsQuery {
   final _uuid = Uuid();
   final String collectionPath = 'songs';
+  final _user = User();
 
   /// returns true if succeeded otherwise false
   Future<bool> addSong(VideoDetail video) async {
+    var _getAttributes = await _user.getUserAttributes();
+
     Song newSong =  Song(
       songId: _uuid.v1(),
       etag: video.etag,
@@ -33,7 +37,8 @@ class DbSongsQuery {
       numOfTimePlayed: 0,
       originalkey: 'Not Set',
       transposeList: [],
-      reported: false
+      reported: false,
+      orgId: _getAttributes.orgId
     );
 
     try {
@@ -62,9 +67,11 @@ class DbSongsQuery {
   }
 
   Future<List<Song>> getFirstFewSongs(int pageNumber) async {
+    var _getAttributes = await _user.getUserAttributes();
     try {
       List<Song> songs = await Amplify.DataStore.query(
         Song.classType,
+        where: Song.ORGID.eq(_getAttributes.orgId),
         pagination: new QueryPagination(page:0, limit:25) 
       );
 
@@ -75,11 +82,13 @@ class DbSongsQuery {
   }
 
   Future<List<Song>> getSearchedSongs(String keyword) async {
+    var _getAttributes = await _user.getUserAttributes();
     try {
       List<Song> songs = await Amplify.DataStore.query(
         Song.classType,
         where: Song.VIDEOTITLELOWERCASE.contains(keyword.toLowerCase())
-      );
+                    .and(Song.ORGID.eq(_getAttributes.orgId))
+      );  
 
       return songs;
     } catch (e) {
@@ -103,19 +112,33 @@ class DbSongsQuery {
 
 
 class TransposeQuery {
-
   /// returns true if succeeded otherwise false
   Future<bool> addTransposeKey(Map<String, dynamic> updateData) async {
-    TransposeData newTransKey = TransposeData(
-      transposeId: updateData['id'],
-      transposeKey: updateData['transposeKey'],
-      transposeNum: updateData['transposeNum'],
-      userName: updateData['userName'],
-      songId: updateData['songId']
-    );
+    var _userId = updateData['userId'];
+    TransposeData _newTranData;
 
     try {
-      await Amplify.DataStore.save(newTransKey);
+      List<TransposeData> tlData = await Amplify.DataStore.query(
+        TransposeData.classType,
+        where: TransposeData.USERID.eq(_userId)
+      );
+
+      if (tlData.isEmpty) {
+        _newTranData = TransposeData(
+          transposeId: updateData['id'],
+          transposeKey: updateData['transposeKey'],
+          transposeNum: updateData['transposeNum'],
+          userName: updateData['userName'],
+          songId: updateData['songId'],
+          userId: _userId
+        );
+      } else {
+        _newTranData = tlData[0].copyWith(
+          transposeKey: updateData['transposeKey'],
+          transposeNum: updateData['transposeNum'],
+        );
+      }
+      await Amplify.DataStore.save(_newTranData);
       return true;
     } catch (e) {
       return false;

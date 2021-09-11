@@ -28,6 +28,7 @@ class TransposeData extends Model {
   final int transposeNum;
   final String userName;
   final String songId;
+  final String userId;
 
   @override
   getInstanceType() => classType;
@@ -43,7 +44,8 @@ class TransposeData extends Model {
       this.transposeKey,
       this.transposeNum,
       this.userName,
-      @required this.songId});
+      @required this.songId,
+      @required this.userId});
 
   factory TransposeData(
       {String id,
@@ -51,14 +53,16 @@ class TransposeData extends Model {
       String transposeKey,
       int transposeNum,
       String userName,
-      @required String songId}) {
+      @required String songId,
+      @required String userId}) {
     return TransposeData._internal(
         id: id == null ? UUID.getUUID() : id,
         transposeId: transposeId,
         transposeKey: transposeKey,
         transposeNum: transposeNum,
         userName: userName,
-        songId: songId);
+        songId: songId,
+        userId: userId);
   }
 
   bool equals(Object other) {
@@ -74,7 +78,8 @@ class TransposeData extends Model {
         transposeKey == other.transposeKey &&
         transposeNum == other.transposeNum &&
         userName == other.userName &&
-        songId == other.songId;
+        songId == other.songId &&
+        userId == other.userId;
   }
 
   @override
@@ -92,7 +97,8 @@ class TransposeData extends Model {
         (transposeNum != null ? transposeNum.toString() : "null") +
         ", ");
     buffer.write("userName=" + "$userName" + ", ");
-    buffer.write("songId=" + "$songId");
+    buffer.write("songId=" + "$songId" + ", ");
+    buffer.write("userId=" + "$userId");
     buffer.write("}");
 
     return buffer.toString();
@@ -104,14 +110,16 @@ class TransposeData extends Model {
       String transposeKey,
       int transposeNum,
       String userName,
-      String songId}) {
+      String songId,
+      String userId}) {
     return TransposeData(
         id: id ?? this.id,
         transposeId: transposeId ?? this.transposeId,
         transposeKey: transposeKey ?? this.transposeKey,
         transposeNum: transposeNum ?? this.transposeNum,
         userName: userName ?? this.userName,
-        songId: songId ?? this.songId);
+        songId: songId ?? this.songId,
+        userId: userId ?? this.userId);
   }
 
   TransposeData.fromJson(Map<String, dynamic> json)
@@ -120,7 +128,8 @@ class TransposeData extends Model {
         transposeKey = json['transposeKey'],
         transposeNum = json['transposeNum'],
         userName = json['userName'],
-        songId = json['songId'];
+        songId = json['songId'],
+        userId = json['userId'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -128,7 +137,8 @@ class TransposeData extends Model {
         'transposeKey': transposeKey,
         'transposeNum': transposeNum,
         'userName': userName,
-        'songId': songId
+        'songId': songId,
+        'userId': userId
       };
 
   static final QueryField ID = QueryField(fieldName: "transposeData.id");
@@ -137,6 +147,7 @@ class TransposeData extends Model {
   static final QueryField TRANSPOSENUM = QueryField(fieldName: "transposeNum");
   static final QueryField USERNAME = QueryField(fieldName: "userName");
   static final QueryField SONGID = QueryField(fieldName: "songId");
+  static final QueryField USERID = QueryField(fieldName: "userId");
   static var schema =
       Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "TransposeData";
@@ -175,6 +186,11 @@ class TransposeData extends Model {
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: TransposeData.SONGID,
+        isRequired: true,
+        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: TransposeData.USERID,
         isRequired: true,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
   });

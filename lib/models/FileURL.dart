@@ -26,7 +26,7 @@ class FileURL extends Model {
   final String url;
   final String byUser;
   final String userName;
-  final String songMusicSheetsId;
+  final String songID;
 
   @override
   getInstanceType() => classType;
@@ -37,24 +37,16 @@ class FileURL extends Model {
   }
 
   const FileURL._internal(
-      {@required this.id,
-      this.url,
-      this.byUser,
-      this.userName,
-      this.songMusicSheetsId});
+      {@required this.id, this.url, this.byUser, this.userName, this.songID});
 
   factory FileURL(
-      {String id,
-      String url,
-      String byUser,
-      String userName,
-      String songMusicSheetsId}) {
+      {String id, String url, String byUser, String userName, String songID}) {
     return FileURL._internal(
         id: id == null ? UUID.getUUID() : id,
         url: url,
         byUser: byUser,
         userName: userName,
-        songMusicSheetsId: songMusicSheetsId);
+        songID: songID);
   }
 
   bool equals(Object other) {
@@ -69,7 +61,7 @@ class FileURL extends Model {
         url == other.url &&
         byUser == other.byUser &&
         userName == other.userName &&
-        songMusicSheetsId == other.songMusicSheetsId;
+        songID == other.songID;
   }
 
   @override
@@ -84,24 +76,20 @@ class FileURL extends Model {
     buffer.write("url=" + "$url" + ", ");
     buffer.write("byUser=" + "$byUser" + ", ");
     buffer.write("userName=" + "$userName" + ", ");
-    buffer.write("songMusicSheetsId=" + "$songMusicSheetsId");
+    buffer.write("songID=" + "$songID");
     buffer.write("}");
 
     return buffer.toString();
   }
 
   FileURL copyWith(
-      {String id,
-      String url,
-      String byUser,
-      String userName,
-      String songMusicSheetsId}) {
+      {String id, String url, String byUser, String userName, String songID}) {
     return FileURL(
         id: id ?? this.id,
         url: url ?? this.url,
         byUser: byUser ?? this.byUser,
         userName: userName ?? this.userName,
-        songMusicSheetsId: songMusicSheetsId ?? this.songMusicSheetsId);
+        songID: songID ?? this.songID);
   }
 
   FileURL.fromJson(Map<String, dynamic> json)
@@ -109,22 +97,21 @@ class FileURL extends Model {
         url = json['url'],
         byUser = json['byUser'],
         userName = json['userName'],
-        songMusicSheetsId = json['songMusicSheetsId'];
+        songID = json['songID'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'url': url,
         'byUser': byUser,
         'userName': userName,
-        'songMusicSheetsId': songMusicSheetsId
+        'songID': songID
       };
 
   static final QueryField ID = QueryField(fieldName: "fileURL.id");
   static final QueryField URL = QueryField(fieldName: "url");
   static final QueryField BYUSER = QueryField(fieldName: "byUser");
   static final QueryField USERNAME = QueryField(fieldName: "userName");
-  static final QueryField SONGMUSICSHEETSID =
-      QueryField(fieldName: "songMusicSheetsId");
+  static final QueryField SONGID = QueryField(fieldName: "songID");
   static var schema =
       Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "FileURL";
@@ -157,7 +144,7 @@ class FileURL extends Model {
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: FileURL.SONGMUSICSHEETSID,
+        key: FileURL.SONGID,
         isRequired: false,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
   });
