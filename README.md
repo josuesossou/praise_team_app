@@ -1,4 +1,4 @@
-# praiseteam
+# Praise Team
 This is a mobile application built using Flutter, a popular open-source framework for building high-performance and visually attractive mobile apps. The app utilizes the power of AWS Amplify, a set of tools and services that enables developers to build cloud-powered applications with ease.
 
 ## Features
